@@ -4,7 +4,7 @@
     <nav>
       <ul>
         <li><a href="#">홈페이지</a></li>
-        <li><a href="#">회원가입</a></li>
+        <li><a href="./../user/JoinForm.vue">회원가입</a></li>
         <li><a href="#">반려동물 찾기</a></li>
         <li><a href="#">게시물</a></li>
         <li><a href="#">쇼핑몰</a></li>
