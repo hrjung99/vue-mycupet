@@ -19,7 +19,7 @@
     </template>
     <template v-else-if="principal && principal.mid === 'admin'">
       <li class="nav-item">
-        <a href="#">
+        <a href="./../user/JoinForm.vue">
           <router-link class="nav-link" to="" id="member_link"
             >회원관리</router-link
           >
@@ -28,7 +28,7 @@
     </template>
     <template v-else>
       <li class="nav-item">
-        <a href="#">
+        <a href="./../user/LoginForm.vue">
           <router-link class="nav-link" to="" id="login_link"
             >로그인</router-link
           >
