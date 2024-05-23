@@ -31,7 +31,7 @@ export default {
 <style scoped>
 aside {
   width: 250px;
-  background-color: #f2fff2;
+  background-color: #ffffff;
   padding: 10px;
 }
 
