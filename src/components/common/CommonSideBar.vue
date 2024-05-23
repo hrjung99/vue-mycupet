@@ -4,7 +4,16 @@
     <nav>
       <ul>
         <li><a href="#">홈페이지</a></li>
-        <li><a href="./../user/JoinForm.vue">회원가입</a></li>
+        <li>
+          <router-link class="nav-link" to="/JoinUser" id="member_link"
+            >회원가입</router-link
+          >
+        </li>
+        <li>
+          <router-link class="nav-link" to="/Login" id="member_link"
+            >로그인</router-link
+          >
+        </li>
         <li><a href="#">반려동물 찾기</a></li>
         <li><a href="#">게시물</a></li>
         <li><a href="#">쇼핑몰</a></li>
@@ -15,14 +24,14 @@
 
 <script>
 export default {
-  name: 'CommonSidebar'
+  name: "CommonSidebar",
 };
 </script>
 
 <style scoped>
 aside {
   width: 250px;
-  background-color: #F2FFF2;
+  background-color: #f2fff2;
   padding: 10px;
 }
 
@@ -37,7 +46,7 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #9094A8;
+  color: #9094a8;
   text-decoration: none;
   display: block;
 }

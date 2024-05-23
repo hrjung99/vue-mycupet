@@ -1,25 +1,16 @@
 <template>
-  <MainPage msg="Welcome to Your Vue.js App" />
+  <div id="app">
+    <router-view></router-view>
+    <!-- 이 부분이 페이지가 렌더링되는 곳입니다. -->
+  </div>
 </template>
 
 <script>
-import MainPage from "./components/MainPage.vue";
-
 export default {
   name: "App",
-  components: {
-    MainPage,
-  },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+/* 스타일 내용을 작성합니다 */
 </style>
