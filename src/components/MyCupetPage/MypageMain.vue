@@ -29,7 +29,7 @@ export default {
 .main-container {
   display: flex;
   flex-direction: column;
-  height: 89vh; /* 화면 전체 높이에 맞추기 위해 */
+  height: 91vh; /* 화면 전체 높이에 맞추기 위해 */
   justify-content: space-between; /* 하단 여백을 최대화하여 footer-container가 전체 너비를 채우도록 */
   background-color: #f2fff2;
 }
