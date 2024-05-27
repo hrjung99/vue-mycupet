@@ -1,5 +1,5 @@
 <template>
-  <div id="map" style="width: 500px; height: 400px"></div>
+  <div id="map"></div>
 </template>
 
 <script>
@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 #map {
-  width: 100%;
-  height: 100%;
+  width: 100vw; /* 뷰포트 너비에 맞게 설정 */
+  height: 100vh; /* 뷰포트 높이에 맞게 설정 */
 }
 </style>
