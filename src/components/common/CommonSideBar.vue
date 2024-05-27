@@ -14,7 +14,11 @@
             >로그인</router-link
           >
         </li>
-        <li><a href="#">반려동물 찾기</a></li>
+        <li>
+          <router-link class="nav-link" to="/FindPet" id="member_link"
+            >반려동물 찾기</router-link
+          >
+        </li>
         <li><a href="#">게시물</a></li>
         <li><a href="#">쇼핑몰</a></li>
       </ul>

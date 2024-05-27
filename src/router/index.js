@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '@/components/MainPage.vue'; // MainPage 컴포넌트를 가져옵니다.
 import LoginPage from '@/components/user/LoginForm.vue';
 import JoinPage from '@/components/user/JoinForm.vue';
+import FindPet from '@/components/findpet/FindPetMain.vue';
 
 const routes = [
     { path: '/', component: MainPage }, // 기본 경로('/')일 때 MainPage를 보여줍니다.
     { path: '/Login', component: LoginPage },
     { path: '/JoinUser', component: JoinPage },
+    { path: '/FindPet', component: FindPet },
 ];
 
 const router = createRouter({
