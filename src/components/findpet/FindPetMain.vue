@@ -1,30 +1,31 @@
 <template>
   <div class="main-container">
     <CommonHeader />
-    <MainPageHeader />
     <div class="content-container">
       <CommonSideBar />
+      <KaKaoMap />
     </div>
     <CommonFooter />
   </div>
 </template>
 
 <script>
+import KaKaoMap from "@/components/findpet/map/KaKaoMap.vue";
 import CommonHeader from "@/components/common/CommonHeader.vue";
-import MainPageHeader from "@/components/common/MainPageHeader.vue";
-import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
+import CommonFooter from "@/components/common/CommonFooter.vue";
 
 export default {
   name: "MainPage",
   components: {
+    KaKaoMap,
     CommonHeader,
-    MainPageHeader,
-    CommonFooter,
     CommonSideBar,
+    CommonFooter,
   },
 };
 </script>
+
 <style scoped>
 .main-container {
   display: flex;

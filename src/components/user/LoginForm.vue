@@ -1,22 +1,26 @@
 <template>
   <div>
     <CommonHeader />
-    <div class="main-content">
-      <CommonSideBar />
-      <div class="login-container">
-        <h2>로그인</h2>
-        <form class="login-form">
-          <label for="username">아이디
-            <input type="text" id="username" name="username" />
-          </label>
-          <label for="password">비밀번호
-            <input type="password" id="password" name="password" />
-          </label>
-          <div class="button-container">
-            <button type="submit">로그인</button>
-            <button type="button">회원가입</button>
-          </div>
-        </form>
+    <div class="main-container">
+      <div class="content-container">
+        <CommonSideBar />
+        <div class="login-container">
+          <h2>로그인</h2>
+          <form class="login-form">
+            <label for="username"
+              >아이디
+              <input type="text" id="username" name="username" />
+            </label>
+            <label for="password"
+              >비밀번호
+              <input type="password" id="password" name="password" />
+            </label>
+            <div class="button-container">
+              <button type="submit">로그인</button>
+              <button type="button">회원가입</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
     <CommonFooter />
@@ -52,7 +56,7 @@ export default {
 
 .login-container h2 {
   margin: 0 0 5px 0;
-  color: #7E84A3;
+  color: #7e84a3;
   font-size: 20px;
 }
 
@@ -67,7 +71,7 @@ export default {
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  color: #7E84A3;
+  color: #7e84a3;
 }
 
 .login-form input {
@@ -85,13 +89,24 @@ export default {
   padding: 8px 12px;
   font-size: 14px;
   cursor: pointer;
-  background-color: #34A853;
-  color: #FFFFFF;
+  background-color: #34a853;
+  color: #ffffff;
   border: none;
   border-radius: 4px;
 }
 
 .login-form button:hover {
   background-color: #2e8b46;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 화면 전체 높이에 맞추기 위해 */
+}
+
+.content-container {
+  display: flex;
+  flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
 }
 </style>
