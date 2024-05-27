@@ -3,8 +3,10 @@
     <CommonHeader />
     <div class="content-container">
       <CommonSideBar />
+      <MissingPetInfoVue />
       <KaKaoMap />
     </div>
+    <AddMissingPetButton />
     <CommonFooter />
   </div>
 </template>
@@ -14,6 +16,8 @@ import KaKaoMap from "@/components/findpet/map/KaKaoMap.vue";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
+import MissingPetInfoVue from "./info/MissingPetInfo.vue";
+import AddMissingPetButton from "./AddMissingPetButton.vue";
 
 export default {
   name: "MainPage",
@@ -22,6 +26,8 @@ export default {
     CommonHeader,
     CommonSideBar,
     CommonFooter,
+    MissingPetInfoVue,
+    AddMissingPetButton,
   },
 };
 </script>
@@ -40,3 +46,4 @@ export default {
 
 /* 원하는 스타일링 추가 가능 */
 </style>
+
