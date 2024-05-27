@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 aside {
-  width: 250px;
+  min-width: 250px;
   background-color: #ffffff;
   padding: 10px;
 }
