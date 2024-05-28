@@ -9,7 +9,7 @@
         </span>
       </p>
       <div class="d-flex justify-content-between align-items-center">
-        <button class="btn btn-primary"> 구입하기</button>
+        <button> 구입하기</button>
         <small class="price text-muted">
           {{ lib.getNumberFormatted(item.cupet_prodprice) }} 원
         </small>
@@ -23,6 +23,7 @@
 
 <script>
 import lib from "@/scripts/lib";
+import './../common/CommonButtonStyle.css';
 
 export default {
   name: "ShopProduct",
