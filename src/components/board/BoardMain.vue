@@ -6,9 +6,9 @@
 
         <div class="content">
           <div class="board_list">
-          <h1>커뮤니티</h1>
+          <h1 style="color:#7E84A3;">커뮤니티</h1>
           <div class="Search">
-            <BoardSearchOption />
+            <BoardSelectOption />
             <BoardSearch/>
           </div>
         <BoardList />
@@ -26,7 +26,7 @@
   import CommonSideBar from "@/components/common/CommonSideBar.vue";
   import BoardSearch from "@/components/board/BoardSearch.vue";
   import BoardList from "@/components/board/BoardList.vue";
-  import BoardSearchOption from "@/components/board/BoardSearchOption.vue";
+  import BoardSelectOption from "@/components/board/BoardSelectOption.vue";
 
 
 
@@ -39,7 +39,7 @@
       CommonSideBar,
       BoardSearch,
       BoardList,
-      BoardSearchOption,
+      BoardSelectOption,
         },
   };
   </script>
@@ -60,4 +60,9 @@
     display: flex;
     flex-direction: row;  
   }
+
+  .body{
+    background-color : black;
+  }
+
   </style>
