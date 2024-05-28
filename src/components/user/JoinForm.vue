@@ -95,6 +95,8 @@
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
+import './../common/CommonButtonStyle.css';
+
 
 export default {
   name: "JoinForm",
@@ -182,26 +184,11 @@ input {
 
 button {
   margin-left: 10px;
-  border: none;
-  background-color: #34a853;
-  color: white;
 }
 
 .register-button {
   margin-top: 5px;
   margin-left: 150px;
-  background-color: #34a853;
-  color: white;
-  border: none;
-  width: 100px;
-  padding: 10px 10px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.register-button:hover {
-  background-color: #85c14a;
 }
 
 .content-container {
