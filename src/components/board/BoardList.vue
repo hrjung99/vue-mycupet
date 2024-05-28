@@ -13,7 +13,7 @@
         <c:forEach var="board" items="${pageResponseVO.list}">
         -->
         <tr>
-            <td><img src="@/components/common/assets/NewIcon.png" width="25" height="15"></td>
+            <td><img src="@/components/common/assets/newicon.png" width="25" height="15"></td>
             <td style="cursor:pointer;">1</td>
             <td>2</td>
             <td>3</td>  

@@ -6,7 +6,7 @@
       <div class="board_list">
         <h1>커뮤니티</h1>
         <div class="Search">
-          <BoardSearchOption class="search-option" />
+          <BoardSelectOption class="select-option" />
           <BoardSearch class="search-input"/>
         </div>
         <BoardList class="board-list" />
@@ -27,7 +27,7 @@ import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import BoardSearch from "@/components/board/BoardSearch.vue";
 import BoardList from "@/components/board/BoardList.vue";
-import BoardSearchOption from "@/components/board/BoardSearchOption.vue";
+import BoardSelectOption from "@/components/board/BoardSelectOption.vue";
 import './../common/CommonButtonStyle.css';
 
 export default {
@@ -38,7 +38,7 @@ export default {
     CommonSideBar,
     BoardSearch,
     BoardList,
-    BoardSearchOption,
+    BoardSelectOption,
   },
   mounted() {
     this.changeSidebarColor();
@@ -71,7 +71,7 @@ export default {
   margin-bottom: 20px;
 }
 
-.search-option {
+.select-option {
   margin-right: 10px;
 }
 
