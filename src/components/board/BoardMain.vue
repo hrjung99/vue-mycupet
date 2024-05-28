@@ -1,24 +1,24 @@
 <template>
-  <CommonHeader />
-  <div class="main-container">
-    <CommonSideBar ref="sidebar" />
-    <div class="content">
-      <div class="board_list">
-        <h1>커뮤니티</h1>
-        <div class="Search">
-          <BoardSelectOption class="select-option" />
-          <BoardSearch class="search-input"/>
-        </div>
-        <BoardList class="board-list" />
+    <CommonHeader />
+    <div class="main-container">
+      <CommonSideBar ref="sidebar" />
+      <div class="content">
+        <div class="board_list">
+          <h1>커뮤니티</h1>
+          <div class="Search">
+            <BoardSelectOption class="select-option" />
+            <BoardSearch class="search-input"/>
+          </div>
+          <BoardList class="board-list" />
+          </div>
+          <router-link to="/BoardInsertFormMain" class="insert-link">
+            <button class="insert-button" type="button">
+              등록
+            </button>
+          </router-link>
       </div>
-      <router-link to="/BoardInsertFormMain">
-        <button class="insert-button" type="button">
-          등록
-        </button>
-      </router-link>
     </div>
-  </div>
-  <CommonFooter />
+    <CommonFooter />
 </template>
 
 <script>
@@ -71,16 +71,12 @@ export default {
   margin-bottom: 20px;
 }
 
-.select-option {
-  margin-right: 10px;
-}
-
 .board-list {
   margin-top: 20px;
 }
 
-
 .insert-button {
   margin-top: 10px;
 }
+
 </style>
