@@ -3,7 +3,7 @@
     <CommonHeader />
     <div class="main-content">
       <div class="content-container">
-        <CommonSideBar2 />
+        <CommonSideBar ref="sidebar" />
         <img
           src="./../common/assets/logo.png"
           alt="new"
@@ -90,12 +90,10 @@
   </div>
   <CommonFooter />
 </template>
-  
-  
-  
-  <script>
+
+<script>
 import CommonHeader from "@/components/common/CommonHeader.vue";
-import CommonSideBar2 from "@/components/common/CommonSideBar-2.vue";
+import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 
 export default {
@@ -103,7 +101,7 @@ export default {
   components: {
     CommonHeader,
     CommonFooter,
-    CommonSideBar2,
+    CommonSideBar,
   },
   data() {
     return {
@@ -113,7 +111,14 @@ export default {
       passwordConfirm: "",
       birth: "",
       phone: "",
+      id: "",
+      nickname: "",
+      gender: "",
+      add: ""
     };
+  },
+  mounted() {
+    this.changeSidebarColor();
   },
   methods: {
     checkId() {
@@ -135,6 +140,9 @@ export default {
         this.phone
       );
     },
+    changeSidebarColor() {
+      this.$refs.sidebar.changeBackground("#ffffff");
+    }
   },
 };
 </script>
@@ -200,4 +208,5 @@ button {
   display: flex;
   flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
 }
+
 </style>
