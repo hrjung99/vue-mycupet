@@ -13,7 +13,12 @@
             >회원가입</router-link
           >
         </li>
-        <li>
+        <li v-if="isLoggedIn">
+          <router-link @click="logout" class="nav-link" to="/" id="logout_link"
+            >로그아웃</router-link
+          >
+        </li>
+        <li v-else>
           <router-link class="nav-link" to="/Login" id="login_link"
             >로그인</router-link
           >
@@ -43,12 +48,24 @@ export default {
   name: "CommonSideBar",
   data() {
     return {
+      isLoggedIn: false,
       backgroundColor: "#f2fff2", // 초기 배경색 설정
     };
+  },
+  mounted() {
+    const token = localStorage.getItem("jwtToken");
+    this.isLoggedIn = !!token;
   },
   methods: {
     changeBackground(color) {
       this.backgroundColor = color;
+    },
+    logout() {
+      // 로그아웃 버튼 클릭 시 로컬 저장소에서 토큰 삭제
+      localStorage.removeItem("jwtToken");
+      // 로그인 상태를 false로 설정하여 로그인 링크가 표시되도록 변경
+      this.isLoggedIn = false;
+      // 다른 로그아웃 관련 작업 수행 가능 (예: 서버에 로그아웃 요청 등)
     },
   },
 };
@@ -56,7 +73,7 @@ export default {
 
 <style scoped>
 aside {
-  width: 150px;
+  min-width: 150px;
   padding: 10px;
 }
 
