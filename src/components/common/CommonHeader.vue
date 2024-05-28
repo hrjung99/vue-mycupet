@@ -2,8 +2,12 @@
   <header>
     <!-- Header content here -->
     <div class="header-content">
-      <img src="./assets/logo.png" alt="new" width="60" height="40" />
-      <h3>Mycupet</h3>
+      <router-link to="/MainPage">
+        <img src="./assets/logo.png" alt="new" width="60" height="40" />
+      </router-link>
+      <h3>
+        <router-link class="nav-link" to="/MainPage" id="main_link">MyCupet</router-link>
+      </h3>
     </div>
   </header>
 </template>

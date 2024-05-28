@@ -4,8 +4,8 @@ import LoginPage from '@/components/user/LoginForm.vue';
 import JoinPage from '@/components/user/JoinForm.vue';
 import FindPet from '@/components/findpet/FindPetMain.vue';
 import MyCupetPage from '@/components/MyCupetPage/MypageMain.vue';
-import MyCupetPetpage from '@/components/MyCupetPage/MyCupetPetpage.vue';
 import ShopMain from '@/components/shop/ShopMain.vue';
+import BoardMain from '@/components/board/BoardMain.vue';
 
 const routes = [
     { path: '/', component: MainPage }, // 기본 경로('/')일 때 MainPage를 보여줍니다.
@@ -13,8 +13,8 @@ const routes = [
     { path: '/JoinUser', component: JoinPage },
     { path: '/FindPet', component: FindPet },
     { path: '/MyCupetPage', component: MyCupetPage },
-    { path: '/MyCupetPetpage', component: MyCupetPetpage },
     { path: '/ShopMain', component: ShopMain },
+    { path: '/BoardMain', component: BoardMain },
 ];
 
 const router = createRouter({
