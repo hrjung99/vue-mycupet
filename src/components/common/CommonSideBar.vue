@@ -4,7 +4,7 @@
     <nav>
       <ul>
         <li>
-          <router-link class="nav-link" to="/MainPage" id="main_link"
+          <router-link class="nav-link" to="/" id="main_link"
             >홈페이지</router-link
           >
         </li>
@@ -25,11 +25,13 @@
         </li>
         <li>
           <router-link class="nav-link" to="/BoardMain" id="board_link"
-            >게시물</router-link>
+            >게시물</router-link
+          >
         </li>
         <li>
           <router-link class="nav-link" to="/ShopMain" id="shop_link"
-            >쇼핑몰</router-link>
+            >쇼핑몰</router-link
+          >
         </li>
       </ul>
     </nav>
@@ -54,7 +56,7 @@ export default {
 
 <style scoped>
 aside {
-  width: 250px;
+  width: 150px;
   padding: 10px;
 }
 

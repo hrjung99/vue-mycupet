@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import KaKaoMap from "@/components/findpet/map/KaKaoMap.vue";
+import KaKaoMap from "@/components/cupetfindpet/map/KaKaoMap.vue";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
