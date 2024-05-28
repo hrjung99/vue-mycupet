@@ -79,6 +79,7 @@ export default {
   margin-top: 20px;
 }
 
+
 .insert-button {
   margin-top: 10px;
 }

@@ -13,7 +13,7 @@
         <c:forEach var="board" items="${pageResponseVO.list}">
         -->
         <tr>
-            <td></td>
+            <td><img src="@/components/common/assets/NewIcon.png" width="25" height="15"></td>
             <td style="cursor:pointer;">1</td>
             <td>2</td>
             <td>3</td>  
@@ -39,15 +39,17 @@ th {
 }
 
 td {
-    text-align: left;
+    text-align: center;
 }
 
 td:nth-child(2n), th:nth-child(2n) {
     background-color: #9cd866;
+    color: white;
 }
 
 td:nth-child(2n-1), th:nth-child(2n-1) {
     background-color: white;
+    color: #7E84A3;
 }
 
 /* 모든 테두리를 없앰 */
@@ -64,4 +66,5 @@ tr {
 tr:last-child {
     border-bottom: none;
 }
+
 </style>
