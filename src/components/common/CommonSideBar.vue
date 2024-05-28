@@ -1,5 +1,5 @@
 <template>
-  <aside>
+  <aside :style="{ backgroundColor: backgroundColor }">
     <!-- Sidebar content here -->
     <nav>
       <ul>
@@ -28,14 +28,23 @@
 
 <script>
 export default {
-  name: "CommonSidebar",
+  name: "CommonSideBar",
+  data() {
+    return {
+      backgroundColor: "#f2fff2", // 초기 배경색 설정
+    };
+  },
+  methods: {
+    changeBackground(color) {
+      this.backgroundColor = color;
+    },
+  },
 };
 </script>
 
 <style scoped>
 aside {
   width: 250px;
-  background-color: #f2fff2;
   padding: 10px;
 }
 
@@ -50,7 +59,7 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #9094a8;
+  color: #9094a8; /* 링크 색상 */
   text-decoration: none;
   display: block;
 }
