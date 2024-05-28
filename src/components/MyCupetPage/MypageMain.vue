@@ -2,7 +2,7 @@
   <div class="main-container">
     <CommonHeader />
     <div class="content-container">
-      <CommonSideBar2 />
+      <CommonSideBar ref="sidebar" />
       <MyCupetPage />
     </div>
     <CommonFooter />
@@ -13,7 +13,7 @@
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import MyCupetPage from "@/components/MyCupetPage/MyCupetPage.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
-import CommonSideBar2 from "@/components/common/CommonSideBar-2.vue";
+import CommonSideBar from "@/components/common/CommonSideBar.vue";
 
 export default {
   name: "MainPage",
@@ -21,7 +21,16 @@ export default {
     CommonHeader,
     MyCupetPage,
     CommonFooter,
-    CommonSideBar2,
+    CommonSideBar,
+  },
+  /* 페이지 켜면 sidebar 배경색이 흰색으로 바뀌는 코드*/
+  mounted() {
+    this.changeSidebarColor();
+  },
+  methods: {
+    changeSidebarColor() {
+      this.$refs.sidebar.changeBackground("#ffffff");
+    }
   },
 };
 </script>
@@ -29,7 +38,7 @@ export default {
 .main-container {
   display: flex;
   flex-direction: column;
-  height: 89vh; /* 화면 전체 높이에 맞추기 위해 */
+  height: 91vh; /* 화면 전체 높이에 맞추기 위해 */
   justify-content: space-between; /* 하단 여백을 최대화하여 footer-container가 전체 너비를 채우도록 */
   background-color: #f2fff2;
 }

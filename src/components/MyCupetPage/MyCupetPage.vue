@@ -90,6 +90,7 @@ export default {
 }
 
 .main-content {
+    margin-top: 30px;
     display: flex;
     align-items: flex-start;
     min-width: 500px;
