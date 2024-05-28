@@ -3,24 +3,34 @@
     <!-- Sidebar content here -->
     <nav>
       <ul>
-        <li><a href="#">홈페이지</a></li>
+        <li>
+          <router-link class="nav-link" to="/MainPage" id="main_link"
+            >홈페이지</router-link
+          >
+        </li>
         <li>
           <router-link class="nav-link" to="/JoinUser" id="member_link"
             >회원가입</router-link
           >
         </li>
         <li>
-          <router-link class="nav-link" to="/Login" id="member_link"
+          <router-link class="nav-link" to="/Login" id="login_link"
             >로그인</router-link
           >
         </li>
         <li>
-          <router-link class="nav-link" to="/FindPet" id="member_link"
+          <router-link class="nav-link" to="/FindPet" id="findpet_link"
             >반려동물 찾기</router-link
           >
         </li>
-        <li><a href="#">게시물</a></li>
-        <li><a href="#">쇼핑몰</a></li>
+        <li>
+          <router-link class="nav-link" to="/BoardMain" id="board_link"
+            >게시물</router-link>
+        </li>
+        <li>
+          <router-link class="nav-link" to="/ShopMain" id="shop_link"
+            >쇼핑몰</router-link>
+        </li>
       </ul>
     </nav>
   </aside>
