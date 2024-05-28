@@ -54,6 +54,9 @@ export default {
             alert("아이디 or 비밀번호를 확인하세요");
             this.formData.username = "";
             this.formData.password = "";
+          } else {
+            localStorage.setItem("jwtToken", this.responseData);
+            this.$router.push("/");
           }
         })
         .catch((error) => {
