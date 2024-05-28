@@ -32,6 +32,8 @@
 
 <script>
 import axios from "axios";
+import './../../common/CommonButtonStyle.css';
+
 export default {
   name: "LoginForm",
   data() {
@@ -121,20 +123,6 @@ export default {
 .button-container {
   display: flex;
   gap: 8px;
-}
-
-.login-form button {
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #34a853;
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-}
-
-.login-form button:hover {
-  background-color: #2e8b46;
 }
 
 .main-container {

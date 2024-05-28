@@ -10,7 +10,7 @@ module.exports = defineConfig({
         changeOrigin: true,
       },
       '/api2': {
-        target: 'http://localhost:9092',
+        target: 'http://192.168.5.3:9092/',
         changeOrigin: true,
       }
     }
