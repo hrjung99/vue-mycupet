@@ -1,16 +1,29 @@
 <template>
         <div>
             <select class="SelectOption" aria-label="SelectOption">
-                <option selected>제목</option>
-                <option value="1">작성자</option>
-                <option value="2">제목+작성자</option>
-
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <div class="col" v-for="(item, idx) in state.list" :key="idx">
+                        <option>{{ item.cupet_board_head_name }} &nbsp; </option>
+                    </div>
+                </div>
             </select>
         </div>
 </template>
 <script>
+import axios from "axios";
+import { reactive } from "vue";
+
 export default {
-    
+  name: "BoardSelectOption",
+
+  setup(){
+    const state = reactive({ target: { list: [] } });
+    axios.get("/api1/selectoption").then(({data}) => {
+      state.list = data;
+    });
+
+    return {state}
+  }
 }
 </script>
 <style>
