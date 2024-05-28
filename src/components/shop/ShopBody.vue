@@ -21,7 +21,7 @@ export default {
 
   setup(){
     const state = reactive({ target: { cupetshopproduct: [] } });
-    axios.get("/api/items").then(({data}) => {
+    axios.get("/api1/items").then(({data}) => {
       state.cupetshopproduct = data;
     });
 
