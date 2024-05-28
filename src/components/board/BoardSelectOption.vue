@@ -1,6 +1,6 @@
 <template>
         <div>
-            <select class="SearchOption" aria-label="SearchOption">
+            <select class="SelectOption" aria-label="SelectOption">
                 <option selected>제목</option>
                 <option value="1">작성자</option>
                 <option value="2">제목+작성자</option>
@@ -15,13 +15,12 @@ export default {
 </script>
 <style>
 /* 셀렉트 요소 스타일링 */
-.SearchOption {
+.SelectOption {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: #9cd866; /* 셀렉트의 배경색 */
     border: 1px solid #9cd866;
-    padding: 10px;
     font-size: 16px;
     color: white;
     padding-right: 30px; /* 화살표 공간 확보 */
@@ -32,12 +31,12 @@ export default {
 }
 
 /* 기본 화살표 제거 (IE) */
-.SearchOption::-ms-expand {
+.SelectOption::-ms-expand {
     display: none;
 }
 
 /* 옵션 스타일링 */
-.SearchOption option {
+.SelectOption option {
     background-color: white;
     color: black;
 }
