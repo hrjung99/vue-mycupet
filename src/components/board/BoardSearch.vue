@@ -12,13 +12,10 @@ export default {
 }
 </script>
 <style>
-    button {
+    .search-button {
         background-color: transparent;
         border: none;
         padding: 0;
-    }
-
-    .search-button {
         margin-left: 5px;
     }
 </style>
