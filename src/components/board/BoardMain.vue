@@ -4,7 +4,7 @@
       <CommonSideBar ref="sidebar" />
       <div class="content">
         <div class="board_list">
-          <h1>커뮤니티</h1>
+          <h1 style="color: #7E84A3;">커뮤니티</h1>
           <div class="Search">
             <BoardSelectOption class="select-option" />
             <BoardSearch class="search-input"/>

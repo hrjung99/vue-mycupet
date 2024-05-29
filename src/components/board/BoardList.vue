@@ -3,7 +3,7 @@
         <table class="board_list">
         <tr>
             <td></td>
-            <th>게시물 번호</th>
+            <th>번호</th>
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
@@ -12,14 +12,13 @@
         <!--
         <c:forEach var="board" items="${pageResponseVO.list}">
         -->
-        <tr>
-            <td><img src="@/components/common/assets/newicon.png" width="25" height="11"></td>
+        <tr @click="goToView(1)" style="cursor: pointer;">
+            <td><img src="../common/assets/NewIcon.png" width="25" height="11"></td>
             <td style="cursor:pointer;">1</td>
             <td>2</td>
             <td>3</td>  
             <td>4</td>
             <td>5</td>
-            <td>6</td>
         </tr>
         <!--
         </c:forEach>
@@ -30,8 +29,12 @@
 </template>
 <script>    
 export default {
-    
-}
+    methods: {
+        goToView() {
+            this.$router.push({ path: '/BoardViewMain' });
+        }
+    }
+    }
 </script>
 <style>
 th {
