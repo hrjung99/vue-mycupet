@@ -5,9 +5,6 @@
 			<BoardSelectOption/> <input class="cupet_board_title" name="cupet_board_title" required="required" placeholder="게시물 제목을 입력해주세요"> <br/>
 			</div>
 			<ckeditor class="cupet_board_content" id="cupet_board_content" name="cupet_board_content" :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
-            <button>수정</button>
-            <button>삭제</button>
-
         </form>
     </div>
 </template>
@@ -15,26 +12,23 @@
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 	import BoardSelectOption from "@/components/board/BoardSelectOption.vue";
 
+	export default {
+		name: "MainPage",
+		components: {
+			BoardSelectOption,
+		},
 
-export default {
-	name: "MainPage",
-	components: {
-		BoardSelectOption,
-	},
-
-	data(){
-		return {
-			editor: ClassicEditor,
- //               editorData: '<p>게시물 내용을 입력해주세요.</p>', //나중에 db에서 초기값 가져와서 넣을 부분
-                editorConfig: {
-					placeholder : "게시물 내용을 입력해주세요"
-                    // The configuration of the editor.
-				}
+		data(){
+			return {
+				editor: ClassicEditor,
+	//               editorData: '<p>게시물 내용을 입력해주세요.</p>', //나중에 db에서 초기값 가져와서 넣을 부분
+					editorConfig: {
+						placeholder : "게시물 내용을 입력해주세요"
+						// The configuration of the editor.
+					}
+			}
 		}
-	}
-
-
-};
+	};
 
 </script>
 <style>

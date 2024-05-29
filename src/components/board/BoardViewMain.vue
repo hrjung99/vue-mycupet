@@ -5,6 +5,8 @@
       <div class="content">
         <h1 style="color:#7E84A3;">게시물 상세</h1>
         <BoardContent />
+        <button>수정</button>
+        <button>삭제</button>
       </div>
       </div>
     <CommonFooter />
@@ -15,6 +17,7 @@ import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import BoardContent from "@/components/board/BoardContent.vue";
+import './../common/CommonButtonStyle.css';
 
 export default {
   name: "MainPage",
