@@ -11,7 +11,7 @@
           </div>
           <BoardList class="board-list" />
           </div>
-          <router-link to="/BoardInsertFormMain">
+          <router-link to="/BoardInsertMain">
             <button type="button" class="insert-button">
               등록
             </button>
