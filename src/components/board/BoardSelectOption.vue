@@ -40,13 +40,16 @@ export default {
     -moz-appearance: none;
     background-color: #9cd866; /* 셀렉트의 배경색 */
     border: 1px solid #9cd866;
-    font-size: 16px;
+    font-size: 14px; /* Decrease font size */
     color: white;
-    padding-right: 30px; /* 화살표 공간 확보 */
+    padding: 6px 30px 6px 10px; /* Adjust padding to decrease height */
     background-image: url('@/components/common/assets/dropdown2.png'); /* 로컬 화살표 이미지 경로 */
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 10px 10px;
+    border-radius: 0; /* Remove rounded corners */
+    height: 30px; /* Reduce the height of the select box */
+    line-height: 30px; /* Center text vertically */
 }
 
 /* 기본 화살표 제거 (IE) */

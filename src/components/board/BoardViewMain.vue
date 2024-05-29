@@ -5,10 +5,12 @@
       <div class="content">
         <h1 style="color:#7E84A3;">게시물 상세</h1>
         <BoardContent />
-        <button>수정</button>
-        <button>삭제</button>
+        <div class="change-button">
+          <button class="update-button">수정</button>
+          <button class="delete-button">삭제</button>
+        </div>
       </div>
-      </div>
+    </div>
     <CommonFooter />
 </template>
 
@@ -26,8 +28,7 @@ export default {
     CommonFooter,
     CommonSideBar,
     BoardContent,
-
-      },
+  },
   mounted() {
     this.changeSidebarColor();
   },
@@ -49,5 +50,15 @@ export default {
 .content{
   flex: 1;
   align-items: center;
+  padding-left: 40px;
+  margin-top: 25px;
+}
+
+.change-button {
+  margin-top: 10px;
+}
+
+.update-button {
+  margin-right: 10px;
 }
 </style>
