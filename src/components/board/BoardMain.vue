@@ -11,8 +11,8 @@
           </div>
           <BoardList class="board-list" />
           </div>
-          <router-link to="/BoardInsertFormMain" class="insert-link">
-            <button class="insert-button" type="button">
+          <router-link to="/BoardInsertFormMain">
+            <button type="button">
               등록
             </button>
           </router-link>
@@ -73,10 +73,6 @@ export default {
 
 .board-list {
   margin-top: 20px;
-}
-
-.insert-button {
-  margin-top: 10px;
 }
 
 </style>
