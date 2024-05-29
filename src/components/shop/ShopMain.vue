@@ -1,12 +1,11 @@
 <template>
-  <CommonHeader />
-  <div>
-    <div class="content-container">
-      <CommonSideBar />
-      <div class="home">
-        <ShopHeader />
-        <ShopBody />
-      </div>
+  <CommonHeader/>
+  <h1>sdfsdfdf</h1>
+  <div class="main-container">
+    <CommonSideBar />
+    <div class="home">
+      <ShopHeader />
+      <ShopBody />
     </div>
   </div>
   <CommonFooter />
@@ -17,14 +16,14 @@ import CommonHeader from "@/components/common/CommonHeader.vue";
 import ShopHeader from "@/components/shop/ShopHeader.vue";
 import ShopBody from "@/components/shop/ShopBody.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
-import CommonFooter from "@/components/common/CommonFooter.vue";
+// import CommonFooter from "@/components/common/CommonFooter.vue";
 
 export default {
   name: "ShopMain",
   components: {
     CommonHeader,
     CommonSideBar,
-    CommonFooter,
+    // CommonFooter,
     ShopHeader,
     ShopBody,
   },
@@ -93,8 +92,10 @@ export default {
   display: block !important;
 }
 
-.content-container {
+.main-container {
   display: flex;
-  flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
+  flex: 1;
 }
+
+
 </style>
