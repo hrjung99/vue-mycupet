@@ -13,7 +13,7 @@
         <c:forEach var="board" items="${pageResponseVO.list}">
         -->
         <tr @click="goToView(1)" style="cursor: pointer;">
-            <td><img src="../common/assets/NewIcon.png" width="25" height="11"></td>
+            <td><img src="../common/assets/newicon.png" width="25" height="11"></td>
             <td style="cursor:pointer;">1</td>
             <td>2</td>
             <td>3</td>  
