@@ -1,41 +1,55 @@
 <template>
     <div>
         <table class="board_list">
-        <tr>
-            <td></td>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>조회수</th>
-        </tr>
-        <!--
-        <c:forEach var="board" items="${pageResponseVO.list}">
-        -->
-        <tr @click="goToView(1)" style="cursor: pointer;">
-            <td><img src="../common/assets/newicon.png" width="25" height="11"></td>
-            <td style="cursor:pointer;">1</td>
-            <td>2</td>
-            <td>3</td>  
-            <td>4</td>
-            <td>5</td>
-        </tr>
-        <!--
-        </c:forEach>
-        -->
-    </table>
-        
+            <tr>
+                <td></td>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+            <tr v-for="(item) in state.list" :key="item.cupet_board_no" @click="goToView(item.cupet_board_no)" style="cursor: pointer;">
+                <td><img src="../common/assets/newicon.png" width="25" height="11"></td>
+                <td>{{ item.cupet_board_no }}</td>
+                <td>{{ item.cupet_board_title }}</td>
+                <td>{{ item.cupet_user_name }}</td>
+                <td>{{ item.cupet_board_regdate }}</td>
+                <td>{{ item.cupet_board_viewcnt }}</td>
+            </tr>
+        </table>
     </div>
 </template>
-<script>    
+
+<script>
+import axios from "axios";
+import { reactive, onMounted } from "vue";
+
 export default {
     methods: {
-        goToView() {
-            this.$router.push({ path: '/BoardViewMain' });
+        goToView(boardNo) {
+            this.$router.push({ path: '/BoardViewMain', query: { boardNo } });
         }
-    }
-    }
+    },
+    name: "BoardList",
+    setup() {
+        const state = reactive({ list: [] });
+
+        onMounted(() => {
+            axios.get("/api1/boardList")
+                .then(response => {
+                    state.list = response.data.list;
+                })
+                .catch(error => {
+                    console.error("Error fetching board list:", error);
+                });
+        });
+
+        return { state };
+    },
+}
 </script>
+
 <style>
 th {
     text-align: center;
@@ -69,5 +83,4 @@ tr {
 tr:last-child {
     border-bottom: none;
 }
-
 </style>
