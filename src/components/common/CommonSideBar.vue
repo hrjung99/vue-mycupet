@@ -8,7 +8,12 @@
             >홈페이지</router-link
           >
         </li>
-        <li>
+        <li v-if="isLoggedIn">
+          <router-link class="nav-link" to="/MyCupetPage" id="member_link"
+            >마이페이지</router-link
+          >
+        </li>
+        <li v-else>
           <router-link class="nav-link" to="/JoinUser" id="member_link"
             >회원가입</router-link
           >
