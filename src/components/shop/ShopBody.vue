@@ -2,7 +2,7 @@
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col" v-for="(item, idx) in state.cupetshopproduct" :key="idx">
+        <div class="col" v-for="(item, idx) in state.items" :key="idx">
           <ShopProduct :item="item" />
         </div>
       </div>
@@ -12,7 +12,7 @@
 
 <script>
 import axios from "axios";
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 import ShopProduct from "./ShopProduct.vue";
 
 export default {
@@ -20,14 +20,22 @@ export default {
   components: { ShopProduct },
 
   setup(){
-    const state = reactive({ target: { cupetshopproduct: [] } });
-    axios.get("/api1/items").then(({data}) => {
-      state.cupetshopproduct = data;
+    const state = reactive({ target: { items: [] } });
+
+    onMounted(() => {
+      axios.get("/api1/products")
+        .then(res => {
+          state.items = res.data.list;
+        })
+        .catch(error => {
+          console.error("Error fetching select options:", error);
+        });
     });
 
-    return {state}
-  }
-}
+    return { state };
+  },
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

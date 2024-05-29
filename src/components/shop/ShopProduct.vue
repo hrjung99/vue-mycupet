@@ -9,7 +9,9 @@
         </span>
       </p>
       <div class="d-flex justify-content-between align-items-center">
-        <button> 구입하기</button>
+        <button class="btn btn-primary" @click="addToCart(item.id)">
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        </button>
         <small class="price text-muted">
           {{ lib.getNumberFormatted(item.cupet_prodprice) }} 원
         </small>
