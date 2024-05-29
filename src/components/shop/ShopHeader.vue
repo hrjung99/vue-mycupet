@@ -1,7 +1,7 @@
 <template>
-  <header class="py-3 text-center container">
+  <header class="py-2 text-center container">
     <div class="row py-lg-3">
-      <div class="col-lg-6 col-md-8 mx-auto">
+      <div class="col-lg-6 col-md-1 mx-auto">
         <h1 class="fw-light">My Cupet Shop</h1>
         <p class="lead text-body-secondary">나의 반려동물을 위한 현명한 선택</p>
         <router-link to="/cart" class="cart btn">
