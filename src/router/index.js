@@ -20,7 +20,6 @@ const routes = [
     { path: '/BoardMain', component: BoardMain },
     { path: '/BoardInsertMain', component: BoardInsertMain },
     { path: '/BoardViewMain', component: BoardViewMain },
-
 ];
 
 const router = createRouter({

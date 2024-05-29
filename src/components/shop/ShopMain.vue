@@ -1,11 +1,12 @@
 <template>
-  <CommonHeader/>
-  <h1>sdfsdfdf</h1>
-  <div class="main-container">
-    <CommonSideBar />
-    <div class="home">
-      <ShopHeader />
-      <ShopBody />
+  <CommonHeader />
+  <div>
+    <div class="content-container">
+      <CommonSideBar />
+      <div class="home">
+        <ShopHeader />
+        <ShopBody />
+      </div>
     </div>
   </div>
   <CommonFooter />
@@ -16,14 +17,13 @@ import CommonHeader from "@/components/common/CommonHeader.vue";
 import ShopHeader from "@/components/shop/ShopHeader.vue";
 import ShopBody from "@/components/shop/ShopBody.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
-// import CommonFooter from "@/components/common/CommonFooter.vue";
-
+import CommonFooter from "@/components/common/CommonFooter.vue";
 export default {
   name: "ShopMain",
   components: {
     CommonHeader,
     CommonSideBar,
-    // CommonFooter,
+    CommonFooter,
     ShopHeader,
     ShopBody,
   },
@@ -38,13 +38,11 @@ export default {
   -moz-user-select: none;
   user-select: none;
 }
-
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
 }
-
 .b-example-divider {
   width: 100%;
   height: 3rem;
@@ -54,25 +52,21 @@ export default {
   box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
     inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
 }
-
 .b-example-vr {
   flex-shrink: 0;
   width: 1.5rem;
   height: 100vh;
 }
-
 .bi {
   vertical-align: -0.125em;
   fill: currentColor;
 }
-
 .nav-scroller {
   position: relative;
   z-index: 2;
   height: 2.75rem;
   overflow-y: hidden;
 }
-
 .nav-scroller .nav {
   display: flex;
   flex-wrap: nowrap;
@@ -83,19 +77,26 @@ export default {
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
 }
-
+.btn-bd-primary {
+  --bd-violet-bg: #712cf9;
+  --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+  --bs-btn-font-weight: 600;
+  --bs-btn-bg: var(--bd-violet-bg);
+  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-hover-bg: #6528e0;
+  --bs-btn-hover-border-color: #6528e0;
+  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+  --bs-btn-active-bg: #5a23c8;
+  --bs-btn-active-border-color: #5a23c8;
+}
 .bd-mode-toggle {
   z-index: 1500;
 }
-
 .bd-mode-toggle .dropdown-menu .active .bi {
   display: block !important;
 }
-
-.main-container {
+.content-container {
   display: flex;
-  flex: 1;
+  flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
 }
-
-
 </style>
