@@ -5,11 +5,12 @@
       <div class="content">
         <h1 style="color:#7E84A3;">게시물 등록</h1>
         <BoardContent />
+        <button type="button" class="register-button">
+          등록
+        </button>
       </div>
     </div>
-    <button type="button">
-      등록
-    </button>
+    
     <CommonFooter />
 </template>
 
@@ -27,8 +28,7 @@ export default {
     CommonFooter,
     CommonSideBar,
     BoardContent,
-
-      },
+  },
   mounted() {
     this.changeSidebarColor();
   },
@@ -41,14 +41,20 @@ export default {
 </script>
 
 <style scoped>
-.main-container{
+.main-container {
   display: flex;
   flex-direction: row;
   background-color: #f2fff2;
 }
 
-.content{
+.content {
   flex: 1;
   align-items: center;
+  padding-left: 40px;
+  margin-top: 25px;
+}
+
+.register-button {
+  margin-top: 10px;
 }
 </style>
