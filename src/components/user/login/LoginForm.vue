@@ -10,6 +10,7 @@
           id="username"
           name="username"
           autocomplete="username"
+          required
         />
       </label>
       <label for="password"
@@ -20,6 +21,7 @@
           id="password"
           name="password"
           autocomplete="current-password"
+          required
         />
       </label>
       <div class="button-container">
@@ -32,7 +34,7 @@
 
 <script>
 import axios from "axios";
-import './../../common/CommonButtonStyle.css';
+import "./../../common/CommonButtonStyle.css";
 
 export default {
   name: "LoginForm",
@@ -52,31 +54,18 @@ export default {
         .post("/api2/user/login", null, { params: this.formData })
         .then((response) => {
           this.responseData = response.data;
-          if (this.responseData === "틀렸습니다") {
-            alert("아이디 or 비밀번호를 확인하세요");
-            this.formData.username = "";
-            this.formData.password = "";
-          } else {
-            localStorage.setItem("jwtToken", this.responseData);
-            this.$router.push("/");
-          }
+          localStorage.setItem("Token", response.data.token);
+          this.$router.push("/"); // "/" 경로로 이동
         })
         .catch((error) => {
-          console.error("Error from API2:", error);
+          alert("올바르지 않은 사용자 정보 입니다.", error);
         });
     },
 
     registerBtn() {
       console.log("Sending registration request to API2");
-      alert("Registering...");
-      axios
-        .post("/api2/test", null, { params: this.formData })
-        .then((response) => {
-          console.log("Response from API2:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error from API2:", error);
-        });
+      alert("회원가입 페이지로 이동합니다.");
+      this.$router.push("/JoinUser");
     },
   },
 };
