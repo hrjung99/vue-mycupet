@@ -48,7 +48,7 @@ export default {
     background-position: right 10px center;
     background-size: 10px 10px;
     border-radius: 0; /* Remove rounded corners */
-    height: 30px; /* Reduce the height of the select box */
+    height: 35px; /* Reduce the height of the select box */
     line-height: 30px; /* Center text vertically */
 }
 
