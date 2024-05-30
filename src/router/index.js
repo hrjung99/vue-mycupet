@@ -7,8 +7,8 @@ import MyCupetPage from '@/components/MyCupetPage/MypageMain.vue';
 import ShopMain from '@/components/shop/ShopMain.vue';
 import BoardMain from '@/components/board/BoardMain.vue';
 import BoardInsertMain from '@/components/board/BoardInsertMain.vue';
+import BoardUpdateMain from '@/components/board/BoardUpdateMain.vue';
 import BoardViewMain from '@/components/board/BoardViewMain.vue';
-
 
 const routes = [
     { path: '/', component: MainPage }, // 기본 경로('/')일 때 MainPage를 보여줍니다.
@@ -19,6 +19,7 @@ const routes = [
     { path: '/ShopMain', component: ShopMain },
     { path: '/BoardMain', component: BoardMain },
     { path: '/BoardInsertMain', component: BoardInsertMain },
+    { path: '/BoardUpdateMain', component: BoardUpdateMain },
     { path: '/BoardViewMain', component: BoardViewMain },
 ];
 
