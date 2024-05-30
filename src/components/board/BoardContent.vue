@@ -38,9 +38,10 @@
 }
 
 .cupet_board_content {
-	width: 100%; /* 원하는 크기 비율로 설정 */
-    max-width: 600px; /* 예시로 최대 너비를 600px로 설정 */
+	width: 100%; /* 원하는 크기 비율로 설정 */;
+	max-width: 600px; /* 예시로 최대 너비를 600px로 설정 */
     box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비를 계산 */
+
 }
 
 .HeaderAndTitle {
