@@ -33,9 +33,7 @@
       <router-link :to="{ path: '/BoardUpdateMain', query: { cupet_board_no: state.board.cupet_board_no }}">
         <button type="button" class="update-button">수정</button>
       </router-link>
-      <router-link to="/">
-        <button type="button" class="delete-button">삭제</button>
-      </router-link>
+      <button type="button" class="delete-button" @click="BoardDelete(state.board.cupet_board_no)">삭제</button>
       <router-link to="/BoardMain">
         <button type="button" class="cancel-button">취소</button>
       </router-link>
@@ -43,32 +41,43 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
 import { reactive, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
-export default {
-  name: "BoardViewContent",
-  setup() {
-    const route = useRoute();
-    const state = reactive({ board: {} });
+const router = useRouter();
+const route = useRoute();
+const state = reactive({ board: {} });
 
-    onMounted(() => {
-      const cupet_board_no = route.query.cupet_board_no;
-      axios
-        .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
-        .then((response) => {
-          state.board = response.data.board;
-        })
-        .catch((error) => {
-          console.error("Error fetching board details:", error);
-        });
+
+const BoardDelete = (cupet_board_no) => {
+  axios
+    .get(`/api1/boardDelete?cupet_board_no=${cupet_board_no}`)
+    .then((response) => {
+      console.log("Board deleted:", response.data);
+      // 삭제 후 BoardMain 페이지로 이동
+      router.push({ path: '/BoardMain' });
+    })
+    .catch((error) => {
+      console.error("Error deleting board:", error);
     });
-
-    return { state };
-  },
 };
+
+
+
+onMounted(() => {
+  const cupet_board_no = route.query.cupet_board_no;
+  axios
+    .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
+    .then((response) => {
+      state.board = response.data.board;
+    })
+    .catch((error) => {
+      console.error("Error fetching board details:", error);
+    });
+});
+
 </script>
 
 <style scoped>
