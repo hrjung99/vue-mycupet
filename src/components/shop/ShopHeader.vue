@@ -4,7 +4,7 @@
       <div class="col-lg-6 col-md-1 mx-auto">
         <h1 class="fw-light">My Cupet Shop</h1>
         <p class="lead text-body-secondary">나의 반려동물을 위한 현명한 선택</p>
-        <router-link to="/cart" class="cart btn">
+        <router-link to="/ShopCart" class="cart btn">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </router-link>
       </div>
