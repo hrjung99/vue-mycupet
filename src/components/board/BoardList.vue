@@ -27,8 +27,8 @@ import { reactive, onMounted } from "vue";
 
 export default {
     methods: {
-        goToView(boardNo) {
-            this.$router.push({ path: '/BoardViewMain', query: { boardNo } });
+        goToView(cupet_board_no) {
+            this.$router.push({ path: '/BoardViewMain', query: { cupet_board_no } });
         }
     },
     name: "BoardList",

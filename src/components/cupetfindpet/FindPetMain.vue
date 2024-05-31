@@ -18,6 +18,7 @@ import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import MissingPetInfoVue from "./info/MissingPetInfo.vue";
 import AddMissingPetButton from "./AddMissingPetButton.vue";
+import axios from "axios";
 
 export default {
   name: "MainPage",
@@ -28,6 +29,22 @@ export default {
     CommonFooter,
     MissingPetInfoVue,
     AddMissingPetButton,
+  },
+  mounted() {
+    const token = localStorage.getItem("Token");
+
+    if (token) {
+      axios
+        .post("/api1/findpet/getmissingpet", {
+          token: token,
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error sending token:", error);
+        });
+    }
   },
 };
 </script>
