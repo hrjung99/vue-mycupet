@@ -5,6 +5,7 @@ import JoinPage from '@/components/user/JoinMain.vue';
 import FindPet from '@/components/cupetfindpet/FindPetMain.vue';
 import MyCupetPage from '@/components/MyCupetPage/MypageMain.vue';
 import ShopMain from '@/components/shop/ShopMain.vue';
+import ShopCart from '@/components/shop/ShopCart.vue';
 import BoardMain from '@/components/board/BoardMain.vue';
 import BoardInsertMain from '@/components/board/BoardInsertMain.vue';
 import BoardUpdateMain from '@/components/board/BoardUpdateMain.vue';
@@ -17,6 +18,7 @@ const routes = [
     { path: '/FindPet', component: FindPet },
     { path: '/MyCupetPage', component: MyCupetPage },
     { path: '/ShopMain', component: ShopMain },
+    { path: '/ShopCart', component: ShopCart },
     { path: '/BoardMain', component: BoardMain },
     { path: '/BoardInsertMain', component: BoardInsertMain },
     { path: '/BoardUpdateMain', component: BoardUpdateMain },
