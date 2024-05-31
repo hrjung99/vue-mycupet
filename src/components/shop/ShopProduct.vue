@@ -9,7 +9,7 @@
         </span>
       </p>
       <div class="d-flex justify-content-between align-items-center">
-        <button class="btn btn-primary" @click="addToCart(item.id)">
+        <button class="btn btn-primary" @click="addToCart(item.cupet_prodno)">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </button>
         <small class="price text-muted">
@@ -25,6 +25,7 @@
 
 <script>
 import lib from "@/scripts/lib";
+import axios from "axios";
 import './../common/CommonButtonStyle.css';
 
 export default {
@@ -33,7 +34,28 @@ export default {
     item: Object
   },
   setup() {
-    return {lib}
+
+    const token = localStorage.getItem("Token"); 
+
+    const addToCart = (cupet_prodno) => {
+
+      
+        /**
+         * shopbody 로 cupet_prodno 를 보낸다.
+         */
+
+      axios.post(`/api1/cart/items/${cupet_prodno}`, {},  {
+      headers: {
+          Authorization: `Bearer ${token}`
+        }
+    })
+      .then(() => {
+        console.log('success')
+      })
+
+
+    };
+    return {lib, addToCart}
   }
 }
 </script>

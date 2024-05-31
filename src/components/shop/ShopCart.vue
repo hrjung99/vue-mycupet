@@ -13,11 +13,7 @@
               <i class="fa fa-trash" @click="remove(item.id)"></i>
             </li>
           </ul>
-          <router-link to="/order">
-            <button type="button" class="buybtn">
-              구입하기
-            </button>
-          </router-link>
+          <router-link to="/order"> <button type="button" class="buybtn">구입하기</button></router-link>
         </div>
       </div>
     </div>
@@ -61,10 +57,16 @@ export default {
         console.error("Error fetching cart items:", error);
       });
     };
+
+    const remove = ({cupet_prodno}) => {
+      axios.delete(`/api1/cart/items/${{cupet_prodno}}`).then(() => {
+        loadItems();
+      })
+    }
  
     
     loadItems();
-    return {token, state, lib}
+    return {token, state, remove, lib}
   }
 }
 
