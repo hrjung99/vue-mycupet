@@ -47,10 +47,10 @@
             </div>
 
             <div class="pet-container">
-                <div v-for="(pet, index) in petList" :key="index">
-                    <MyCupetPetpage v-bind="pet" />
-                </div>
+            <div v-for="(pet, index) in petList" :key="index">
+                <MyCupetPetpage v-bind="pet" :cupet_user_id="state.cupet_user_id" />
             </div>
+        </div>
         </div>
     </div>
 </template>
@@ -161,6 +161,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    margin-bottom: 5px;
 }
 
 .form-group {
@@ -178,19 +179,5 @@ export default {
 
 input {
     flex: 1;
-}
-
-.register-button {
-    margin-top: 5px;
-    margin-left: 150px;
-    width: 100px;
-}
-
-.register-button:hover {
-    background-color: #85c14a; 
-}
-
-.charge-button-small:hover {
-    background-color: #85c14a;
 }
 </style>
