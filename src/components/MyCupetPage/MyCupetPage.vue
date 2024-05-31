@@ -198,4 +198,9 @@ export default {
 input {
     flex: 1;
 }
+
+.pet-container > * {
+    flex: 0 0 auto;
+    margin-right: 0px;
+}
 </style>
