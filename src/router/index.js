@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '@/components/MainPage.vue'; // MainPage 컴포넌트를 가져옵니다.
 import LoginPage from '@/components/user/LoginMain.vue';
-import JoinPage from '@/components/user/JoinForm.vue';
+import JoinPage from '@/components/user/JoinMain.vue';
 import FindPet from '@/components/cupetfindpet/FindPetMain.vue';
 import MyCupetPage from '@/components/MyCupetPage/MypageMain.vue';
 import ShopMain from '@/components/shop/ShopMain.vue';
