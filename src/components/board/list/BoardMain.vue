@@ -26,9 +26,9 @@ import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import BoardSearch from "@/components/board/BoardSearch.vue";
-import BoardList from "@/components/board/BoardList.vue";
+import BoardList from "@/components/board/list/BoardList.vue";
 import BoardSelectOption from "@/components/board/BoardSelectOption.vue";
-import './../common/CommonButtonStyle.css';
+import '@/components/common/CommonButtonStyle.css';
 
 export default {
   name: "MainPage",

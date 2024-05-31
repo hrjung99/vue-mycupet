@@ -1,20 +1,19 @@
 <template>
-    <CommonHeader />
-    <div class="main-container">
-      <CommonSideBar ref="sidebar" />
-      <div class="content">
-        <h1 style="color:#7E84A3;">게시물 등록</h1>
-        <BoardContent />
-        <button type="button" class="register-button">
-          등록
-        </button>
+  <CommonHeader />
+  <div class="main-container">
+    <CommonSideBar ref="sidebar" />
+    <div class="content">
+      <h1 style="color:#7E84A3;">게시물 수정</h1>
+      <BoardContent />
+      <div class="change-button">
+        <button class="update2-button">수정</button>
         <router-link to="/BoardMain">
-          <button type="button" class="cancle-button">취소</button>
+          <button type="button" class="cancel2-button">취소</button>
         </router-link>
       </div>
     </div>
-    
-    <CommonFooter />
+  </div>
+  <CommonFooter />
 </template>
 
 <script>
@@ -22,7 +21,7 @@ import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import BoardContent from "@/components/board/BoardContent.vue";
-import './../common/CommonButtonStyle.css';
+import '@/components/common/CommonButtonStyle.css';
 
 export default {
   name: "MainPage",
@@ -57,8 +56,18 @@ export default {
   margin-top: 25px;
 }
 
-.register-button {
+.change-button {
+  display: flex;
+  justify-content: flex-start;
   margin-top: 10px;
-  margin-right: 10px;
+  gap: 10px;
+}
+
+.update2-button {
+  margin-left: 0;
+}
+
+.cancel2-button {
+  margin-left: 0;
 }
 </style>
