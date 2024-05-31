@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group point-group">
                     <label>잔여포인트: {{ state.cupet_user_point }}</label>
-                    <router-link to="/MyCupetPoint">
+                    <router-link to="/MyCupetPointMain">
                         <button type="button" class="charge-button-small">
                             충전
                         </button>
@@ -188,31 +188,6 @@ input {
 
 .register-button:hover {
     background-color: #85c14a; 
-}
-
-.charge-button {
-    background-color: #34a853; 
-    color: white; 
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-.charge-button:hover {
-    background-color: #85c14a;
-}
-
-.charge-button-small {
-    background-color: #34a853; 
-    color: white; 
-    border: none;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
 .charge-button-small:hover {
