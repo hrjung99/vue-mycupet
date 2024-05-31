@@ -18,9 +18,14 @@
                     <span v-if="!isEditing">{{ cupet_pet_type }}</span>
                     <input type="text" id="cupet_pet_type" v-model="cupet_pet_type" :disabled="!isEditing" v-show="isEditing" />
                 </div>
-                <button type="button" class="savepet-button" @click="toggleEdit">
-                    {{ isEditing ? '수정 완료' : '수정' }}
-                </button>
+                <div class="buttons">
+                    <button type="button" class="savepet-button" @click="toggleEdit">
+                        {{ isEditing ? '수정 완료' : '수정' }}
+                    </button>
+                    <button type="button" class="delete-button" @click="toggleDelete">
+                        삭제
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -62,6 +67,19 @@ export default {
             }).catch(error => {
                 console.error("Error updating pet:", error);
             });
+        },
+        toggleDelete() {
+            const cupet_pet_no = this.pet.cupet_pet_no; // 애완동물 번호 가져오기
+
+            axios
+                .get(`/api1/petDelete?cupet_pet_no=${cupet_pet_no}`) // GET 요청 수정
+                .then(response => {
+                    console.log("Pet deleted:", response.data);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error("Error deleting pet:", error);
+                });
         }
     }
 }
@@ -100,7 +118,16 @@ label {
     margin-right: 8px;
 }
 
-.savepet-button {
-    margin-top: 10px;
+.buttons {
+    display: flex;
+}
+
+.savepet-button,
+.delete-button {
+    margin-top: 5px;
+}
+
+.delete-button {
+    margin-left: 10px;
 }
 </style>
