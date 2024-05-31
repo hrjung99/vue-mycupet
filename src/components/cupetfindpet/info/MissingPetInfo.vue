@@ -1,6 +1,9 @@
 <template>
-  <div class="main-container">
-    <img src="./assets/mob.png" alt="new" width="100" height="100" />
+  <div class="missingcard-main-container">
+    <div class="missingpet-main-container">
+      <img src="./assets/mob.png" alt="new" width="200" height="200" />
+      <div>ssss</div>
+    </div>
   </div>
 </template>
 
@@ -11,7 +14,9 @@ export default {
 </script>
 
 <style>
-.main-container {
+.missingcard-main-container {
   width: 30vx;
+  flex-direction: column;
+  padding: 40px;
 }
 </style>
