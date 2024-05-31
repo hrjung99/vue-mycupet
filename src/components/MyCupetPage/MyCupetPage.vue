@@ -25,7 +25,14 @@
                 <div class="form-group">
                     <label>성별: {{ state.cupet_user_gender }}</label>
                 </div>
-                <br/>
+                <div class="form-group point-group">
+                    <label>잔여포인트: {{ state.cupet_user_point }}</label>
+                    <router-link to="/MyCupetPoint">
+                        <button type="button" class="charge-button-small">
+                            충전
+                        </button>
+                    </router-link>
+                </div>
             </div>
         </div>
 
@@ -163,29 +170,52 @@ export default {
     text-align: left;
 }
 
-input {
-    flex: 1;
+.point-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 라벨과 버튼 사이의 간격을 설정 */
 }
 
-button {
-    border: none;
-    background-color: #f2fff2; 
+input {
+    flex: 1;
 }
 
 .register-button {
     margin-top: 5px;
     margin-left: 150px;
-    background-color: #34a853; 
-    color: white; 
-    border: none;
     width: 100px;
-    padding: 10px 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
 .register-button:hover {
     background-color: #85c14a; 
+}
+
+.charge-button {
+    background-color: #34a853; 
+    color: white; 
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.charge-button:hover {
+    background-color: #85c14a;
+}
+
+.charge-button-small {
+    background-color: #34a853; 
+    color: white; 
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.charge-button-small:hover {
+    background-color: #85c14a;
 }
 </style>
