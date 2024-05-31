@@ -58,7 +58,7 @@ export default {
     };
   },
   mounted() {
-    const token = localStorage.getItem("jwtToken");
+    const token = localStorage.getItem("Token");
     this.isLoggedIn = !!token;
   },
   methods: {
@@ -67,7 +67,7 @@ export default {
     },
     logout() {
       // 로그아웃 버튼 클릭 시 로컬 저장소에서 토큰 삭제
-      localStorage.removeItem("jwtToken");
+      localStorage.removeItem("Token");
       // 로그인 상태를 false로 설정하여 로그인 링크가 표시되도록 변경
       this.isLoggedIn = false;
       // 다른 로그아웃 관련 작업 수행 가능 (예: 서버에 로그아웃 요청 등)
