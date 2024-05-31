@@ -5,7 +5,13 @@
             <img src="./../common/assets/logo.png" alt="new" width="180" height="120" class="logo"/>
             <div class="join-container">
                 <h2>마이페이지</h2>
-                <!-- 유저 정보 표시 -->
+                <div class="user-button-container">
+                    <router-link to="/UserUpdatePageMain">
+                        <button type="submit" class="user-update-button">
+                            <img src="./../MyCupetPage/image/플러스버튼.png" alt="new" width="30" height="30"/>
+                        </button>
+                    </router-link>
+                </div>
                 <div class="form-group">
                     <label for="id">아이디: {{ state.cupet_user_id }}</label>
                 </div>
@@ -150,7 +156,7 @@ export default {
     margin-right: 20px;
 }
 
-.plus-button {
+.plus-button, .user-update-button {
     border: none;
     background-color: transparent;
     cursor: pointer;

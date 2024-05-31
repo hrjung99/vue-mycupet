@@ -78,7 +78,6 @@ label {
 
 .savepet-button {
     margin-bottom: 15px;
-    padding: 5px 70px;
 }
 
 .small-input {
