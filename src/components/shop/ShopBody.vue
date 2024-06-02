@@ -3,7 +3,6 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div class="col" v-for="(item, idx) in state.items" :key="idx">
-          {{ item }}
           <ShopProduct :item="item" />
         </div>
       </div>
@@ -13,23 +12,30 @@
 
 <script>
 import axios from "axios";
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 import ShopProduct from "./ShopProduct.vue";
 
 export default {
-  name: "ShopHeader",
-  components: {
-    ShopProduct,
-  },
+  name: "ShopBody",
+  components: { ShopProduct },
 
-  setup() {
+  setup(){
     const state = reactive({ target: { items: [] } });
-    axios.get("/api/items").then(({ data }) => {
-      state.items = data;
+
+    onMounted(() => {
+      axios.get("/api1/products")
+        .then(res => {
+          state.items = res.data.list;
+        })
+        .catch(error => {
+          console.error("Error fetching select options:", error);
+        });
     });
+
     return { state };
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

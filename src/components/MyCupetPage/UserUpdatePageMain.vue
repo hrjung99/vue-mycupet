@@ -3,7 +3,7 @@
     <CommonHeader />
     <div class="content-container">
       <CommonSideBar ref="sidebar" />
-      <MyCupetPage />
+      <UserUpdatePage />
     </div>
     <CommonFooter />
   </div>
@@ -11,7 +11,7 @@
 
 <script>
 import CommonHeader from "@/components/common/CommonHeader.vue";
-import MyCupetPage from "@/components/MyCupetPage/MyCupetPage.vue";
+import UserUpdatePage from "@/components/MyCupetPage/UserUpdatePage.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 
@@ -19,7 +19,7 @@ export default {
   name: "MainPage",
   components: {
     CommonHeader,
-    MyCupetPage,
+    UserUpdatePage,
     CommonFooter,
     CommonSideBar,
   },
