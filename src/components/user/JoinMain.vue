@@ -88,9 +88,6 @@ export default {
   flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
   
 }
-.common-sidebar {
-  height: 100%; /* 사이드바가 전체 높이를 채우도록 */
-}
 
 .join-container{
     display: flex;
