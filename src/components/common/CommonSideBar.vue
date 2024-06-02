@@ -79,7 +79,10 @@ export default {
 <style scoped>
 aside {
   min-width: 150px;
+  max-width: 150px;
   padding: 10px;
+  flex:1;
+  height: 100vh; /* 사이드바를 전체 높이에 맞춤 */
 }
 
 nav ul {
