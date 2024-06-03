@@ -60,7 +60,7 @@ export default {
 
     const remove = (cupet_prodno) => {
       console.log(cupet_prodno);
-      axios.delete(`/api1/cart/items/${cupet_prodno}`, {}, {
+      axios.delete(`/api1/cart/items/${cupet_prodno}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
