@@ -4,6 +4,8 @@
       class="form-select"
       aria-label="SelectOption"
       v-model="selectedOption"
+      @change="emitSelectedOption"
+
     >
       <option
         v-for="item in state.list"
@@ -45,6 +47,12 @@ export default {
     });
 
     return { state };
+  },
+
+  methods: {
+    emitSelectedOption() {
+    this.$emit('selected', this.selectedOption);
+  },
   },
 };
 </script>

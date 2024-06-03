@@ -2,7 +2,13 @@
   <div>
     <form>
       <div class="HeaderAndTitle">
-        <BoardSelectOption id="cupet_board_head_no" name="cupet_board_head_no" v-model="cupet_board_head_no" />
+        <BoardSelectOption
+          id="cupet_board_head_no"
+          name="cupet_board_head_no"
+          v-model="cupet_board_head_no"
+          @selected="updateSelectedOption"
+
+        />
         <input
           class="cupet_board_title"
           id="cupet_board_title"
@@ -25,7 +31,13 @@
       <button
         type="button"
         class="delete-button"
-        @click="BoardInsert"
+        @click="
+          BoardInsert(
+            cupet_board_title,
+            cupet_board_content,
+            cupet_board_head_no
+          )
+        "
       >
         등록
       </button>
@@ -35,30 +47,42 @@
     </form>
   </div>
 </template>
-
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import BoardSelectOption from '@/components/board/BoardSelectOption.vue'
 import axios from 'axios'
+
+// 	import { reactive } from "vue";
+// 	import { useRoute, useRouter } from "vue-router";
+
+// const router = useRouter();
+// const route = useRoute();
+// const state = reactive({ board: {} });
 
 export default {
   name: 'MainPage',
   components: {
     BoardSelectOption,
   },
+
   data() {
     return {
-      cupet_board_title: '',
-      cupet_board_content: '',
-      cupet_board_head_no: '',
       editor: ClassicEditor,
       editorConfig: {
         placeholder: '게시물 내용을 입력해주세요',
         require: 'require',
       },
+      cupet_board_no: "",
+      cupet_board_title: "",
+      cupet_board_content: "",
     }
   },
+
   methods: {
+    updateSelectedOption(selectedOption) {
+    this.cupet_board_head_no = selectedOption;
+  },
+
     BoardInsert() {
       const token = localStorage.getItem('Token')
       const getInsertData = {
@@ -66,6 +90,7 @@ export default {
         cupet_board_content: this.cupet_board_content,
         cupet_board_head_no: this.cupet_board_head_no,
       }
+      
       axios
         .post('/api1/boardInsert', getInsertData, {
           headers: {
@@ -87,7 +112,6 @@ export default {
   },
 }
 </script>
-
 <style>
 .cupet_board_title {
   width: 100%; /* CKEditor가 전체 너비를 사용하도록 설정 */
