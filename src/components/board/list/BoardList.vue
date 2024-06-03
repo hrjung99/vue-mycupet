@@ -13,7 +13,7 @@
                 <td><img src="@/components/common/assets/newicon.png" width="25" height="11"></td>
                 <td>{{ item.cupet_board_no }}</td>
                 <td>{{ item.cupet_board_title }}</td>
-                <td>{{ item.cupet_user_name }}</td>
+                <td>{{ item.cupet_user_nickname }}</td>
                 <td>{{ item.cupet_board_regdate }}</td>
                 <td>{{ item.cupet_board_viewcnt }}</td>
             </tr>
