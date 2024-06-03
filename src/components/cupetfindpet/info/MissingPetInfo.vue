@@ -109,7 +109,7 @@ export default {
     redirectToken() {
       const token = localStorage.getItem("Token");
       if (token) {
-        alert("토큰 재생성 시작");
+    
         axios
           .post(
             "/api2/user/redirectToken",
