@@ -9,8 +9,8 @@
             <li v-for="(item, idx) in state.items" :key="idx">
               <img :src="item.cupet_prodimgpath" />
               <span class="name">{{ item.cupet_prodname }}</span>
-              <span class="price">{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원</span>
-              <i class="fa fa-trash" @click="remove(item.id)"></i>
+              <span class="price">{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원 &nbsp;</span>
+              <i class="fa fa-trash" @click="remove(item.cupet_prodno)"></i>
             </li>
           </ul>
           <router-link to="/order"> <button type="button" class="buybtn">구입하기</button></router-link>
@@ -58,18 +58,21 @@ export default {
       });
     };
 
-    const remove = ({cupet_prodno}) => {
-      axios.delete(`/api1/cart/items/${{cupet_prodno}}`).then(() => {
+    const remove = (cupet_prodno) => {
+      console.log(cupet_prodno);
+      axios.delete(`/api1/cart/items/${cupet_prodno}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(() => {
+        console.log('success')
         loadItems();
       })
     }
- 
-    
     loadItems();
     return {token, state, remove, lib}
   }
 }
-
 </script>
 
 <style scoped>

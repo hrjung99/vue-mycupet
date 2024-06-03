@@ -38,20 +38,14 @@ export default {
     const token = localStorage.getItem("Token"); 
 
     const addToCart = (cupet_prodno) => {
-
-      
-        /**
-         * shopbody 로 cupet_prodno 를 보낸다.
-         */
-
+      console.log(cupet_prodno);
       axios.post(`/api1/cart/items/${cupet_prodno}`, {},  {
       headers: {
           Authorization: `Bearer ${token}`
         }
+    }).then(() => {
+      console.log('success')
     })
-      .then(() => {
-        console.log('success')
-      })
 
 
     };

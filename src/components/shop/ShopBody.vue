@@ -20,12 +20,6 @@ export default {
   components: { ShopProduct },
 
   setup(){
-    /*
-      const list = ref([]); <- 여기에 cupet_prodno 추가
-      쇼핑카트 버튼 누를경우 Controller 로 list 를 보낸다.
-      list 내용을 쇼핑 카트에 담는다.
-    */
-
     const state = reactive({ target: { items: [] } });
 
     onMounted(() => {
