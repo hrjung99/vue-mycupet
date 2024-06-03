@@ -4,13 +4,7 @@
       <CommonSideBar ref="sidebar" />
       <div class="content">
         <h1 style="color:#7E84A3;">게시물 등록</h1>
-        <BoardContent />
-        <button type="button" class="register-button">
-          등록
-        </button>
-        <router-link to="/BoardMain">
-          <button type="button" class="cancle-button">취소</button>
-        </router-link>
+        <BoardInsertContent />
       </div>
     </div>
     
@@ -21,8 +15,9 @@
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
-import BoardContent from "@/components/board/BoardContent.vue";
+import BoardInsertContent from "@/components/board/insert/BoardInsertContent.vue";
 import '@/components/common/CommonButtonStyle.css';
+
 
 export default {
   name: "MainPage",
@@ -30,7 +25,7 @@ export default {
     CommonHeader,
     CommonFooter,
     CommonSideBar,
-    BoardContent,
+    BoardInsertContent,
   },
   mounted() {
     this.changeSidebarColor();
