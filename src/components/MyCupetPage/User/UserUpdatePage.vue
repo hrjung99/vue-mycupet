@@ -48,6 +48,11 @@
                     <button type="button" class="delete-button" @click="toggleDelete">
                         탈퇴
                     </button>
+                    <router-link to="/MyCupetPage">
+                        <button type="button" class="cancle-button">
+                        취소
+                        </button>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -96,7 +101,8 @@ export default {
                 .get(`/api1/userDelete?cupet_user_id=${cupet_user_id}`)
                 .then(response => {
                     console.log("User deleted:", response.data);
-                    this.$router.push('/MyCupetPage');
+                    alert("탈퇴 되었습니다.");
+                    this.$router.push('/LoginPage');
                 })
                 .catch(error => {
                     console.error("Error deleting user:", error);
@@ -120,6 +126,7 @@ export default {
                 cupet_user_point: this.state.cupet_user_point
             }).then(response => {
                 console.log("User updated:", response.data);
+                alert("수정 되었습니다.");
                 this.$router.push('/MyCupetPage');
             }).catch(error => {
                 console.error("Error updating user:", error);
@@ -171,6 +178,10 @@ input {
 }
 
 .delete-button {
+    margin-left: 7px;
+}
+
+.cancle-button {
     margin-left: 7px;
 }
 </style>
