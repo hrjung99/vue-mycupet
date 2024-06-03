@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="sub-content-inner">
-            <img src="./../common/assets/logo.png" alt="new" width="180" height="120" class="logo sub-logo"/>
+            <img src="./../../common/assets/logo.png" alt="new" width="180" height="120" class="logo sub-logo"/>
             <div class="pet-info">
                 <div class="form-group">
                     <label for="cupet_pet_name">이름: </label>
@@ -33,7 +33,7 @@
 
 <script>
 import axios from 'axios';
-import "./../common/CommonButtonStyle.css";
+import "./../../common/CommonButtonStyle.css";
 
 export default {
     props: ['cupet_user_id', 'pet'],
