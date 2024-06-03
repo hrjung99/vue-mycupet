@@ -1,14 +1,13 @@
 <template>
     <div>
         <div class="main-content">
-            <!-- 유저 정보 섹션 -->
-            <img src="./../common/assets/logo.png" alt="new" width="180" height="120" class="logo"/>
+            <img src="./../../common/assets/logo.png" alt="new" width="180" height="120" class="logo"/>
             <div class="join-container">
-                <h2>마이페이지</h2>
-                <div class="user-button-container">
+                <div class="page-header">
+                    <h2>마이페이지</h2>
                     <router-link to="/UserUpdatePageMain">
                         <button type="submit" class="user-update-button">
-                            <img src="./../MyCupetPage/image/플러스버튼.png" alt="new" width="30" height="30"/>
+                            <img src="./../../MyCupetPage/image/수정아이콘.png" alt="new" width="30" height="30"/>
                         </button>
                     </router-link>
                 </div>
@@ -49,7 +48,7 @@
                 <h2>나의 애완동물</h2>
                 <div class="pet-button-container">
                     <button type="submit" class="plus-button" @click="addNewPet">
-                        <img src="./../MyCupetPage/image/플러스버튼.png" alt="new" width="30" height="30"/>
+                        <img src="./../../MyCupetPage/image/플러스버튼.png" alt="new" width="30" height="30"/>
                     </button>
                 </div>
             </div>
@@ -68,8 +67,8 @@
 </template>
 
 <script>
-import MyCupetPetView from "@/components/MyCupetPage/MyCupetPetView.vue";
-import MyCupetPetpage from "@/components/MyCupetPage/MyCupetPetpage.vue";
+import MyCupetPetView from "@/components/MyCupetPage/Pet/MyCupetPetView.vue";
+import MyCupetPetpage from "@/components/MyCupetPage/Pet/MyCupetPetpage.vue";
 import axios from "axios";
 import { reactive } from "vue";
 
@@ -81,8 +80,8 @@ export default {
     },
     data() {
         return {
-            petList: [], // 애완동물 목록을 담을 배열
-            newPetList: [], // 새로 추가된 애완동물 목록을 담을 배열
+            petList: [],
+            newPetList: [],
             state: reactive({}) // state를 반응형으로 변경
         };
     },
@@ -149,17 +148,28 @@ export default {
     margin-left: 20px;
 }
 
-.header-container {
+.page-header {
     display: flex;
     align-items: center;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.page-header h2 {
+    margin-right: 5px;
 }
 
 .plus-button, .user-update-button {
     border: none;
     background-color: transparent;
     cursor: pointer;
+    padding: 0;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .pet-button-container {
@@ -168,17 +178,17 @@ export default {
 
 .pet-container {
     display: flex;
-    flex-wrap: nowrap; /* 수평으로만 요소를 배치 */
-    overflow-x: auto; /* 요소가 넘칠 경우 가로 스크롤 표시 */
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 
 .pet-container::-webkit-scrollbar {
-    display: none; /* 스크롤바 숨기기 */
+    display: none;
 }
 
 .pet-container > * {
     flex: 0 0 auto; /* 자식 요소가 크기를 자동 조정하지 않고 고정 크기로 설정 */
-    margin-right: 20px; /* 요소 간 간격 조절 */
+    margin-right: 20px;
 }
 
 .join-container, .pet-info {
@@ -198,7 +208,7 @@ export default {
 .point-group {
     display: flex;
     align-items: center;
-    gap: 10px; /* 라벨과 버튼 사이의 간격을 설정 */
+    gap: 10px;
 }
 
 input {

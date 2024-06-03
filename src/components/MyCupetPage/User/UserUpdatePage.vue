@@ -1,8 +1,7 @@
 <template>
     <div>
         <div class="main-content">
-            <!-- 유저 정보 섹션 -->
-            <img src="./../common/assets/logo.png" alt="new" width="180" height="120" class="logo"/>
+            <img src="./../../common/assets/logo.png" alt="new" width="180" height="120" class="logo"/>
             <div class="join-container">
                 <h2>마이페이지</h2>
                 <div class="form-group">
@@ -94,7 +93,7 @@ export default {
             const cupet_user_id = this.user.cupet_user_id;
 
             axios
-                .get(`/api1/userDelete?cupet_user_id=${cupet_user_id}`) // GET 요청 수정
+                .get(`/api1/userDelete?cupet_user_id=${cupet_user_id}`)
                 .then(response => {
                     console.log("User deleted:", response.data);
                     this.$router.push('/MyCupetPage');
