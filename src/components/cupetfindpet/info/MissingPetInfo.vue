@@ -106,6 +106,30 @@ export default {
     };
   },
   methods: {
+    redirectToken() {
+      const token = localStorage.getItem("Token");
+      if (token) {
+    
+        axios
+          .post(
+            "/api2/user/redirectToken",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((res) => {
+            localStorage.removeItem("Token");
+            localStorage.setItem("Token", res.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching user details:", error);
+          });
+      }
+    },
+
     fetchUserData() {
       const token = localStorage.getItem("Token");
       if (token) {
@@ -167,6 +191,7 @@ export default {
             }
             if (msg === "success") {
               alert("등록이 완료되었습니다");
+              this.redirectToken();
               this.$router.push("/");
             }
             if (msg === "morepoint") {
