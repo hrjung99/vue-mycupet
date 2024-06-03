@@ -9,11 +9,18 @@
                     <label> 50,000p </label><br/>
                     <label> 100,000p </label><br/>
                 </div>
-                <router-link to="/MyCupetPointMain">
-                    <button type="button" class="charge-button-small">
-                        충전
-                    </button>
-                </router-link>
+                <div class="button-container">
+                    <router-link to="/MyCupetPointMain">
+                        <button type="button" class="charge-button-small">
+                            충전
+                        </button>
+                    </router-link>
+                    <router-link to="/MyCupetPage">
+                        <button type="button" class="cancel-button">
+                            취소
+                        </button>
+                    </router-link>
+                </div>
             </div>
         </div>
     </div>
@@ -46,6 +53,11 @@ export default {
     padding: 3px 0px 3px 20px;
 }
 
+.button-container {
+    display: flex;
+    margin-top: 10px;
+}
+
 .charge-button-small {
     background-color: #34a853; 
     color: white; 
@@ -54,10 +66,17 @@ export default {
     font-size: 14px;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: 10px;
 }
 
 .charge-button-small:hover {
+    background-color: #85c14a;
+}
+
+.cancel-button {
+    margin-left: 5px;
+}
+
+.cancel-button:hover {
     background-color: #85c14a;
 }
 </style>
