@@ -5,12 +5,13 @@ import JoinPage from '@/components/user/JoinMain.vue';
 import FindPet from '@/components/cupetfindpet/FindPetMain.vue';
 import MyCupetPage from '@/components/MyCupetPage/MypageMain.vue';
 import MyCupetPointMain from '@/components/MyCupetPage/MyCupetPointMain.vue';
+import UserUpdatePageMain from '@/components/MyCupetPage/UserUpdatePageMain.vue';
 import ShopMain from '@/components/shop/ShopMain.vue';
 import ShopCart from '@/components/shop/ShopCart.vue';
-import BoardMain from '@/components/board/BoardMain.vue';
-import BoardInsertMain from '@/components/board/BoardInsertMain.vue';
-import BoardUpdateMain from '@/components/board/BoardUpdateMain.vue';
-import BoardViewMain from '@/components/board/BoardViewMain.vue';
+import BoardMain from '@/components/board/list/BoardMain.vue';
+import BoardInsertMain from '@/components/board/insert/BoardInsertMain.vue';
+import BoardUpdateMain from '@/components/board/update/BoardUpdateMain.vue';
+import BoardViewMain from '@/components/board/view/BoardViewMain.vue';
 
 const routes = [
     { path: '/', component: MainPage }, // 기본 경로('/')일 때 MainPage를 보여줍니다.
@@ -19,6 +20,7 @@ const routes = [
     { path: '/FindPet', component: FindPet },
     { path: '/MyCupetPage', component: MyCupetPage },
     { path: '/MyCupetPointMain', component: MyCupetPointMain },
+    { path: '/UserUpdatePageMain', component: UserUpdatePageMain },
     { path: '/ShopMain', component: ShopMain },
     { path: '/ShopCart', component: ShopCart },
     { path: '/BoardMain', component: BoardMain },

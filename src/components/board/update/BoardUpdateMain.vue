@@ -21,7 +21,7 @@ import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import BoardContent from "@/components/board/BoardContent.vue";
-import './../common/CommonButtonStyle.css';
+import '@/components/common/CommonButtonStyle.css';
 
 export default {
   name: "MainPage",

@@ -1,9 +1,17 @@
 <template>
     <div>
         <div class="main-content">
+            <!-- 유저 정보 섹션 -->
             <img src="./../common/assets/logo.png" alt="new" width="180" height="120" class="logo"/>
             <div class="join-container">
                 <h2>마이페이지</h2>
+                <div class="user-button-container">
+                    <router-link to="/UserUpdatePageMain">
+                        <button type="submit" class="user-update-button">
+                            <img src="./../MyCupetPage/image/플러스버튼.png" alt="new" width="30" height="30"/>
+                        </button>
+                    </router-link>
+                </div>
                 <div class="form-group">
                     <label for="id">아이디: {{ state.cupet_user_id }}</label>
                 </div>
@@ -45,10 +53,14 @@
                     </button>
                 </div>
             </div>
-
             <div class="pet-container">
+                <!-- DB에서 가져온 애완동물 데이터를 보여줌 -->
                 <div v-for="(pet, index) in petList" :key="index">
-                    <MyCupetPetpage v-bind="pet" />
+                    <MyCupetPetView :pet="pet" :cupet_user_id="state.cupet_user_id" />
+                </div>
+                <!-- 새 애완동물 추가 폼을 보여줌 -->
+                <div v-for="(newPet, index) in newPetList" :key="index">
+                    <MyCupetPetpage :cupet_user_id="state.cupet_user_id" :pet="newPet" />
                 </div>
             </div>
         </div>
@@ -56,6 +68,7 @@
 </template>
 
 <script>
+import MyCupetPetView from "@/components/MyCupetPage/MyCupetPetView.vue";
 import MyCupetPetpage from "@/components/MyCupetPage/MyCupetPetpage.vue";
 import axios from "axios";
 import { reactive } from "vue";
@@ -63,44 +76,55 @@ import { reactive } from "vue";
 export default {
     name: "MyCupetPage",
     components: {
+        MyCupetPetView,
         MyCupetPetpage,
     },
     data() {
         return {
             petList: [], // 애완동물 목록을 담을 배열
-            state: reactive({}), // state를 반응형으로 변경
+            newPetList: [], // 새로 추가된 애완동물 목록을 담을 배열
+            state: reactive({}) // state를 반응형으로 변경
         };
     },
     methods: {
         addNewPet() {
-            this.petList.push({
-                // 새 애완동물의 구조를 여기에 정의합니다.
+            this.newPetList.push({
+                cupet_pet_name: '',
+                cupet_pet_birth: '',
+                cupet_pet_type: ''
             });
         },
         fetchUserData() {
-            // 로컬 스토리지에서 토큰을 가져옴
             const token = localStorage.getItem("Token");
 
             if (token) {
-                // Axios를 사용하여 HTTP 요청을 보낼 때 헤더에 토큰을 추가
                 axios
                     .post("/api1/userView", {}, {
                         headers: {
-                            Authorization: `Bearer ${token}` // Bearer 스킴을 사용한 토큰 인증
+                            Authorization: `Bearer ${token}`
                         }
                     })
                     .then(response => {
-                        // 요청이 성공한 경우 처리
                         console.log("Data received:", response.data);
-                        // 응답으로 받은 데이터를 state에 할당
                         Object.assign(this.state, response.data);
+                        this.fetchPetData(); // 유저 데이터 받아온 후 펫 데이터도 가져옴
                     })
                     .catch((error) => {
-                        console.error("Error fetching board details:", error);
+                        console.error("Error fetching user details:", error);
                     });
             } else {
                 console.error("Token not found");
             }
+        },
+        fetchPetData() {
+            axios
+                .get(`/api1/petView?cupet_user_id=${this.state.cupet_user_id}`)
+                .then(response => {
+                    this.petList = response.data.petView;
+                })
+                .catch(error => {
+                    console.error("Error fetching pet data:", error);
+                });
         }
     },
     mounted() {
@@ -132,7 +156,7 @@ export default {
     margin-right: 20px;
 }
 
-.plus-button {
+.plus-button, .user-update-button {
     border: none;
     background-color: transparent;
     cursor: pointer;
@@ -161,6 +185,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin-left: 20px;
+    margin-bottom: 5px;
 }
 
 .form-group {
@@ -180,17 +205,8 @@ input {
     flex: 1;
 }
 
-.register-button {
-    margin-top: 5px;
-    margin-left: 150px;
-    width: 100px;
-}
-
-.register-button:hover {
-    background-color: #85c14a; 
-}
-
-.charge-button-small:hover {
-    background-color: #85c14a;
+.pet-container > * {
+    flex: 0 0 auto;
+    margin-right: 0px;
 }
 </style>

@@ -265,12 +265,6 @@ export default {
 </script>
 
 <style scoped>
-.main-content {
-  display: flex;
-  align-items: flex-start;
-  background-color: #f2fff2;
-}
-
 .logo {
   margin-left: 20px;
 }
@@ -304,10 +298,5 @@ button {
 .register-button {
   margin-top: 5px;
   margin-left: 150px;
-}
-
-.content-container {
-  display: flex;
-  flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
 }
 </style>

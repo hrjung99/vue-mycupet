@@ -1,29 +1,37 @@
 <template>
-  <div class="main-container">
     <CommonHeader />
-    <div class="content-container">
+    <div class="main-container">
       <CommonSideBar ref="sidebar" />
-      <MyCupetPage />
+      <div class="content">
+        <h1 style="color:#7E84A3;">게시물 등록</h1>
+        <BoardContent />
+        <button type="button" class="register-button">
+          등록
+        </button>
+        <router-link to="/BoardMain">
+          <button type="button" class="cancle-button">취소</button>
+        </router-link>
+      </div>
     </div>
+    
     <CommonFooter />
-  </div>
 </template>
 
 <script>
 import CommonHeader from "@/components/common/CommonHeader.vue";
-import MyCupetPage from "@/components/MyCupetPage/MyCupetPage.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
+import BoardContent from "@/components/board/BoardContent.vue";
+import '@/components/common/CommonButtonStyle.css';
 
 export default {
   name: "MainPage",
   components: {
     CommonHeader,
-    MyCupetPage,
     CommonFooter,
     CommonSideBar,
+    BoardContent,
   },
-  /* 페이지 켜면 sidebar 배경색이 흰색으로 바뀌는 코드*/
   mounted() {
     this.changeSidebarColor();
   },
@@ -38,14 +46,19 @@ export default {
 <style scoped>
 .main-container {
   display: flex;
-  flex-direction: column;
-  height: 95vh; /* 화면 전체 높이에 맞추기 위해 */
-  justify-content: space-between; /* 하단 여백을 최대화하여 footer-container가 전체 너비를 채우도록 */
+  flex-direction: row;
   background-color: #f2fff2;
 }
 
-.content-container {
-  display: flex;
-  flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
+.content {
+  flex: 1;
+  align-items: center;
+  padding-left: 40px;
+  margin-top: 25px;
+}
+
+.register-button {
+  margin-top: 10px;
+  margin-right: 10px;
 }
 </style>

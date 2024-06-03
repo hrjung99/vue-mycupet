@@ -45,6 +45,8 @@
 import axios from "axios";
 import { reactive, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import '@/components/common/CommonButtonStyle.css';
+
 
 const router = useRouter();
 const route = useRoute();

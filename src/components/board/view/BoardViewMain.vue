@@ -11,7 +11,7 @@
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
-import './../common/CommonButtonStyle.css';
+import '@/components/common/CommonButtonStyle.css';
 import BoardViewContent from './BoardViewContent.vue';
 
 export default {
