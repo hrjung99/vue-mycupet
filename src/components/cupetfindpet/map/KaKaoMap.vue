@@ -6,71 +6,96 @@
 </template>
 
 <script>
+import { inject, ref, onMounted } from "vue";
+import axios from "axios";
+
 export default {
   name: "KakaoMap",
-  data() {
-    return {
-      centerCoordinate: {
-        lat: 33.450701,
-        lan: 126.570667,
-      },
-      locateMap: {
-        lat: 0,
-        lan: 0,
-      },
-      map: null, // map 객체를 저장할 변수
-    };
-  },
-  mounted() {
-    this.resizeMap();
-    this.initMap();
-  },
-  methods: {
-    initMap() {
-      // 카카오맵 API 로드 확인
-      if (window.kakao && window.kakao.maps) {
-        const container = document.getElementById("map"); // 지도를 표시할 div
-        const options = {
-          center: new window.kakao.maps.LatLng(
-            this.centerCoordinate.lat,
-            this.centerCoordinate.lan
-          ), // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
-        };
+  setup() {
+    const mapLocate = inject("mapLocate");
+    const centerCoordinate = ref({
+      lat: 33.450701,
+      lan: 126.570667,
+    });
 
-        // 지도 생성
-        this.map = new window.kakao.maps.Map(container, options);
+    const map = ref(null);
+    const marker = ref(null);
 
-        // 클릭 이벤트 추가
-        window.kakao.maps.event.addListener(this.map, "click", (mouseEvent) => {
-          // 클릭한 위도, 경도 정보를 가져옵니다
-          var latlng = mouseEvent.latLng;
-
-          this.locateMap.lat = latlng.getLat();
-          this.locateMap.lan = latlng.getLng();
-
-          let message = "클릭한 위치의 위도는 " + latlng.getLat() + " 이고, ";
-          message += "경도는 " + latlng.getLng() + " 입니다";
-
-          const resultDiv = document.getElementById("result");
-          resultDiv.innerHTML = message;
-        });
-      } else {
-        console.error("Kakao Maps API is not loaded.");
-      }
-    },
-    resizeMap() {
+    const resizeMap = () => {
       const mapContainer = document.getElementById("map");
       mapContainer.style.width = "650px";
       mapContainer.style.height = "650px";
-    },
-    relayout() {
-      if (this.map) {
-        this.map.relayout();
+    };
+
+    const userGetLocate = () => {
+      const token = localStorage.getItem("Token");
+
+      axios
+        .get("/api1/findpet/getUserLocate", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          const data = response.data;
+          centerCoordinate.value.lat = data.UserLocate.locateY;
+          centerCoordinate.value.lan = data.UserLocate.locateX;
+
+          mapLocate.lat = data.UserLocate.locateY;
+          mapLocate.lan = data.UserLocate.locateX;
+
+          initializeMap();
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    };
+
+    const initializeMap = () => {
+      if (window.kakao && window.kakao.maps) {
+        const container = document.getElementById("map");
+        const options = {
+          center: new window.kakao.maps.LatLng(
+            centerCoordinate.value.lat,
+            centerCoordinate.value.lan
+          ),
+          level: 3,
+        };
+
+        map.value = new window.kakao.maps.Map(container, options);
+
+        window.kakao.maps.event.addListener(
+          map.value,
+          "click",
+          (mouseEvent) => {
+            const latlng = mouseEvent.latLng;
+
+            mapLocate.lat = latlng.getLat();
+            mapLocate.lan = latlng.getLng();
+
+            // 마커를 생성하고 클릭한 위치에 추가
+            if (marker.value) {
+              marker.value.setMap(null); // 이전 마커 삭제
+            }
+            marker.value = new window.kakao.maps.Marker({
+              position: latlng,
+            });
+            marker.value.setMap(map.value); // 지도에 마커 추가
+          }
+        );
       } else {
-        console.error("Map is not initialized.");
+        console.error("Kakao Maps API is not loaded.");
       }
-    },
+    };
+
+    onMounted(() => {
+      resizeMap();
+      userGetLocate();
+    });
+
+    return {
+      mapLocate,
+    };
   },
 };
 </script>

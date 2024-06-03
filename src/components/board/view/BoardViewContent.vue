@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
           <label>작성자: </label>
-          <div class="info">{{ state.board.cupet_user_name }}</div>
+          <div class="info">{{ state.board.cupet_user_nickname }}</div>
         </div>
         <div class="form-group">
           <label>작성일: </label>
