@@ -30,7 +30,26 @@
                 </div>
                 <div class="form-group">
                     <label>성별: </label>
-                    <input type="text" v-model="state.cupet_user_gender">
+                    <input
+                        class="form-check"
+                        type="radio"
+                        name="radio"
+                        id="male"
+                        v-model="state.cupet_user_gender"
+                        value="M"
+                        required
+                    />
+                    <label class="form-check" for="male"> 남</label>
+                    <input
+                        class="form-check"
+                        type="radio"
+                        name="radio"
+                        id="female"
+                        v-model="state.cupet_user_gender"
+                        value="F"
+                        required
+                    />
+                    <label class="form-check" for="female"> 여 </label>
                 </div>
                 <div class="form-group point-group">
                     <label>잔여포인트: </label>
@@ -40,17 +59,21 @@
                             충전
                         </button>
                     </router-link>
+                </div><br/>
+                <div class="form-group">
+                    <label for="cupet_userpwd">비밀번호 확인: </label>
+                    <input type="password" v-model="formData.password">
                 </div>
                 <div class="buttons">
                     <button type="button" class="savepet-button" @click="toggleEdit">
-                        {{ isEditing ? '수정 완료' : '수정' }}
+                        수정
                     </button>
                     <button type="button" class="delete-button" @click="toggleDelete">
                         탈퇴
                     </button>
                     <router-link to="/MyCupetPage">
                         <button type="button" class="cancle-button">
-                        취소
+                            취소
                         </button>
                     </router-link>
                 </div>
@@ -65,14 +88,49 @@ import { reactive } from "vue";
 
 export default {
     name: "UserUpdatePage",
-    components: {
-    },
     data() {
         return {
-            state: reactive({}) // state를 반응형으로 변경
+            responseData: null,
+            state: reactive({
+                cupet_user_id: "",
+                cupet_user_nickname: "",
+                cupet_user_name: "",
+                cupet_user_address: "",
+                cupet_user_phonenumber: "",
+                cupet_user_birth: "",
+                cupet_user_gender: "",
+                cupet_user_point: ""
+            }),
+            isEditing: true,
+            formData: {
+                username: "",
+                password: "",
+            }
         };
     },
     methods: {
+        redirectToken() {
+            const token = localStorage.getItem("Token");
+            if (token) {
+                axios
+                .post(
+                    "/api2/user/redirectToken",
+                    {},
+                    {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    }
+                )
+                .then((res) => {
+                    localStorage.removeItem("Token");
+                    localStorage.setItem("Token", res.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching user details:", error);
+                });
+            }
+        },
         fetchUserData() {
             const token = localStorage.getItem("Token");
 
@@ -86,6 +144,7 @@ export default {
                     .then(response => {
                         console.log("Data received:", response.data);
                         Object.assign(this.state, response.data);
+                        this.formData.username = this.state.cupet_user_id;
                     })
                     .catch((error) => {
                         console.error("Error fetching user details:", error);
@@ -95,19 +154,31 @@ export default {
             }
         },
         toggleDelete() {
-            const cupet_user_id = this.user.cupet_user_id;
+            const cupet_user_id = this.state.cupet_user_id;
+            
+            console.log("Fetching token for delete operation");
+            this.getToken().then(() => {
+                if(!localStorage.getItem("check")) {
+                    alert("비밀번호가 틀렸습니다.");
+                    return;
+                }else{
+                    localStorage.removeItem("check")
+                }
 
-            axios
-                .get(`/api1/userDelete?cupet_user_id=${cupet_user_id}`)
-                .then(response => {
-                    console.log("User deleted:", response.data);
-                    alert("탈퇴 되었습니다.");
-                    this.$router.push('/LoginPage');
-                })
-                .catch(error => {
-                    console.error("Error deleting user:", error);
-                    alert("탈퇴에 실패했습니다.");
-                });
+                console.log("Deleting user with ID:", cupet_user_id);
+                axios
+                    .post("/api1/userDelete", { cupet_user_id })
+                    .then(response => {
+                        console.log("User deleted:", response.data);
+
+                        alert("탈퇴되었습니다.");
+                        this.$router.push('/Login');
+                    })
+                    .catch(error => {
+                        console.error("Error deleting user:", error);
+                        alert("탈퇴에 실패했습니다.");
+                    });
+            });
         },
         toggleEdit() {
             this.isEditing = !this.isEditing;
@@ -116,24 +187,52 @@ export default {
             }
         },
         updateUser() {
-            axios.post(`/api1/userUpdate`, {
-                cupet_user_id: this.state.cupet_user_id,
-                cupet_user_name: this.state.cupet_user_name,
-                cupet_user_nickname: this.state.cupet_user_nickname,
-                cupet_user_address: this.state.cupet_user_address,
-                cupet_user_gender: this.state.cupet_user_gender,
-                cupet_user_phonenumber: this.state.cupet_user_phonenumber,
-                cupet_user_birth: this.state.cupet_user_birth,
-                cupet_user_point: this.state.cupet_user_point
-            }).then(response => {
-                console.log("User updated:", response.data);
-                alert("수정 되었습니다.");
-                this.$router.push('/MyCupetPage');
-            }).catch(error => {
-                console.error("Error updating user:", error);
-                alert("수정에 실패했습니다.");
+            this.getToken().then(() => {
+                if(!localStorage.getItem("check")) {
+                    alert("비밀번호가 틀렸습니다.");
+                    return;
+                }
+
+                axios.post("/api1/userUpdate", {
+                    cupet_user_id: this.state.cupet_user_id,
+                    cupet_user_name: this.state.cupet_user_name,
+                    cupet_user_nickname: this.state.cupet_user_nickname,
+                    cupet_user_address: this.state.cupet_user_address,
+                    cupet_user_gender: this.state.cupet_user_gender,
+                    cupet_user_phonenumber: this.state.cupet_user_phonenumber,
+                    cupet_user_birth: this.state.cupet_user_birth,
+                    cupet_user_point: this.state.cupet_user_point
+                }).then(response => {
+                    console.log("User updated:", response.data);
+                    localStorage.removeItem("check");
+                    alert("수정되었습니다.");
+
+                    //토큰 재발급
+                    this.redirectToken();
+                    this.$router.push('/MyCupetPage');
+                }).catch(error => {
+                    console.error("Error updating user:", error);
+                    alert("수정에 실패했습니다.");
+                });
             });
-        }
+        },
+        getToken() {
+            console.log("Sending Token request to API2");
+            return axios
+                .post("/api2/user/login", null, { params: this.formData })
+                .then((response) => {
+                    this.responseData = response.data;
+                    if(localStorage.getItem("check")) {
+                        localStorage.setItem("Token", response.data.token);
+                    } else {
+                        localStorage.setItem("check", response.data.token);
+                    }
+                })
+                .catch((error) => {
+                    alert("비밀번호가 틀렸습니다.", error);
+                });
+        },
+        
     },
     mounted() {
         this.fetchUserData();
