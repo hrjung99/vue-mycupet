@@ -106,6 +106,7 @@ export default {
                 })
                 .catch(error => {
                     console.error("Error deleting user:", error);
+                    alert("탈퇴에 실패했습니다.");
                 });
         },
         toggleEdit() {
@@ -130,6 +131,7 @@ export default {
                 this.$router.push('/MyCupetPage');
             }).catch(error => {
                 console.error("Error updating user:", error);
+                alert("수정에 실패했습니다.");
             });
         }
     },
