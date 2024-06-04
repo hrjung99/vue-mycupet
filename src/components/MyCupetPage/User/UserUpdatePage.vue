@@ -17,8 +17,21 @@
                     <input type="text" v-model="state.cupet_user_name">
                 </div>
                 <div class="form-group">
-                    <label for="cupet_user_address">주소: </label>
+                    <label for="cupet_user_address">우편주소: </label>
                     <input type="text" v-model="state.cupet_user_address">
+                    <button type="button" @click="openPostcode">우편번호 찾기</button>
+                </div>
+                <div class="form-group">
+                    <label for="roadAddress">도로명 주소: </label>
+                    <input type="text" v-model="state.roadAddress">
+                </div>
+                <div class="form-group">
+                    <label for="jibunAddress">지번 주소: </label>
+                    <input type="text" v-model="state.jibunAddress">
+                </div>
+                <div class="form-group">
+                    <label for="detailAddress">상세 주소: </label>
+                    <input type="text" v-model="state.detailAddress">
                 </div>
                 <div class="form-group">
                     <label for="cupet_user_phonenumber">전화번호: </label>
@@ -96,6 +109,9 @@ export default {
                 cupet_user_nickname: "",
                 cupet_user_name: "",
                 cupet_user_address: "",
+                roadAddress: "",
+                jibunAddress: "",
+                detailAddress: "",
                 cupet_user_phonenumber: "",
                 cupet_user_birth: "",
                 cupet_user_gender: "",
@@ -145,6 +161,10 @@ export default {
                         console.log("Data received:", response.data);
                         Object.assign(this.state, response.data);
                         this.formData.username = this.state.cupet_user_id;
+
+                        this.state.roadAddress = response.data.address.roadAddress;
+                        this.state.jibunAddress = response.data.address.jibunAddress;
+                        this.state.detailAddress = response.data.address.detailAddress;
                     })
                     .catch((error) => {
                         console.error("Error fetching user details:", error);
@@ -193,16 +213,26 @@ export default {
                     return;
                 }
 
-                axios.post("/api1/userUpdate", {
-                    cupet_user_id: this.state.cupet_user_id,
-                    cupet_user_name: this.state.cupet_user_name,
-                    cupet_user_nickname: this.state.cupet_user_nickname,
-                    cupet_user_address: this.state.cupet_user_address,
-                    cupet_user_gender: this.state.cupet_user_gender,
-                    cupet_user_phonenumber: this.state.cupet_user_phonenumber,
-                    cupet_user_birth: this.state.cupet_user_birth,
-                    cupet_user_point: this.state.cupet_user_point
-                }).then(response => {
+                const userUpdateRequest = {
+                    user: {
+                        cupet_user_id: this.state.cupet_user_id,
+                        cupet_user_name: this.state.cupet_user_name,
+                        cupet_user_nickname: this.state.cupet_user_nickname,
+                        cupet_user_address: this.state.cupet_user_address,
+                        cupet_user_phonenumber: this.state.cupet_user_phonenumber,
+                        cupet_user_birth: this.state.cupet_user_birth,
+                        cupet_user_gender: this.state.cupet_user_gender,
+                        cupet_user_point: this.state.cupet_user_point
+                    },
+                    address: {
+                        cupet_user_id: this.state.cupet_user_id,
+                        roadAddress: this.state.roadAddress,
+                        jibunAddress: this.state.jibunAddress,
+                        detailAddress: this.state.detailAddress
+                    }
+                };
+
+                axios.post("/api1/userUpdate", userUpdateRequest).then(response => {
                     console.log("User updated:", response.data);
                     localStorage.removeItem("check");
                     alert("수정되었습니다.");
@@ -232,7 +262,59 @@ export default {
                     alert("비밀번호가 틀렸습니다.", error);
                 });
         },
-        
+        getCoordinates(address) {
+            const apiKey = "6c6926ac09f27d3575acd4aee7934548"; // 발급받은 API 키 사용
+            const apiUrl = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
+            axios
+                .get(apiUrl, {
+                    headers: {
+                        Authorization: `KakaoAK ${apiKey}`,
+                    },
+                })
+                .then((response) => {
+                    if (response.data.documents.length > 0) {
+                        const { x, y } = response.data.documents[0].address;
+                        this.longitude = x;
+                        this.latitude = y;
+                        this.lanlatlocate.x = this.longitude;
+                        this.lanlatlocate.y = this.latitude;
+                    }
+                })
+                .catch((error) => {
+                console.error("좌표 검색 실패:", error);
+                });
+        },
+        openPostcode() {
+        new window.daum
+            .Postcode({
+                oncomplete: (data) => {
+                    // 우편번호와 주소 정보를 Vue 데이터 속성에 저장
+                    this.state.cupet_user_address = data.zonecode;
+                    this.state.roadAddress = data.roadAddress;
+                    this.state.jibunAddress = data.jibunAddress;
+                    if (this.roadAddress != "") {
+                        this.getCoordinates(this.roadAddress);
+                    } else {
+                        this.getCoordinates(this.jibunAddress);
+                    }
+                },
+                // 팝업 스타일 설정
+                width: "100%",
+                height: "100%",
+                maxWidth: "600px",
+                maxHeight: "400px",
+                popupName: "postcodePopup",
+                popupKey: "postcodePopupKey",
+            })
+            .open({
+                popupName: "postcodePopup",
+                left: window.screen.width / 2 - 300,
+                top: window.screen.height / 2 - 200,
+                width: 600,
+                height: 400,
+                openOnPopup: true,
+            });
+        },
     },
     mounted() {
         this.fetchUserData();
