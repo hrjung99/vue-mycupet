@@ -84,7 +84,7 @@
         name="radio"
         id="male"
         v-model="gender"
-        value="male"
+        value="M"
         required
       />
       <label class="form-check" for="male"> 남</label>
@@ -94,7 +94,7 @@
         name="radio"
         id="female"
         v-model="gender"
-        value="female"
+        value="F"
         required
       />
       <label class="form-check" for="female"> 여 </label>

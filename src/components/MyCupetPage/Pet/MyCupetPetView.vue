@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="sub-content-inner">
-            <img src="./../common/assets/logo.png" alt="new" width="180" height="120" class="logo sub-logo"/>
+            <img src="./../../common/assets/logo.png" alt="new" width="180" height="120" class="logo sub-logo"/>
             <div class="pet-info">
                 <div class="form-group">
                     <label for="cupet_pet_name">이름: </label>
@@ -33,7 +33,7 @@
 
 <script>
 import axios from 'axios';
-import "./../common/CommonButtonStyle.css";
+import "./../../common/CommonButtonStyle.css";
 
 export default {
     props: ['cupet_user_id', 'pet'],
@@ -62,9 +62,10 @@ export default {
                 cupet_pet_birth: this.cupet_pet_birth,
                 cupet_pet_type: this.cupet_pet_type
             }).then(response => {
+                alert("수정 되었습니다.");
                 console.log("Pet updated:", response.data);
-                // 필요한 경우 애완동물 목록을 다시 불러오는 등의 작업을 수행할 수 있습니다.
             }).catch(error => {
+                alert("수정에 실패했습니다.");
                 console.error("Error updating pet:", error);
             });
         },
@@ -74,10 +75,12 @@ export default {
             axios
                 .get(`/api1/petDelete?cupet_pet_no=${cupet_pet_no}`) // GET 요청 수정
                 .then(response => {
+                    alert("삭제 되었습니다.");
                     console.log("Pet deleted:", response.data);
                     location.reload();
                 })
                 .catch(error => {
+                    alert("삭제에 실패했습니다.");
                     console.error("Error deleting pet:", error);
                 });
         }

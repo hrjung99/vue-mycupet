@@ -1,8 +1,7 @@
 <template>
     <div>
         <div class="main-content">
-            <!-- 유저 정보 섹션 -->
-            <img src="./../common/assets/logo.png" alt="new" width="180" height="120" class="logo"/>
+            <img src="./../../common/assets/logo.png" alt="new" width="180" height="120" class="logo"/>
             <div class="join-container">
                 <h2>마이페이지</h2>
                 <div class="form-group">
@@ -49,6 +48,11 @@
                     <button type="button" class="delete-button" @click="toggleDelete">
                         탈퇴
                     </button>
+                    <router-link to="/MyCupetPage">
+                        <button type="button" class="cancle-button">
+                        취소
+                        </button>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -94,13 +98,15 @@ export default {
             const cupet_user_id = this.user.cupet_user_id;
 
             axios
-                .get(`/api1/userDelete?cupet_user_id=${cupet_user_id}`) // GET 요청 수정
+                .get(`/api1/userDelete?cupet_user_id=${cupet_user_id}`)
                 .then(response => {
                     console.log("User deleted:", response.data);
-                    this.$router.push('/MyCupetPage');
+                    alert("탈퇴 되었습니다.");
+                    this.$router.push('/LoginPage');
                 })
                 .catch(error => {
                     console.error("Error deleting user:", error);
+                    alert("탈퇴에 실패했습니다.");
                 });
         },
         toggleEdit() {
@@ -121,9 +127,11 @@ export default {
                 cupet_user_point: this.state.cupet_user_point
             }).then(response => {
                 console.log("User updated:", response.data);
+                alert("수정 되었습니다.");
                 this.$router.push('/MyCupetPage');
             }).catch(error => {
                 console.error("Error updating user:", error);
+                alert("수정에 실패했습니다.");
             });
         }
     },
@@ -172,6 +180,10 @@ input {
 }
 
 .delete-button {
+    margin-left: 7px;
+}
+
+.cancle-button {
     margin-left: 7px;
 }
 </style>

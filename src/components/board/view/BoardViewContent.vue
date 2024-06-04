@@ -1,4 +1,4 @@
-<template>
+npm<template>
   <div>
     <div class="content">
       <h1 style="color:#7E84A3;">게시물 상세보기</h1>
