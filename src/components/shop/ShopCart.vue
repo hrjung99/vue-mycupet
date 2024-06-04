@@ -13,7 +13,7 @@
               <i class="fa fa-trash" @click="remove(item.cupet_prodno)"></i>
             </li>
           </ul>
-          <router-link to="/order"> <button type="button" class="buybtn">구입하기</button></router-link>
+          <router-link to="/OrderPage"> <button type="button" class="buybtn">구입하기</button></router-link>
         </div>
       </div>
     </div>
@@ -59,7 +59,6 @@ export default {
     };
 
     const remove = (cupet_prodno) => {
-      console.log(cupet_prodno);
       axios.delete(`/api1/cart/items/${cupet_prodno}`, {
         headers: {
           Authorization: `Bearer ${token}`

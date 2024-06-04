@@ -8,6 +8,8 @@ import MyCupetPointMain from '@/components/MyCupetPage/Point/MyCupetPointMain.vu
 import UserUpdatePageMain from '@/components/MyCupetPage/User/UserUpdatePageMain.vue';
 import ShopMain from '@/components/shop/ShopMain.vue';
 import ShopCart from '@/components/shop/ShopCart.vue';
+import OrderPage from '@/components/shop/OrderPage.vue';
+import OrdersPage from '@/components/shop/OrdersPage.vue';
 import BoardMain from '@/components/board/list/BoardMain.vue';
 import BoardInsertMain from '@/components/board/insert/BoardInsertMain.vue';
 import BoardUpdateMain from '@/components/board/update/BoardUpdateMain.vue';
@@ -23,6 +25,8 @@ const routes = [
     { path: '/UserUpdatePageMain', component: UserUpdatePageMain },
     { path: '/ShopMain', component: ShopMain },
     { path: '/ShopCart', component: ShopCart },
+    { path: '/OrderPage', component: OrderPage },
+    { path: '/OrdersPage', component: OrdersPage },
     { path: '/BoardMain', component: BoardMain },
     { path: '/BoardInsertMain', component: BoardInsertMain },
     { path: '/BoardUpdateMain', component: BoardUpdateMain },
