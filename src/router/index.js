@@ -14,6 +14,8 @@ import BoardMain from '@/components/board/list/BoardMain.vue';
 import BoardInsertMain from '@/components/board/insert/BoardInsertMain.vue';
 import BoardUpdateMain from '@/components/board/update/BoardUpdateMain.vue';
 import BoardViewMain from '@/components/board/view/BoardViewMain.vue';
+import MissingPetMain from '@/components/cupetfindpet/MissingPetMain.vue';
+
 
 const routes = [
     { path: '/', component: MainPage }, // 기본 경로('/')일 때 MainPage를 보여줍니다.
@@ -31,6 +33,7 @@ const routes = [
     { path: '/BoardInsertMain', component: BoardInsertMain },
     { path: '/BoardUpdateMain', component: BoardUpdateMain },
     { path: '/BoardViewMain', component: BoardViewMain },
+    { path: '/MissingPetMain', component: MissingPetMain },
 ];
 
 const router = createRouter({

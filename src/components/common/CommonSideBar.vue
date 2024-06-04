@@ -29,7 +29,7 @@
           >
         </li>
         <li>
-          <router-link class="nav-link" to="/FindPet" id="findpet_link"
+          <router-link class="nav-link" to="/MissingPetMain" id="findpet_link"
             >반려동물 찾기</router-link
           >
         </li>
@@ -81,7 +81,7 @@ aside {
   min-width: 150px;
   max-width: 150px;
   padding: 10px;
-  flex:1;
+  flex: 1;
   height: 100vh; /* 사이드바를 전체 높이에 맞춤 */
 }
 
