@@ -1,136 +1,179 @@
 <template>
-    <div>
-        <div class="sub-content-inner">
-            <img src="./../../common/assets/logo.png" alt="new" width="180" height="120" class="logo sub-logo"/>
-            <div class="pet-info">
-                <div class="form-group">
-                    <label for="cupet_pet_name">이름: </label>
-                    <span v-if="!isEditing">{{ cupet_pet_name }}</span>
-                    <input type="text" id="cupet_pet_name" v-model="cupet_pet_name" :disabled="!isEditing" v-show="isEditing" />
-                </div>
-                <div class="form-group">
-                    <label for="cupet_pet_birth">생년월일: </label>
-                    <span v-if="!isEditing">{{ cupet_pet_birth }}</span>
-                    <input type="text" id="cupet_pet_birth" v-model="cupet_pet_birth" :disabled="!isEditing" v-show="isEditing" />
-                </div>
-                <div class="form-group">
-                    <label for="cupet_pet_type">종: </label>
-                    <span v-if="!isEditing">{{ cupet_pet_type }}</span>
-                    <input type="text" id="cupet_pet_type" v-model="cupet_pet_type" :disabled="!isEditing" v-show="isEditing" />
-                </div>
-                <div class="buttons">
-                    <button type="button" class="savepet-button" @click="toggleEdit">
-                        {{ isEditing ? '수정 완료' : '수정' }}
-                    </button>
-                    <button type="button" class="delete-button" @click="toggleDelete">
-                        삭제
-                    </button>
-                </div>
-            </div>
+  <div>
+    <div class="sub-content-inner">
+      <img
+        src="./../../common/assets/logo.png"
+        alt="new"
+        width="180"
+        height="120"
+        class="logo sub-logo"
+      />
+      <div class="pet-info">
+        <div class="form-group">
+          <label for="cupet_pet_name">이름: </label>
+          <span v-if="!isEditing">{{ cupet_pet_name }}</span>
+          <input
+            type="text"
+            id="cupet_pet_name"
+            v-model="cupet_pet_name"
+            :disabled="!isEditing"
+            v-show="isEditing"
+          />
         </div>
+        <div class="form-group">
+          <label for="cupet_pet_birth">생년월일: </label>
+          <span v-if="!isEditing">{{ cupet_pet_birth }}</span>
+          <input
+            type="date"
+            id="cupet_pet_birth"
+            v-model="cupet_pet_birth"
+            :disabled="!isEditing"
+            v-show="isEditing"
+          />
+        </div>
+        <div class="form-group">
+          <label for="cupet_pet_type">종: </label>
+          <span v-if="!isEditing">{{ cupet_pet_type }}</span>
+          <input
+            type="text"
+            id="cupet_pet_type"
+            v-model="cupet_pet_type"
+            :disabled="!isEditing"
+            v-show="isEditing"
+          />
+        </div>
+        <div class="buttons">
+          <button type="button" class="savepet-button" @click="toggleEdit">
+            {{ isEditing ? "수정 완료" : "수정" }}
+          </button>
+          <span v-if="!isEditing">
+            <button type="button" class="delete-button" @click="toggleDelete">
+              삭제
+            </button>
+          </span>
+          <span v-else-if="isEditing">
+            <button type="button" class="cancle-button" @click="toggleCalcle">취소</button>
+          </span>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
-import "./../../common/CommonButtonStyle.css";
+import axios from "axios"
+import "./../../common/CommonButtonStyle.css"
 
 export default {
-    props: ['cupet_user_id', 'pet'],
+  props: ["cupet_user_id", "pet"],
 
-    data() {
-        return {
-            cupet_pet_name: this.pet && this.pet.cupet_pet_name ? this.pet.cupet_pet_name : '',
-            cupet_pet_birth: this.pet && this.pet.cupet_pet_birth ? this.pet.cupet_pet_birth : '',
-            cupet_pet_type: this.pet && this.pet.cupet_pet_type ? this.pet.cupet_pet_type : '',
-            isEditing: false
-        };
-    },
-
-    methods: {
-        toggleEdit() {
-            this.isEditing = !this.isEditing;
-            if (!this.isEditing) {
-                this.updatePet();
-            }
-        },
-        updatePet() {
-            axios.post(`/api1/petUpdate`, {
-                cupet_user_id: this.cupet_user_id,
-                cupet_pet_no: this.pet.cupet_pet_no,
-                cupet_pet_name: this.cupet_pet_name,
-                cupet_pet_birth: this.cupet_pet_birth,
-                cupet_pet_type: this.cupet_pet_type
-            }).then(response => {
-                alert("수정 되었습니다.");
-                console.log("Pet updated:", response.data);
-            }).catch(error => {
-                alert("수정에 실패했습니다.");
-                console.error("Error updating pet:", error);
-            });
-        },
-        toggleDelete() {
-            const cupet_pet_no = this.pet.cupet_pet_no; // 애완동물 번호 가져오기
-
-            axios
-                .get(`/api1/petDelete?cupet_pet_no=${cupet_pet_no}`) // GET 요청 수정
-                .then(response => {
-                    alert("삭제 되었습니다.");
-                    console.log("Pet deleted:", response.data);
-                    location.reload();
-                })
-                .catch(error => {
-                    alert("삭제에 실패했습니다.");
-                    console.error("Error deleting pet:", error);
-                });
-        }
+  data() {
+    return {
+      cupet_pet_name:
+        this.pet && this.pet.cupet_pet_name ? this.pet.cupet_pet_name : "",
+      cupet_pet_birth:
+        this.pet && this.pet.cupet_pet_birth ? this.pet.cupet_pet_birth : "",
+      cupet_pet_type:
+        this.pet && this.pet.cupet_pet_type ? this.pet.cupet_pet_type : "",
+      isEditing: false,
     }
+  },
+
+  methods: {
+    toggleEdit() {
+      this.isEditing = !this.isEditing
+      if (!this.isEditing) {
+        this.updatePet()
+      }
+    },
+    updatePet() {
+      axios
+        .post(`/api1/petUpdate`, {
+          cupet_user_id: this.cupet_user_id,
+          cupet_pet_no: this.pet.cupet_pet_no,
+          cupet_pet_name: this.cupet_pet_name,
+          cupet_pet_birth: this.cupet_pet_birth,
+          cupet_pet_type: this.cupet_pet_type,
+        })
+        .then((response) => {
+          alert("수정되었습니다.")
+          console.log("Pet updated:", response.data)
+        })
+        .catch((error) => {
+          alert("수정에 실패했습니다.")
+          console.error("Error updating pet:", error)
+        })
+    },
+    toggleDelete() {
+      const cupet_pet_no = this.pet.cupet_pet_no // 애완동물 번호 가져오기
+
+      axios
+        .get(`/api1/petDelete?cupet_pet_no=${cupet_pet_no}`) // GET 요청 수정
+        .then((response) => {
+          alert("삭제되었습니다.")
+          console.log("Pet deleted:", response.data)
+          location.reload()
+        })
+        .catch((error) => {
+          alert("삭제에 실패했습니다.")
+          console.error("Error deleting pet:", error)
+        })
+    },
+    toggleCalcle() {
+        location.reload();
+    },
+  },
 }
 </script>
 
 <style scoped>
 .sub-content-inner {
-    display: flex;
-    align-items: flex-start;
+  display: flex;
+  align-items: flex-start;
 }
 
 .logo.sub-logo {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .pet-info {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
 }
 
 .form-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    text-align: left;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: left;
 }
 
 .form-group input {
-    margin-left: 10px;
-    padding: 5px;
+  margin-left: 10px;
+  padding: 5px;
 }
 
 label {
-    width: 80px; 
-    margin-right: 8px;
+  width: 80px;
+  margin-right: 8px;
 }
 
 .buttons {
-    display: flex;
+  display: flex;
 }
 
 .savepet-button,
-.delete-button {
-    margin-top: 5px;
+.delete-button,
+.cancle-button {
+  margin-top: 5px;
 }
 
 .delete-button {
-    margin-left: 10px;
+  margin-left: 10px;
+}
+
+.cancle-button {
+  margin-left: 7px;
 }
 </style>
