@@ -1,15 +1,9 @@
 <template>
-  <div>
-    <CommonHeader />
+  <CommonHeader />
+    <div class="content-container">
+    <CommonSideBar ref="sidebar" />
     <div class="main-content">
-
-      <div class="common-sidebar">
-        <CommonSideBar ref="sidebar" />
-      </div>
-      <div class="content-container">
-
-
-        <div class="join-container">
+      <div class="join-container">
         <img
           src="./../common/assets/logo.png"
           alt="new"
@@ -19,12 +13,8 @@
         />
         <JoinForm />
         </div>
-
-
       </div>
     </div>
-  </div>
-
   <CommonFooter />
 </template>
 
@@ -71,13 +61,15 @@ export default {
 <style scoped>
 
 
-.main-content {
+ .main-content {
   display: flex;
   align-items: flex-start;
   user-select: none;
-  height: 100vh; /* 화면 전체 높이에 맞추기 위해 */
+  height: 100vh;
   background-color: #f2fff2;
-}
+  width: 100%;
+  }  
+
 
 .logo {
   margin-left: 20px;
