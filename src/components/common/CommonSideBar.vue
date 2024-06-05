@@ -82,7 +82,7 @@ aside {
   max-width: 150px;
   padding: 10px;
   flex: 1;
-  height: 100vh; /* 사이드바를 전체 높이에 맞춤 */
+  /* height: 100vh; 사이드바를 전체 높이에 맞춤 */
 }
 
 nav ul {
