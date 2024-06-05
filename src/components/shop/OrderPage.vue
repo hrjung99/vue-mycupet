@@ -53,8 +53,8 @@
         </main>
       </div>
     </div>
-    <CommonFooter />
   </div>
+<CommonFooter />
 </template>
 
 <script>

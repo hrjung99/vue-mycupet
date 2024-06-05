@@ -20,7 +20,7 @@ footer {
   text-align: center;
 
   /* 항상 화면 맨 끝에 붙이기 */
-  position: fixed;
+  /* position: fixed; */
   left: 0;
   bottom: 0;
   width: 100%;
