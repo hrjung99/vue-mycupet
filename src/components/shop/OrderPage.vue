@@ -5,7 +5,7 @@
     <div class="orderPage">
       <div class="container">
         <main>
-          <div class="py-5 text-center"><h2>주문</h2></div>
+          <div class="py-5 text-center"><h2>주문하기</h2></div>
           <div class="row g-5">
             <div class="col-md-5 col-lg-4 order-md-last">
               <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -140,5 +140,6 @@ export default {
   margin: 0 auto;
   padding: 30px 50px;
   font-size: 20px;
+  margin-bottom: 20px;
 }
 </style>
