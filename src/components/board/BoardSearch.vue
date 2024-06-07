@@ -16,6 +16,7 @@ export default {
 <style>
     .textbox {
         height: 35px;
+        width: 300px;
     }
     .search-button {
         background-color: transparent;

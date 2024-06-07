@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div class="board_list">
         <table class="board_list">
             <tr>
                 <td></td>
-                <th>번호</th>
+                <th>머리말</th>
                 <th>제목</th>
                 <th>작성자</th>
                 <th>작성일</th>
@@ -11,7 +11,7 @@
             </tr>
             <tr v-for="(item) in state.list" :key="item.cupet_board_no" @click="goToView(item.cupet_board_no)" style="cursor: pointer;">
                 <td><img src="@/components/common/assets/newicon.png" width="25" height="11"></td>
-                <td>{{ item.cupet_board_no }}</td>
+                <td>{{ item.cupet_board_head_name }}</td>
                 <td>{{ item.cupet_board_title }}</td>
                 <td>{{ item.cupet_user_nickname }}</td>
                 <td>{{ item.cupet_board_regdate }}</td>
@@ -82,5 +82,10 @@ tr {
 /* 마지막 tr 요소의 아래쪽 테두리 제거 */
 tr:last-child {
     border-bottom: none;
+}
+
+.board_list {
+    width: 50vmax; /* 테이블의 전체적인 너비를 1000px로 설정 */
+    height: 60%; /* 테이블의 전체적인 높이를 600px로 설정 */
 }
 </style>

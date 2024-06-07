@@ -78,7 +78,7 @@ onMounted(() => {
     .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
     .then((response) => {
       state.board = response.data.board;
-      console.log("data :     ", state.board)
+      console.log("data : ", state.board)
     })
     .catch((error) => {
       console.error("Error fetching board details:", error);
