@@ -3,10 +3,14 @@
     <CommonHeader />
     <div class="content-container">
       <CommonSideBar />
-
       <div class="infocontent-container">
-        <div class="mapbut-and-map-container"></div>
-        <KaKaoMapMissingVue />
+        <DetailInfoCard
+          :petDetail="selectedPetDetail"
+          class="detail-info-card"
+        />
+        <div class="mapbut-and-map-container">
+          <KaKaoMapMissingVue @select-pet="selectPet" />
+        </div>
       </div>
     </div>
     <CommonFooter />
@@ -14,10 +18,12 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import KaKaoMapMissingVue from "./map/KaKaoMapMissing.vue";
+import DetailInfoCard from "./DetailInfoCard.vue";
 
 export default {
   name: "MissingMainPage",
@@ -26,9 +32,20 @@ export default {
     CommonSideBar,
     CommonFooter,
     KaKaoMapMissingVue,
+    DetailInfoCard,
+  },
+  setup() {
+    const selectedPetDetail = ref(null);
+
+    const selectPet = (petDetail) => {
+      selectedPetDetail.value = petDetail;
+    };
+
+    return { selectedPetDetail, selectPet };
   },
 };
 </script>
+
 <style scoped>
 .main-container {
   display: flex;
@@ -52,5 +69,13 @@ export default {
   padding-left: 10px;
 }
 
-/* 원하는 스타일링 추가 가능 */
+.detail-info-card {
+  margin-right: 20px; /* 카드와 지도 사이에 간격 추가 */
+  height: 60vh;
+  width: 300px;
+}
+
+.mapbut-and-map-container {
+  flex-grow: 1; /* 지도 컨테이너가 남은 공간을 차지하도록 */
+}
 </style>
