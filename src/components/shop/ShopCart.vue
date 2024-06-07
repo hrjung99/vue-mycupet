@@ -11,6 +11,11 @@
               <img :src="item.cupet_prodimgpath" />
               <span class="name">{{ item.cupet_prodname }}</span>
               <span class="price">{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원 &nbsp;</span>
+              <div class="quantity-control">
+                <button @click="decreaseQuantity(item)">-</button>
+                <span>{{ state.cartcnt }}</span>
+                <button @click="increaseQuantity(item)">+</button> &nbsp;
+              </div>
               <i class="fa fa-trash" @click="remove(item.cupet_prodno)"></i>
             </li>
             <h5 class="text-center total-price">총 금액 : {{ lib.getNumberFormatted(computedPrice) }}원</h5>
@@ -40,11 +45,12 @@ export default {
   },
   setup() {
     const state = reactive({
-      items: []
+      items: [],
+      cartcnt: []
     });
-    
+
     const token = localStorage.getItem("Token"); 
-    
+
     const loadItems = () => {
       axios.post("/api1/cart/items", {}, {
         headers: {
@@ -52,7 +58,6 @@ export default {
         }
       })
       .then(response => {
-        // 서버로부터 받은 데이터를 state에 할당합니다.
         state.items = response.data;
       })
       .catch(error => {
@@ -60,10 +65,29 @@ export default {
       });
     };
 
+    const loaddata = () => {
+      axios.get("/api1/cart/items/count", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        state.cartcnt = response.data.cartcnt;
+      })
+      .catch(error => {
+        console.error("Error fetching cart count:", error);
+      });
+    };
+
+    const getItemCount = (prodno) => {
+      const item = state.items.find(item => item.cupet_prodno === prodno);
+      return item ? item.cupet_cartprodcnt : 0;
+    };
+
     const computedPrice = computed(() => {
       let result = 0;
       for (let i of state.items) {
-        result += i.cupet_prodprice - i.cupet_prodprice * i.cupet_proddiscountper / 100;
+        result += (i.cupet_prodprice - i.cupet_prodprice * i.cupet_proddiscountper / 100) * state.cartcnt;
       }
       return result;
     });
@@ -74,13 +98,39 @@ export default {
           Authorization: `Bearer ${token}`
         }
       }).then(() => {
-        console.log('success');
         loadItems();
+        loaddata();
       });
     };
-    
+
+    const updateQuantity = (item) => {
+      axios.put(`/api1/cart/items/${item.cupet_prodno}`, { quantity: item.cupet_cartprodcnt }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(() => {
+        loadItems();
+        loaddata();
+      }).catch(error => {
+        console.error('Error updating quantity:', error);
+      });
+    };
+
+    const increaseQuantity = (item) => {
+      item.cupet_cartprodcnt++;
+      updateQuantity(item);
+    };
+
+    const decreaseQuantity = (item) => {
+      if (item.cupet_cartprodcnt > 1) {
+        item.cupet_cartprodcnt--;
+        updateQuantity(item);
+      }
+    };
+
     loadItems();
-    return { token, computedPrice, state, remove, lib };
+    loaddata();
+    return { state, token, computedPrice, remove, increaseQuantity, decreaseQuantity, lib, getItemCount };
   }
 }
 </script>
@@ -134,6 +184,19 @@ export default {
 
 .cart ul li .price {
   margin-left: 25px;
+}
+
+.cart ul li .quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.cart ul li .quantity-control button {
+  margin: 0 5px;
+}
+
+.cart ul li .quantity-control span {
+  margin: 0 10px;
 }
 
 .cart ul li i {
