@@ -10,7 +10,7 @@
         >로그인</router-link
       >
     </li>
-    
+
     <li class="nav-item" v-if="isLoggedIn">
       <router-link class="nav-link" to="/MyCupetPage" id="member_link"
         >마이페이지</router-link
@@ -23,8 +23,8 @@
     </li>
 
     <li class="nav-item">
-      <router-link class="nav-link" to="/FindPet" id="petfind_link"
-        >반려동물 찾기</router-link
+      <router-link class="nav-link" to="/MissingPetMain" id="petfind_link"
+        >잃어버린 반려동물</router-link
       >
     </li>
     <li class="nav-item">
@@ -47,10 +47,10 @@ export default {
       isLoggedIn: false,
       isAuthenticated: false,
       principal: null,
-    }
+    };
   },
   created() {
-    this.checkAuth()
+    this.checkAuth();
   },
   mounted() {
     const token = localStorage.getItem("Token");
@@ -58,11 +58,11 @@ export default {
   },
   methods: {
     checkAuth() {
-      this.isAuthenticated = true
+      this.isAuthenticated = true;
       this.principal = {
         mid: "admin",
         mname: "admin",
-      }
+      };
     },
     logout() {
       // 로그아웃 버튼 클릭 시 로컬 저장소에서 토큰 삭제
@@ -72,7 +72,7 @@ export default {
       // 다른 로그아웃 관련 작업 수행 가능 (예: 서버에 로그아웃 요청 등)
     },
   },
-}
+};
 </script>
 
 <style scoped>
