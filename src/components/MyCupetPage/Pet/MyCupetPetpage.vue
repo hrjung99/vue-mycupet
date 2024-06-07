@@ -47,15 +47,17 @@
         <button type="button" class="savepet-button" @click="saveOrUpdate">
           저장
         </button>
-        <button type="button" class="cancle-button" @click="cancle">취소</button>
+        <button type="button" class="cancle-button" @click="cancle">
+          취소
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import "./../../common/CommonButtonStyle.css";
+import axios from "axios"
+import "./../../common/CommonButtonStyle.css"
 
 export default {
   props: ["cupet_user_id", "pet"],
@@ -68,40 +70,30 @@ export default {
         this.pet && this.pet.cupet_pet_birth ? this.pet.cupet_pet_birth : "",
       cupet_pet_type:
         this.pet && this.pet.cupet_pet_type ? this.pet.cupet_pet_type : "",
-      imageUrl: this.pet && this.pet.cupet_pet_image ? this.pet.cupet_pet_image : null,
-    };
+      imageUrl:
+        this.pet && this.pet.cupet_pet_image ? this.pet.cupet_pet_image : null,
+    }
   },
 
   methods: {
     triggerFileInput() {
-      this.$refs.fileInput.click();
+      this.$refs.fileInput.click()
     },
     handleFileChange(event) {
-      const file = event.target.files[0];
+      const file = event.target.files[0]
       if (file) {
-        this.uploadImage(file);
+        this.uploadImage(file)
       }
     },
     uploadImage(file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("image_type", "pet");
-      formData.append("use_id", this.cupet_pet_no);
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("image_type", "pet")
+      formData.append("use_id", this.pet.cupet_pet_no)
 
-      axios
-        .post("/api1/images/upload/pet", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          this.imageUrl = response.data.data;
-          alert("이미지가 업로드되었습니다.");
-        })
-        .catch((error) => {
-          alert("이미지 업로드에 실패했습니다.");
-          console.error("Error uploading image:", error);
-        });
+      // 저장 또는 업데이트가 성공한 후에 이미지를 업로드합니다.
+      // 저장 또는 업데이트가 성공했을 때만 이미지를 업로드합니다.
+      // saveOrUpdate 메서드 내에서 이미지를 업로드하는 로직으로 이동됩니다.
     },
     saveOrUpdate() {
       axios
@@ -113,19 +105,21 @@ export default {
           cupet_pet_image: this.imageUrl,
         })
         .then((response) => {
-          console.log("Pet inserted:", response.data);
-          alert("저장되었습니다.");
-          location.reload();
+          console.log("Pet inserted:", response.data)
+          // 이미지를 업로드합니다.
+          this.uploadImage(this.$refs.fileInput.files[0])
+          alert("저장되었습니다.")
+          location.reload()
         })
         .catch((error) => {
-          console.error("Error inserting pet:", error);
-        });
+          console.error("Error inserting pet:", error)
+        })
     },
     cancle() {
-      location.reload();
+      location.reload()
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -167,5 +161,10 @@ label {
   background-color: transparent;
   cursor: pointer;
   padding: 0;
+}
+
+.sub-logo {
+  width: 60px;
+  height: auto;
 }
 </style>

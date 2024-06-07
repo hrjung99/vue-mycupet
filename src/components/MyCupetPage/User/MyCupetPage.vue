@@ -1,15 +1,20 @@
 <template>
   <div>
     <div class="main-content">
-      <button class="image_btn" @click="triggerFileInput">
-        <img
-          :src="imageUrl || 'img/logo.png'"
-          alt="new"
-          width="180"
-          height="120"
-          class="logo"
-        />
-      </button>
+      <div class="image-container">
+        <button class="image_btn" @click="triggerFileInput">
+          <img
+            :src="imageUrl || 'img/logo.png'"
+            alt="new"
+            width="180"
+            height="120"
+            class="logo"
+          />
+        </button>
+        <button v-if="imageUrl" class="delete-image-btn" @click="deleteImage">
+          X
+        </button>
+      </div>
       <input
         type="file"
         ref="fileInput"
@@ -125,10 +130,21 @@ export default {
         this.uploadImage(file)
       }
     },
+    deleteImage() {
+      axios
+        .get(`/api1/images/delete/user?use_id=${this.state.cupet_user_id}`)
+        .then(() => {
+          this.imageUrl = null
+          alert("이미지가 삭제되었습니다.")
+        })
+        .catch((error) => {
+          console.error("이미지 삭제 중 에러:", error)
+          alert("이미지 삭제에 실패했습니다.")
+        })
+    },
     uploadImage(file) {
       const formData = new FormData()
       formData.append("file", file)
-      formData.append("image_type", "user")
       formData.append("use_id", this.state.cupet_user_id)
 
       axios
@@ -208,7 +224,7 @@ export default {
         .get(`/api1/images/user/${cupet_user_id}`)
         .then((response) => {
           if (response.data.data.length > 0) {
-            this.imageUrl = response.data.data[0]
+            this.imageUrl = response.data.data
           } else {
             console.error("No images found for this user.")
           }
@@ -239,6 +255,8 @@ export default {
 
 .logo {
   margin-left: 20px;
+  width: 180px;
+  height: auto;
 }
 
 .page-header {
@@ -315,5 +333,23 @@ input {
   background-color: transparent;
   cursor: pointer;
   padding: 0;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.delete-image-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
+  color: black;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  text-align: center;
+  z-index: 1;
 }
 </style>
