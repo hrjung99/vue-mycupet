@@ -13,7 +13,7 @@
               <span class="price">{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원 &nbsp;</span>
               <div class="quantity-control">
                 <button @click="decreaseQuantity(item)">-</button>
-                <span>{{ state.cartcnt }}</span>
+                <span>{{ getItemCount(item.cupet_prodno) }}</span>
                 <button @click="increaseQuantity(item)">+</button> &nbsp;
               </div>
               <i class="fa fa-trash" @click="remove(item.cupet_prodno)"></i>
@@ -46,10 +46,10 @@ export default {
   setup() {
     const state = reactive({
       items: [],
-      cartcnt: []
+      data: {}
     });
 
-    const token = localStorage.getItem("Token"); 
+    const token = localStorage.getItem("Token");
 
     const loadItems = () => {
       axios.post("/api1/cart/items", {}, {
@@ -72,7 +72,7 @@ export default {
         }
       })
       .then(response => {
-        state.cartcnt = response.data.cartcnt;
+        state.data = response.data;
       })
       .catch(error => {
         console.error("Error fetching cart count:", error);
@@ -80,14 +80,13 @@ export default {
     };
 
     const getItemCount = (prodno) => {
-      const item = state.items.find(item => item.cupet_prodno === prodno);
-      return item ? item.cupet_cartprodcnt : 0;
+      return state.data[prodno] || 0;
     };
 
     const computedPrice = computed(() => {
       let result = 0;
       for (let i of state.items) {
-        result += (i.cupet_prodprice - i.cupet_prodprice * i.cupet_proddiscountper / 100) * state.cartcnt;
+        result += (i.cupet_prodprice - i.cupet_prodprice * i.cupet_proddiscountper / 100) * getItemCount(i.cupet_prodno);
       }
       return result;
     });
@@ -103,8 +102,8 @@ export default {
       });
     };
 
-    const updateQuantity = (item) => {
-      axios.put(`/api1/cart/items/${item.cupet_prodno}`, { quantity: item.cupet_cartprodcnt }, {
+    const updateQuantity = (item, newQuantity) => {
+      axios.put(`/api1/cart/items/${item.cupet_prodno}`, { quantity: newQuantity }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -117,14 +116,16 @@ export default {
     };
 
     const increaseQuantity = (item) => {
-      item.cupet_cartprodcnt++;
-      updateQuantity(item);
+      const newQuantity = getItemCount(item.cupet_prodno) + 1;
+      state.data[item.cupet_prodno] = newQuantity;
+      updateQuantity(item, newQuantity);
     };
 
     const decreaseQuantity = (item) => {
-      if (item.cupet_cartprodcnt > 1) {
-        item.cupet_cartprodcnt--;
-        updateQuantity(item);
+      const newQuantity = getItemCount(item.cupet_prodno) - 1;
+      if (newQuantity > 0) {
+        state.data[item.cupet_prodno] = newQuantity;
+        updateQuantity(item, newQuantity);
       }
     };
 
