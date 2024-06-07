@@ -1,15 +1,20 @@
 <template>
   <div>
     <div class="sub-content-inner">
-      <button class="image_btn" @click="triggerFileInput">
-        <img
-          :src="imageUrl || 'img/logo.png'"
-          alt="new"
-          width="180"
-          height="120"
-          class="logo sub-logo"
-        />
-      </button>
+      <div class="image-container">
+        <button class="image_btn" @click="triggerFileInput">
+          <img
+            :src="imageUrl || 'img/logo.png'"
+            alt="new"
+            width="180"
+            height="120"
+            class="logo sub-logo"
+          />
+        </button>
+        <button v-if="imageUrl" class="delete-image-btn" @click="deleteImage">
+          X
+        </button>
+      </div>
       <input
         type="file"
         ref="fileInput"
@@ -84,7 +89,7 @@ export default {
       cupet_pet_type:
         this.pet && this.pet.cupet_pet_type ? this.pet.cupet_pet_type : "",
       isEditing: false,
-      imageUrl: null, // 기본값을 null로 설정
+      imageUrl: null,
     };
   },
 
@@ -114,6 +119,18 @@ export default {
         this.uploadImage(file);
       }
     },
+    deleteImage() {
+      axios
+        .get(`/api1/images/delete/pet?use_id=${this.pet.cupet_pet_no}`)
+        .then(() => {
+          this.imageUrl = null
+          alert("이미지가 삭제되었습니다.")
+        })
+        .catch((error) => {
+          console.error("이미지 삭제 중 에러:", error)
+          alert("이미지 삭제에 실패했습니다.")
+        })
+    },
     uploadImage(file) {
       const formData = new FormData();
       formData.append("file", file);
@@ -127,7 +144,7 @@ export default {
           },
         })
         .then((response) => {
-          this.imageUrl = response.data.data; // assuming response.data.data contains the image URL
+          this.imageUrl = response.data.data;
           alert("이미지가 업로드되었습니다.");
         })
         .catch((error) => {
@@ -161,10 +178,10 @@ export default {
         });
     },
     toggleDelete() {
-      const cupet_pet_no = this.pet.cupet_pet_no; // 애완동물 번호 가져오기
+      const cupet_pet_no = this.pet.cupet_pet_no;
 
       axios
-        .get(`/api1/petDelete?cupet_pet_no=${cupet_pet_no}`) // GET 요청 수정
+        .get(`/api1/petDelete?cupet_pet_no=${cupet_pet_no}`)
         .then((response) => {
           alert("삭제되었습니다.");
           console.log("Pet deleted:", response.data);
@@ -190,6 +207,8 @@ export default {
 
 .logo.sub-logo {
   margin-left: 20px;
+  width: 60px;
+  height: auto;
 }
 
 .pet-info {
@@ -238,5 +257,23 @@ label {
   background-color: transparent;
   cursor: pointer;
   padding: 0;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.delete-image-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
+  color: black;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  text-align: center;
+  z-index: 1;
 }
 </style>
