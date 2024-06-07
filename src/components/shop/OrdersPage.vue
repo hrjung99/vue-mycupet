@@ -1,66 +1,87 @@
 <template>
+  <CommonHeader />
+  <div class="content-container">
+    <CommonSideBar />
     <div class="ordersPage">
       <div class="container">
+        <div class="text-center"><h2>주문 내역</h2></div>
         <table class="table table-bordered">
           <thead>
           <tr>
-            <th>번호</th>
-            <th>주문자명</th>
+            <th>주문번호</th>
+            <th>수신인</th>
             <th>주소</th>
-            <th>결제 수단</th>
-            <th>구입 항목</th>
+            <th>연락처</th>
+            <th>주문 날짜</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(o, idx1) in state.orders" :key="idx1">
             <td>{{ state.orders.length - idx1 }}</td>
-            <td>{{ o.name }}</td>
-            <td>{{ o.address }}</td>
-            <td>{{ o.payment }}</td>
-            <td>
-              <div v-for="(i, idx2) in o.items" :key="idx2">{{ i.name }}</div>
-            </td>
+            <td>{{ o.cupet_receiver_name }}</td>
+            <td>{{ o.cupet_receiver_add }}</td>
+            <td>{{ o.cupet_receiver_phone }}</td>
+            <td>{{ o.cupet_order_date }}</td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import {reactive} from "vue";
-  import axios from "axios";
-  import lib from "@/scripts/lib";
-  
-  export default {
-    setup() {
-      const state = reactive({
-        orders: [],
-      })
-  
-      axios.get("/api1/order").then(({data}) => {
+  </div>
+  <CommonFooter />
+</template>
+
+<script>
+import { reactive, onMounted } from "vue";
+import axios from "axios";
+import lib from "@/scripts/lib";
+import CommonHeader from "@/components/common/CommonHeader.vue";
+import CommonSideBar from "@/components/common/CommonSideBar.vue";
+import CommonFooter from "@/components/common/CommonFooter.vue";
+
+export default {
+  components: {
+    CommonHeader,
+    CommonSideBar,
+    CommonFooter,
+  },
+  setup() {
+    const state = reactive({
+      orders: [],
+    });
+
+    const loadOrders = () => {
+      const token = localStorage.getItem("Token");
+      axios.get("/api1/order", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(({ data }) => {
         state.orders = [];
-  
+
         for (let d of data) {
-          if (d.items) {
-            d.items = JSON.parse(d.items);
-          }
-  
           state.orders.push(d);
         }
-      })
-  
-      return {state, lib,}
-    }
+      }).catch(error => {
+        console.error("Error fetching orders:", error);
+      });
+    };
+
+    onMounted(() => {
+      loadOrders();
+    });
+
+    return { state, lib };
   }
-  </script>
-  
-  <style scoped>
-  .table {
-    margin-top: 30px;
-  }
-  
-  .table > tbody {
-    border-top: 1px solid #eee;
-  }
-  </style>
+};
+</script>
+
+<style scoped>
+.table {
+  margin-top: 30px;
+}
+
+.table > tbody {
+  border-top: 1px solid #eee;
+}
+</style>

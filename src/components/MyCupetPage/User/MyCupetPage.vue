@@ -1,12 +1,20 @@
 <template>
   <div>
     <div class="main-content">
-      <img
-        src="./../../common/assets/logo.png"
-        alt="new"
-        width="180"
-        height="120"
-        class="logo"
+      <button class="image_btn" @click="triggerFileInput">
+        <img
+          :src="imageUrl || 'img/logo.png'"
+          alt="new"
+          width="180"
+          height="120"
+          class="logo"
+        />
+      </button>
+      <input
+        type="file"
+        ref="fileInput"
+        style="display: none"
+        @change="handleFileChange"
       />
       <div class="join-container">
         <div class="page-header">
@@ -88,6 +96,7 @@ export default {
         cupet_user_gender: "",
         cupet_user_point: 0,
       }),
+      imageUrl: null,
     }
   },
   computed: {
@@ -107,6 +116,36 @@ export default {
     },
   },
   methods: {
+    triggerFileInput() {
+      this.$refs.fileInput.click()
+    },
+    handleFileChange(event) {
+      const file = event.target.files[0]
+      if (file) {
+        this.uploadImage(file)
+      }
+    },
+    uploadImage(file) {
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("image_type", "user")
+      formData.append("use_id", this.state.cupet_user_id)
+
+      axios
+        .post("/api1/images/upload/user", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          this.imageUrl = response.data.data
+          alert("이미지가 업로드되었습니다.")
+        })
+        .catch((error) => {
+          alert("이미지 업로드에 실패했습니다.")
+          console.error("이미지 업로드 중 에러:", error)
+        })
+    },
     addNewPet() {
       this.newPetList.push({
         cupet_pet_name: "",
@@ -145,6 +184,7 @@ export default {
             this.state.cupet_user_point = response.data.cupet_user_point
 
             this.fetchPetData()
+            this.fetchUserImage(this.state.cupet_user_id)
           })
           .catch((error) => {
             console.error("Error fetching user details:", error)
@@ -161,6 +201,20 @@ export default {
         })
         .catch((error) => {
           console.error("Error fetching pet data:", error)
+        })
+    },
+    fetchUserImage(cupet_user_id) {
+      axios
+        .get(`/api1/images/user/${cupet_user_id}`)
+        .then((response) => {
+          if (response.data.data.length > 0) {
+            this.imageUrl = response.data.data[0]
+          } else {
+            console.error("No images found for this user.")
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user image:", error)
         })
     },
   },
@@ -254,5 +308,12 @@ export default {
 
 input {
   flex: 1;
+}
+
+.image_btn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
 }
 </style>
