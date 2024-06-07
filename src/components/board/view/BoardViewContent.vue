@@ -4,8 +4,12 @@ npm<template>
       <h1 style="color:#7E84A3;">게시물 상세보기</h1>
       <div class="form-container">
         <div class="form-group">
-          <label>번호: </label>
+          <label>게시물 번호: </label>
           <div class="info">{{ state.board.cupet_board_no }}</div>
+        </div>
+        <div>
+        <label>말머리: </label>
+          <div class="info">{{ state.board.cupet_board_head_no }}</div>
         </div>
         <div class="form-group">
           <label>제목: </label>
@@ -30,7 +34,7 @@ npm<template>
       </div>
     </div>
     <div class="change-button">
-      <router-link :to="{ path: '/BoardUpdateMain', query: { cupet_board_no: state.board.cupet_board_no }}">
+      <router-link :to="{ path: '/BoardUpdateMain', query: { viewData: state.board}}">
         <button type="button" class="update-button">수정</button>
       </router-link>
       <button type="button" class="delete-button" @click="BoardDelete(state.board.cupet_board_no)">삭제</button>
@@ -74,6 +78,7 @@ onMounted(() => {
     .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
     .then((response) => {
       state.board = response.data.board;
+      console.log("data :     ", state.board)
     })
     .catch((error) => {
       console.error("Error fetching board details:", error);
