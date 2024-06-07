@@ -30,7 +30,7 @@
         </li>
         <li>
           <router-link class="nav-link" to="/MissingPetMain" id="findpet_link"
-            >반려동물 찾기</router-link
+            >잃어버린 반려동물</router-link
           >
         </li>
         <li>

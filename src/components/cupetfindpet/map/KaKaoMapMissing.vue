@@ -1,38 +1,45 @@
 <template>
   <div>
     <div id="map"></div>
+    <button @click="goToFindPet">잃어버린 반려동물 등록하기</button>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
-  name: "KakaoMap",
-  setup() {
+  name: "KakaoMapMissing",
+  setup(props, { emit }) {
+    const router = useRouter();
     const markers = ref([]);
     const centerCoordinate = ref({
-      lat: 33.450701,
-      lng: 126.570667,
+      lat: 37.580014211892404,
+      lng: 127.02422705407305,
     });
 
     const getUserCenter = () => {
       const token = localStorage.getItem("Token");
-      axios
-        .get("/api1/findpet/getUserLocate", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          const data = res.data;
-          updateCoordinate(data.UserLocate.locateY, data.UserLocate.locateX);
-          initializeMap();
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      if (token) {
+        axios
+          .get("/api1/findpet/getUserLocate", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            const data = res.data;
+            updateCoordinate(data.UserLocate.locateY, data.UserLocate.locateX);
+            initializeMap();
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      } else {
+        initializeMap();
+      }
     };
 
     const map = ref(null);
@@ -106,63 +113,34 @@ export default {
           markerInfo.locateY
         );
 
+        // 새 마커 이미지 생성
+        const markerImage = new window.kakao.maps.MarkerImage(
+          "/img/custommarker.png", // 이미지 경로 수정
+          new window.kakao.maps.Size(100, 125) // 이미지 크기 설정
+        );
+
+        // 새로운 마커 객체 생성 및 이미지 설정
         const newMarker = new window.kakao.maps.Marker({
           title: markerInfo.cupet_pet_no,
           position,
           clickable: true,
           map: map.value,
+          image: markerImage, // 새 이미지 설정
         });
 
         markers.value.push(newMarker);
 
-        const petDetails = await petdetailInfo(markerInfo.cupet_pet_no);
-
-        //<p>Cupet Pet No: ${markerInfo.cupet_pet_no}</p>
-        const iwContent = `<div style="padding:5px;">
-          <p><img src="img/logo.png" width="200" height="150"><p>
-          
-          <p>펫 이름: ${petDetails ? petDetails.cupet_pet_name : "No Name"}</p>
-
-           <p>사례금: ${
-             petDetails ? petDetails.reward : "정보를 불러오지 못했습니다."
-           }</p>
-
-
-          <p>종 이름: ${
-            petDetails
-              ? petDetails.cupet_pet_type
-              : "정보를 불러오지 못했습니다."
-          }</p>
-
-           <p>주인 이름: ${
-             petDetails
-               ? petDetails.cupet_user_name
-               : "정보를 불러오지 못했습니다."
-           }</p>
-
-
-          <button id="closeInfoWindow" style="margin-top:10px;">Close</button>
-        </div>`;
-
-        const infowindow = new window.kakao.maps.InfoWindow({
-          content: iwContent,
-        });
+        const petDetail = await petdetailInfo(markerInfo.cupet_pet_no);
 
         window.kakao.maps.event.addListener(newMarker, "click", function () {
-          infowindow.open(map.value, newMarker);
-          const closeBtn = document.getElementById("closeInfoWindow");
-          if (closeBtn) {
-            closeBtn.addEventListener("click", () => {
-              infowindow.close();
-            });
-          }
+          emit("select-pet", petDetail); // 부모 컴포넌트로 펫 정보 전달
         });
       }
     };
 
     const petdetailInfo = async (petNo) => {
       try {
-        const res = await axios.post("api1/findpet/getPetDetailInfo", {
+        const res = await axios.post("/api1/findpet/getPetDetailInfo", {
           petNo,
         });
         return res.data;
@@ -178,12 +156,22 @@ export default {
       mapContainer.style.height = "650px";
     };
 
+    const goToFindPet = () => {
+      const token = localStorage.getItem("Token");
+      if (token) {
+        router.push("/FindPet");
+      } else {
+        alert("로그인이 필요합니다.");
+        router.push("/Login");
+      }
+    };
+
     onMounted(() => {
       resizeMap();
       getUserCenter();
     });
 
-    return { markers, centerCoordinate, updateCoordinate };
+    return { markers, centerCoordinate, updateCoordinate, goToFindPet };
   },
 };
 </script>
@@ -192,5 +180,8 @@ export default {
 #map {
   width: 650px;
   height: 650px;
+}
+button {
+  margin-top: 20px;
 }
 </style>
