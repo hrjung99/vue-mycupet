@@ -72,6 +72,7 @@ export default {
         this.pet && this.pet.cupet_pet_type ? this.pet.cupet_pet_type : "",
       imageUrl:
         this.pet && this.pet.cupet_pet_image ? this.pet.cupet_pet_image : null,
+      selectedFile: null,
     }
   },
 
@@ -82,18 +83,32 @@ export default {
     handleFileChange(event) {
       const file = event.target.files[0]
       if (file) {
-        this.uploadImage(file)
+        this.selectedFile = file
+        this.imageUrl = URL.createObjectURL(file)
       }
     },
     uploadImage(file) {
       const formData = new FormData()
       formData.append("file", file)
       formData.append("image_type", "pet")
-      formData.append("use_id", this.pet.cupet_pet_no)
 
-      // 저장 또는 업데이트가 성공한 후에 이미지를 업로드합니다.
-      // 저장 또는 업데이트가 성공했을 때만 이미지를 업로드합니다.
-      // saveOrUpdate 메서드 내에서 이미지를 업로드하는 로직으로 이동됩니다.
+      const use_id = file.use_id ? file.use_id : this.pet.cupet_pet_no
+      formData.append("use_id", use_id)
+
+      axios
+        .post("/api1/images/upload/pet", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          alert("이미지가 업로드되었습니다.")
+          location.reload()
+        })
+        .catch((error) => {
+          console.error("이미지 업로드 중 오류 발생:", error)
+          alert("이미지를 업로드하는 중 오류가 발생했습니다.")
+        })
     },
     saveOrUpdate() {
       axios
@@ -105,14 +120,27 @@ export default {
           cupet_pet_image: this.imageUrl,
         })
         .then((response) => {
-          console.log("Pet inserted:", response.data)
-          // 이미지를 업로드합니다.
-          this.uploadImage(this.$refs.fileInput.files[0])
-          alert("저장되었습니다.")
-          location.reload()
+          console.log("API 응답:", response.data)
+          const cupet_pet_no = response.data.cupet_pet_no
+          if (cupet_pet_no) {
+            // 파일 입력 요소에서 파일을 가져옵니다.
+            const file = this.$refs.fileInput.files[0]
+
+            if (file) {
+              file.use_id = cupet_pet_no
+              this.uploadImage(file)
+            }
+
+            alert("저장되었습니다.")
+            location.reload()
+          } else {
+            console.error("펫 번호가 응답에 포함되어 있지 않습니다.")
+            alert("펫 번호가 응답에 포함되어 있지 않습니다.")
+          }
         })
         .catch((error) => {
-          console.error("Error inserting pet:", error)
+          console.error("펫 저장 중 오류 발생:", error)
+          alert("펫 정보를 저장하는 중 오류가 발생했습니다.")
         })
     },
     cancle() {
