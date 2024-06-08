@@ -16,7 +16,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(o, idx1) in state.orders" :key="idx1">
+          <tr v-for="(o, idx1) in state.orders" :key="idx1" @click="goToOrderDetail(o.cupet_order_no)">
             <td>{{ state.orders.length - idx1 }}</td>
             <td>{{ o.cupet_receiver_name }}</td>
             <td>{{ o.cupet_receiver_add }}</td>
@@ -33,6 +33,7 @@
 
 <script>
 import { reactive, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import lib from "@/scripts/lib";
 import CommonHeader from "@/components/common/CommonHeader.vue";
@@ -49,6 +50,8 @@ export default {
     const state = reactive({
       orders: [],
     });
+
+    const router = useRouter();
 
     const loadOrders = () => {
       const token = localStorage.getItem("Token");
@@ -67,11 +70,16 @@ export default {
       });
     };
 
+    const goToOrderDetail = (orderNo) => {
+      // 주문 상세 페이지로 이동
+      router.push({ name: 'OrderDetail', params: { cupet_order_no: orderNo } });
+    };
+
     onMounted(() => {
       loadOrders();
     });
 
-    return { state, lib };
+    return { state, lib, goToOrderDetail };
   }
 };
 </script>
@@ -83,5 +91,9 @@ export default {
 
 .table > tbody {
   border-top: 1px solid #eee;
+}
+
+.table > tbody > tr {
+  cursor: pointer;
 }
 </style>
