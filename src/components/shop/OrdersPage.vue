@@ -4,25 +4,25 @@
     <CommonSideBar />
     <div class="ordersPage">
       <div class="container">
-        <div class="text-center"><h2>주문 내역</h2></div>
-        <table class="table table-bordered">
-          <thead>
-          <tr>
-            <th>주문번호</th>
-            <th>수신인</th>
-            <th>주소</th>
-            <th>연락처</th>
-            <th>주문 날짜</th>
-          </tr>
+        <div class="text-center mb-4"><h2>주문 내역</h2></div>
+        <table class="table table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>주문번호</th>
+              <th>수신인</th>
+              <th>주소</th>
+              <th>연락처</th>
+              <th>주문 날짜</th>
+            </tr>
           </thead>
           <tbody>
-          <tr v-for="(o, idx1) in state.orders" :key="idx1" @click="goToOrderDetail(o.cupet_order_no)">
-            <td>{{ state.orders.length - idx1 }}</td>
-            <td>{{ o.cupet_receiver_name }}</td>
-            <td>{{ o.cupet_receiver_add }}</td>
-            <td>{{ o.cupet_receiver_phone }}</td>
-            <td>{{ o.cupet_order_date }}</td>
-          </tr>
+            <tr v-for="(o, idx1) in state.orders" :key="idx1" @click="goToOrderDetail(o.cupet_order_no)">
+              <td>{{ state.orders.length - idx1 }}</td>
+              <td>{{ o.cupet_receiver_name }}</td>
+              <td>{{ o.cupet_receiver_add }}</td>
+              <td>{{ o.cupet_receiver_phone }}</td>
+              <td>{{ o.cupet_order_date }}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -95,5 +95,14 @@ export default {
 
 .table > tbody > tr {
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.table > tbody > tr:hover {
+  background-color: #f1f1f1;
+}
+
+.container {
+  padding: 20px;
 }
 </style>
