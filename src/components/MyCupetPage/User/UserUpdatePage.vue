@@ -180,6 +180,18 @@ export default {
         console.error("Token not found")
       }
     },
+    deleteImage() {
+      axios
+        .get(`/api1/images/delete/user?use_id=${this.state.cupet_user_id}`)
+        .then(() => {
+          this.imageUrl = null
+          alert("이미지가 삭제되었습니다.")
+        })
+        .catch((error) => {
+          console.error("이미지 삭제 중 에러:", error)
+          alert("이미지 삭제에 실패했습니다.")
+        })
+    },
     toggleDelete() {
       const cupet_user_id = this.state.cupet_user_id
 
@@ -196,13 +208,14 @@ export default {
         axios
           .post("/api1/userDelete", { cupet_user_id })
           .then((response) => {
-            console.log("User deleted:", response.data)
+            console.log("탈퇴 완료:", response.data)
 
             alert("탈퇴되었습니다.")
+            this.deleteImage()
             this.$router.push("/Login")
           })
           .catch((error) => {
-            console.error("Error deleting user:", error)
+            console.error("탈퇴 중 오류 발생:", error)
             alert("탈퇴에 실패했습니다.")
           })
       })
@@ -242,7 +255,7 @@ export default {
         axios
           .post("/api1/userUpdate", userUpdateRequest)
           .then((response) => {
-            console.log("User updated:", response.data)
+            console.log("정보 수정 완료:", response.data)
             localStorage.removeItem("check")
             alert("수정되었습니다.")
 
@@ -251,7 +264,7 @@ export default {
             this.$router.push("/MyCupetPage")
           })
           .catch((error) => {
-            console.error("Error updating user:", error)
+            console.error("정보 수정 중 오류 발생:", error)
             alert("수정에 실패했습니다.")
           })
       })
