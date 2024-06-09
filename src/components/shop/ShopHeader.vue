@@ -7,9 +7,9 @@
         <router-link to="/ShopCart" class="cart btn">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </router-link>
-        <!-- <li v-if="$store.state.account.id">
-          <router-link to="/orders" class="text-white">주문 내역</router-link>
-        </li> -->
+        <router-link to="/OrdersPage" class="orders btn">
+          <i class="fa fa-th-list" aria-hidden="true"></i>
+        </router-link>
       </div>
     </div>
   </header>
