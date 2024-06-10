@@ -9,15 +9,15 @@
           <thead class="table-dark">
             <tr>
               <th>주문번호</th>
-              <th>수신인</th>
-              <th>주소</th>
+              <th>받는 사람</th>
+              <th>배송주소</th>
               <th>연락처</th>
               <th>주문 날짜</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(o, idx1) in state.orders" :key="idx1" @click="goToOrderDetail(o.cupet_order_no)">
-              <td>{{ state.orders.length - idx1 }}</td>
+              <td>{{ o.cupet_order_no }}</td>
               <td>{{ o.cupet_receiver_name }}</td>
               <td>{{ o.cupet_receiver_add }}</td>
               <td>{{ o.cupet_receiver_phone }}</td>
