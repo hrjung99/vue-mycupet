@@ -226,11 +226,11 @@ export default {
           if (response.data.data.length > 0) {
             this.imageUrl = response.data.data
           } else {
-            console.error("No images found for this user.")
+            console.info("No images found for this user.")
           }
         })
         .catch((error) => {
-          console.error("Error fetching user image:", error)
+          console.info("Error fetching user image:", error)
         })
     },
   },
