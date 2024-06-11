@@ -1,4 +1,4 @@
-<template>
+npm<template>
   <div>
     <div class="content">
       <h1 style="color:#7E84A3;">게시물 상세보기</h1>
@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
           <label>작성자: </label>
-          <div class="info">{{ state.board.cupet_user_name }}</div>
+          <div class="info">{{ state.board.cupet_user_nickname }}</div>
         </div>
         <div class="form-group">
           <label>작성일: </label>

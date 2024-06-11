@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <CommonHeader />
+  <CommonHeader />
+    <div class="content-container">
+    <CommonSideBar ref="sidebar" />
     <div class="main-content">
-      <div class="content-container">
-        <CommonSideBar ref="sidebar" />
+      <div class="join-container">
         <img
           src="./../common/assets/logo.png"
           alt="new"
@@ -12,10 +12,9 @@
           class="logo"
         />
         <JoinForm />
+        </div>
       </div>
     </div>
-  </div>
-
   <CommonFooter />
 </template>
 
@@ -52,25 +51,6 @@ export default {
     this.changeSidebarColor();
   },
   methods: {
-    checkId() {
-      // 이메일 중복 확인 로직 추가
-      console.log("이메일 중복 확인:", this.email);
-    },
-    register() {
-      // 회원가입 로직 추가
-      if (this.password !== this.passwordConfirm) {
-        alert("비밀번호가 일치하지 않습니다.");
-        return;
-      }
-      console.log(
-        "회원가입 정보:",
-        this.id,
-        this.name,
-        this.password,
-        this.birth,
-        this.phone
-      );
-    },
     changeSidebarColor() {
       this.$refs.sidebar.changeBackground("#ffffff");
     },
@@ -79,21 +59,32 @@ export default {
 </script>
 
 <style scoped>
-.main-content {
+
+
+ .main-content {
   display: flex;
   align-items: flex-start;
+  user-select: none;
+  height: 100vh;
   background-color: #f2fff2;
-}
+  width: 100%;
+  }  
+
 
 .logo {
   margin-left: 20px;
 }
 
-.join-container {
+.content-container {
   display: flex;
-  flex-direction: column;
-  margin-left: 20px;
+  flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
+  
 }
+
+.join-container{
+    display: flex;
+}
+
 
 .form-group {
   display: flex;
