@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="map"></div>
-    <button @click="goToFindPet">잃어버린 반려동물 등록하기</button>
   </div>
 </template>
 
@@ -16,8 +15,8 @@ export default {
     const router = useRouter();
     const markers = ref([]);
     const centerCoordinate = ref({
-      lat: 37.580014211892404,
-      lng: 127.02422705407305,
+      lat: 37.4956031419934,
+      lng: 127.124067847413,
     });
 
     const getUserCenter = () => {
@@ -152,8 +151,8 @@ export default {
 
     const resizeMap = () => {
       const mapContainer = document.getElementById("map");
-      mapContainer.style.width = "650px";
-      mapContainer.style.height = "650px";
+      mapContainer.style.width = "100%";
+      mapContainer.style.height = "500px";
     };
 
     const goToFindPet = () => {
@@ -176,12 +175,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #map {
-  width: 650px;
-  height: 650px;
-}
-button {
-  margin-top: 20px;
+  width: 25%;
+  height: 25%;
 }
 </style>

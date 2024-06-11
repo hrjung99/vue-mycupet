@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--주석-->
     <CommonHeader />
     <div class="main-container">
       <div class="content-container">
@@ -52,7 +53,6 @@ export default {
 }
 
 .login-container img {
-  border: 1px solid;
   margin-right: 60px;
   user-select: none;
 }

@@ -1,29 +1,20 @@
 <template>
   <CommonHeader />
-    <div class="content-container">
+  <div class="content-container">
     <CommonSideBar ref="sidebar" />
     <div class="main-content">
-      <div class="join-container">
-        <img
-          src="./../common/assets/logo.png"
-          alt="new"
-          width="180"
-          height="120"
-          class="logo"
-        />
-        <JoinForm />
-        </div>
-      </div>
+      <JoinForm ref="joinForm" />
     </div>
+  </div>
   <CommonFooter />
 </template>
 
 <script>
-import CommonHeader from "@/components/common/CommonHeader.vue";
-import CommonSideBar from "@/components/common/CommonSideBar.vue";
-import CommonFooter from "@/components/common/CommonFooter.vue";
-import JoinForm from "@/components/user/register/JoinForm.vue";
-import "./../common/CommonButtonStyle.css";
+import CommonHeader from "@/components/common/CommonHeader.vue"
+import CommonSideBar from "@/components/common/CommonSideBar.vue"
+import CommonFooter from "@/components/common/CommonFooter.vue"
+import JoinForm from "@/components/user/register/JoinForm.vue"
+import "./../common/CommonButtonStyle.css"
 
 export default {
   name: "JoinMain",
@@ -45,46 +36,38 @@ export default {
       nickname: "",
       gender: "",
       add: "",
-    };
+    }
   },
   mounted() {
-    this.changeSidebarColor();
+    this.changeSidebarColor()
   },
   methods: {
     changeSidebarColor() {
-      this.$refs.sidebar.changeBackground("#ffffff");
+      this.$refs.sidebar.changeBackground("#ffffff")
     },
   },
-};
+}
 </script>
 
 <style scoped>
-
-
- .main-content {
+.main-content {
   display: flex;
   align-items: flex-start;
   user-select: none;
   height: 100vh;
   background-color: #f2fff2;
   width: 100%;
-  }  
-
+}
 
 .logo {
   margin-left: 20px;
+  cursor: pointer; /* 이미지 클릭 가능하도록 스타일 추가 */
 }
 
 .content-container {
   display: flex;
   flex: 1; /* 컨텐츠 영역이 화면 전체 높이를 채우도록 */
-  
 }
-
-.join-container{
-    display: flex;
-}
-
 
 .form-group {
   display: flex;
