@@ -14,8 +14,11 @@
               </h4>
               <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-sm" v-for="(item, idx) in state.items" :key="idx">
-                  <div><h6 class="my-0">{{ item.cupet_prodname }}</h6></div>
-                  <span class="text-muted">{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원</span>
+                  <div>
+                    <h6 class="my-0">{{ item.cupet_prodname }}</h6>
+                    <small class="text-muted">수량: {{ getItemCount(item.cupet_prodno) }}</small>
+                  </div>
+                  <span class="text-muted">{{ lib.getNumberFormatted(getItemTotalPrice(item)) }}원</span>
                 </li>
               </ul>
               <h3 class="text-center total-price">{{ lib.getNumberFormatted(computedPrice) }}원</h3>
@@ -57,6 +60,7 @@
 <CommonFooter />
 </template>
 
+
 <script>
 import { computed, reactive } from "vue";
 import axios from "axios";
@@ -77,6 +81,7 @@ export default {
     const token = localStorage.getItem("Token");
     const state = reactive({
       items: [],
+      data: {},
       form: {
         name: "",
         address: "",
@@ -95,17 +100,48 @@ export default {
         .then(({ data }) => {
           console.log(data);
           state.items = data;
+          loadCartCount();
         })
         .catch(error => {
           console.error("Error fetching cart items:", error);
         });
     };
 
+    const loadCartCount = () => {
+      axios.get("/api1/cart/items/count", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        state.data = response.data;
+      })
+      .catch(error => {
+        console.error("Error fetching cart count:", error);
+      });
+    };
+
+    const getItemCount = (prodno) => {
+      return state.data[prodno] || 0;
+    };
+
+    const getItemTotalPrice = (item) => {
+      return (item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) * getItemCount(item.cupet_prodno);
+    };
+
+    const computedPrice = computed(() => {
+      let result = 0;
+      for (let i of state.items) {
+        result += getItemTotalPrice(i);
+      }
+      return result;
+    });
+
     const submit = () => {
       const args = JSON.parse(JSON.stringify(state.form));
       args.items = JSON.stringify(state.items);
-      args.price = computedPrice.value; 
-      args.date = state.form.date; 
+      args.price = computedPrice.value;
+      args.date = state.form.date;
 
       axios.post("/api1/order", args, {
         headers: {
@@ -117,29 +153,10 @@ export default {
       }).catch(error => {
         console.error("Error submitting order:", error);
       });
-    }
-
-    const computedPrice = computed(() => {
-      let result = 0;
-      for (let i of state.items) {
-        result += i.cupet_prodprice - i.cupet_prodprice * i.cupet_proddiscountper / 100;
-      }
-      return result;
-    });
+    };
 
     load();
-    return { state, lib, computedPrice, submit };
+    return { state, lib, computedPrice, submit, getItemTotalPrice, getItemCount };
   }
 }
 </script>
-
-<style scoped>
-.orderPage .paybtn {
-  width: 300px;
-  display: block;
-  margin: 0 auto;
-  padding: 30px 50px;
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-</style>

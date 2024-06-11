@@ -1,12 +1,29 @@
 <template>
   <div>
     <div class="main-content">
-      <img
-        src="./../../common/assets/logo.png"
-        alt="new"
-        width="180"
-        height="120"
-        class="logo"
+      <div class="logo-container">
+        <img
+          v-if="imageUrl"
+          :src="imageUrl"
+          alt="User Image"
+          class="logo"
+          @click="triggerFileInput"
+        />
+        <div v-else class="logo-placeholder" @click="triggerFileInput">
+          <img
+            src="./../../common/assets/logo.png"
+            alt="new"
+            class="logo"
+            @click="triggerFileInput"
+          />
+        </div>
+      </div>
+      <input
+        ref="fileInput"
+        type="file"
+        accept="image/*"
+        style="display: none"
+        @change="handleFileChange"
       />
       <div class="join-container">
         <h2>마이페이지</h2>
@@ -125,6 +142,7 @@ export default {
         username: "",
         password: "",
       },
+      imageUrl: null,
     }
   },
   methods: {
@@ -172,6 +190,8 @@ export default {
             this.state.roadAddress = response.data.address.roadAddress
             this.state.jibunAddress = response.data.address.jibunAddress
             this.state.detailAddress = response.data.address.detailAddress
+
+            this.fetchUserImage(this.state.cupet_user_id)
           })
           .catch((error) => {
             console.error("Error fetching user details:", error)
@@ -180,10 +200,44 @@ export default {
         console.error("Token not found")
       }
     },
+    fetchPetData() {
+      return axios
+        .get(`/api1/petView?cupet_user_id=${this.state.cupet_user_id}`)
+        .then((response) => {
+          return response.data.petView
+        })
+        .catch((error) => {
+          console.error("Error fetching pet data:", error)
+          return []
+        })
+    },
+    deletePetImages(cupet_pet_no) {
+      return axios
+        .get(`/api1/images/delete/pet?use_id=${cupet_pet_no}`)
+        .then(() => {
+          console.log("펫 이미지 삭제됨")
+        })
+        .catch((error) => {
+          console.error("펫 이미지 삭제 중 에러:", error)
+          alert("펫 이미지 삭제에 실패했습니다.")
+        })
+    },
+    deleteUserImage() {
+      axios
+        .get(`/api1/images/delete/user?use_id=${this.state.cupet_user_id}`)
+        .then(() => {
+          this.imageUrl = null
+          console.log("사용자 이미지 삭제됨")
+        })
+        .catch((error) => {
+          console.error("사용자 이미지 삭제 중 에러:", error)
+          alert("사용자 이미지 삭제에 실패했습니다.")
+        })
+    },
     toggleDelete() {
       const cupet_user_id = this.state.cupet_user_id
 
-      console.log("Fetching token for delete operation")
+      console.log("삭제를 위한 토큰 가져오기")
       this.getToken().then(() => {
         if (!localStorage.getItem("check")) {
           alert("비밀번호가 틀렸습니다.")
@@ -192,18 +246,26 @@ export default {
           localStorage.removeItem("check")
         }
 
-        console.log("Deleting user with ID:", cupet_user_id)
+        console.log("ID가", cupet_user_id, "인 사용자 및 해당 펫 삭제 중")
+        this.fetchPetData().then((petList) => {
+          petList.forEach((pet) => {
+            this.deletePetImages(pet.cupet_pet_no)
+          })
+        })
+        if (!this.imageUrl) {
+          this.deleteUserImage()
+        }
+
         axios
           .post("/api1/userDelete", { cupet_user_id })
           .then((response) => {
-            console.log("User deleted:", response.data)
-
+            console.log("사용자 삭제됨:", response.data)
             alert("탈퇴되었습니다.")
             this.$router.push("/Login")
           })
           .catch((error) => {
-            console.error("Error deleting user:", error)
-            alert("탈퇴에 실패했습니다.")
+            console.error("사용자 삭제 중 오류 발생:", error)
+            alert("사용자 삭제에 실패했습니다.")
           })
       })
     },
@@ -242,7 +304,7 @@ export default {
         axios
           .post("/api1/userUpdate", userUpdateRequest)
           .then((response) => {
-            console.log("User updated:", response.data)
+            console.log("정보 수정 완료:", response.data)
             localStorage.removeItem("check")
             alert("수정되었습니다.")
 
@@ -251,7 +313,7 @@ export default {
             this.$router.push("/MyCupetPage")
           })
           .catch((error) => {
-            console.error("Error updating user:", error)
+            console.error("정보 수정 중 오류 발생:", error)
             alert("수정에 실패했습니다.")
           })
       })
@@ -325,9 +387,53 @@ export default {
         openOnPopup: true,
       })
     },
+    triggerFileInput() {
+      this.$refs.fileInput.click()
+    },
+    handleFileChange(event) {
+      const file = event.target.files[0]
+      if (file) {
+        this.uploadImage(file)
+      }
+    },
+    uploadImage(file) {
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("use_id", this.state.cupet_user_id)
+
+      axios
+        .post("/api1/images/upload/user", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          this.imageUrl = response.data.data
+          alert("이미지가 업로드되었습니다.")
+        })
+        .catch((error) => {
+          alert("이미지 업로드에 실패했습니다.")
+          console.error("이미지 업로드 중 에러:", error)
+        })
+    },
+    fetchUserImage(cupet_user_id) {
+      axios
+        .get(`/api1/images/user/${cupet_user_id}`)
+        .then((response) => {
+          if (response.data.data.length > 0) {
+            this.imageUrl = response.data.data
+          } else {
+            console.info("No images found for this user.")
+          }
+        })
+        .catch((error) => {
+          console.info("Error fetching user image:", error)
+        })
+    },
   },
   mounted() {
     this.fetchUserData()
+    this.fetchUserImage(this.state.cupet_user_id)
   },
 }
 </script>
@@ -343,6 +449,8 @@ export default {
 
 .logo {
   margin-left: 20px;
+  width: 180px;
+  height: auto;
 }
 
 .header-container {
@@ -376,5 +484,9 @@ input {
 
 .cancle-button {
   margin-left: 7px;
+}
+
+.logo-container {
+  cursor: pointer;
 }
 </style>

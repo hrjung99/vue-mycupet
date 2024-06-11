@@ -65,7 +65,9 @@
             </button>
           </span>
           <span v-else-if="isEditing">
-            <button type="button" class="cancle-button" @click="toggleCancel">취소</button>
+            <button type="button" class="cancle-button" @click="toggleCancel">
+              취소
+            </button>
           </span>
         </div>
       </div>
@@ -74,8 +76,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import "./../../common/CommonButtonStyle.css";
+import axios from "axios"
+import "./../../common/CommonButtonStyle.css"
 
 export default {
   props: ["cupet_user_id", "pet"],
@@ -90,12 +92,12 @@ export default {
         this.pet && this.pet.cupet_pet_type ? this.pet.cupet_pet_type : "",
       isEditing: false,
       imageUrl: null,
-    };
+    }
   },
 
   mounted() {
     if (this.pet && this.pet.cupet_pet_no) {
-      this.loadPetImage(this.pet.cupet_pet_no);
+      this.loadPetImage(this.pet.cupet_pet_no)
     }
   },
 
@@ -104,19 +106,19 @@ export default {
       axios
         .get(`/api1/images/pet/${cupet_pet_no}`)
         .then((response) => {
-          this.imageUrl = response.data.data;
+          this.imageUrl = response.data.data
         })
         .catch((error) => {
-          console.error("Error loading pet image:", error);
-        });
+          console.error("Error loading pet image:", error)
+        })
     },
     triggerFileInput() {
-      this.$refs.fileInput.click();
+      this.$refs.fileInput.click()
     },
     handleFileChange(event) {
-      const file = event.target.files[0];
+      const file = event.target.files[0]
       if (file) {
-        this.uploadImage(file);
+        this.uploadImage(file)
       }
     },
     deleteImage() {
@@ -132,10 +134,10 @@ export default {
         })
     },
     uploadImage(file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("image_type", "pet");
-      formData.append("use_id", this.pet.cupet_pet_no);
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("image_type", "pet")
+      formData.append("use_id", this.pet.cupet_pet_no)
 
       axios
         .post("/api1/images/upload/pet", formData, {
@@ -144,18 +146,18 @@ export default {
           },
         })
         .then((response) => {
-          this.imageUrl = response.data.data;
-          alert("이미지가 업로드되었습니다.");
+          this.imageUrl = response.data.data
+          alert("이미지가 업로드되었습니다.")
         })
         .catch((error) => {
-          alert("이미지 업로드에 실패했습니다.");
-          console.error("Error uploading image:", error);
-        });
+          alert("이미지 업로드에 실패했습니다.")
+          console.error("Error uploading image:", error)
+        })
     },
     toggleEdit() {
-      this.isEditing = !this.isEditing;
+      this.isEditing = !this.isEditing
       if (!this.isEditing) {
-        this.updatePet();
+        this.updatePet()
       }
     },
     updatePet() {
@@ -166,37 +168,38 @@ export default {
           cupet_pet_name: this.cupet_pet_name,
           cupet_pet_birth: this.cupet_pet_birth,
           cupet_pet_type: this.cupet_pet_type,
-          cupet_pet_image: this.imageUrl, // 이미지 URL 추가
+          cupet_pet_image: this.imageUrl,
         })
         .then((response) => {
-          alert("수정되었습니다.");
-          console.log("Pet updated:", response.data);
+          alert("수정되었습니다.")
+          console.log("Pet updated:", response.data)
         })
         .catch((error) => {
-          alert("수정에 실패했습니다.");
-          console.error("Error updating pet:", error);
-        });
+          alert("수정에 실패했습니다.")
+          console.error("Error updating pet:", error)
+        })
     },
     toggleDelete() {
-      const cupet_pet_no = this.pet.cupet_pet_no;
+      const cupet_pet_no = this.pet.cupet_pet_no
 
       axios
         .get(`/api1/petDelete?cupet_pet_no=${cupet_pet_no}`)
         .then((response) => {
-          alert("삭제되었습니다.");
-          console.log("Pet deleted:", response.data);
-          location.reload();
+          alert("삭제되었습니다.")
+          console.log("Pet deleted:", response.data)
+          this.deleteImage()
+          location.reload()
         })
         .catch((error) => {
-          alert("삭제에 실패했습니다.");
-          console.error("Error deleting pet:", error);
-        });
+          alert("삭제에 실패했습니다.")
+          console.error("Error deleting pet:", error)
+        })
     },
     toggleCancel() {
-      location.reload();
+      location.reload()
     },
   },
-};
+}
 </script>
 
 <style scoped>
