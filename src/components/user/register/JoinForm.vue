@@ -26,17 +26,41 @@
           중복확인
         </button>
       </div>
-
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" v-model="email" required />
+        <button
+          type="button"
+          class="email-button"
+          @click="sendEmailVerification"
+        >
+          {{ emailSent ? "재전송" : "이메일 인증" }}
+        </button>
+        <!-- 타이머 -->
+        <span v-if="emailSent && timeRemaining > 0" class="timer"
+          >{{ timeRemaining }}초 남음</span
+        >
+      </div>
+      <div v-if="emailSent" class="form-group">
+        <label for="verificationCode">인증번호</label>
+        <input
+          type="text"
+          id="verificationCode"
+          v-model="verificationCode"
+          required
+        />
+        <button type="button" class="verify-button" @click="verifyEmailCode">
+          인증번호 확인
+        </button>
+      </div>
       <div class="form-group">
         <label for="nickname">닉네임</label>
         <input type="text" id="nickname" v-model="nickname" required />
       </div>
-
       <div class="form-group">
         <label for="password">비밀번호</label>
         <input type="password" id="password" v-model="password" required />
       </div>
-
       <div class="form-group">
         <label for="passwordConfirm">비밀번호 확인</label>
         <input
@@ -46,18 +70,15 @@
           required
         />
       </div>
-
       <div class="form-group">
         <label for="name">이름</label>
         <input type="text" id="name" v-model="name" required />
       </div>
-
       <div class="form-group">
         <label for="postcode">우편번호</label>
         <input type="text" id="postcode" v-model="postcode" readonly required />
         <button type="button" @click="openPostcode">우편번호 찾기</button>
       </div>
-
       <div class="form-group">
         <label for="roadAddress">도로명 주소</label>
         <input
@@ -68,7 +89,6 @@
           required
         />
       </div>
-
       <div class="form-group">
         <label for="jibunAddress">지번 주소</label>
         <input
@@ -88,17 +108,14 @@
           required
         />
       </div>
-
       <div class="form-group">
         <label for="phone">전화번호</label>
         <input type="tel" id="phone" v-model="phone" required />
       </div>
-
       <div class="form-group">
         <label for="birth">생년월일</label>
         <input type="date" id="birth" v-model="birth" required />
       </div>
-
       <div class="form-group">
         <label>성별</label>
         <input
@@ -122,7 +139,6 @@
         />
         <label class="form-check" for="female"> 여 </label>
       </div>
-
       <div class="form-group">
         <button class="register-button" type="submit">회원가입</button>
       </div>
@@ -132,7 +148,7 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 
 export default {
   name: "JoinForm",
@@ -157,54 +173,106 @@ export default {
         y: "",
       },
       idcheck: false,
+      emailcheck: false,
+      emailSent: false,
+      verificationCode: "",
       resData: null,
       selectedFile: null,
       imageUrl: null,
-    }
+      timeRemaining: 0,
+      timerInterval: null,
+    };
   },
   computed: {
     isPasswordMatch() {
-      return this.password === this.passwordConfirm
+      return this.password === this.passwordConfirm;
     },
   },
   methods: {
+    sendEmailVerification() {
+      axios
+        .post("/api2/user/emailcheck", { email: this.email })
+        .then(() => {
+          this.emailSent = true;
+          this.startTimer(); // 타이머 시작
+          alert(
+            "인증 이메일이 발송되었습니다. 이메일을 확인하고 인증번호를 입력하세요."
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    startTimer() {
+      this.timeRemaining = 300; // 5분을 초로 계산
+      this.timerInterval = setInterval(() => {
+        if (this.timeRemaining > 0) {
+          this.timeRemaining--;
+        } else {
+          clearInterval(this.timerInterval);
+          this.emailSent = false; // 시간 초과 시 다시 인증 가능하도록 설정
+        }
+      }, 1000); // 1초마다 감소
+    },
+    verifyEmailCode() {
+      axios
+        .post("/api2/user/verifyCode", {
+          email: this.email,
+          code: this.verificationCode,
+        })
+        .then((res) => {
+          if (res.data === "success") {
+            this.emailcheck = true;
+            alert("이메일 인증이 완료되었습니다.");
+          } else {
+            alert("인증번호가 일치하지 않습니다.");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     checkId() {
       axios
         .post("/api2/user/idcheck", { id: this.id })
         .then((res) => {
-          this.resData = res
+          this.resData = res;
           if (res.data === "no") {
-            alert("중복된 아이디 입니다")
-            this.id = ""
+            alert("중복된 아이디 입니다");
+            this.id = "";
           } else if (res.data === "donot") {
-            alert("올바르지 않은 아이디 형식 입니다 (5글자 이상)")
-            this.id = ""
+            alert("올바르지 않은 아이디 형식 입니다 (5글자 이상)");
+            this.id = "";
           } else {
-            alert("사용가능한 아이디입니다")
-            this.idcheck = true
+            alert("사용가능한 아이디입니다");
+            this.idcheck = true;
           }
         })
         .catch((error) => {
-          alert("서버 연결 실패", error)
-        })
+          alert("서버 연결 실패", error);
+        });
     },
-
     register() {
       if (!this.idcheck) {
-        alert("ID 중복 체크를 확인해주세요")
-        return
+        alert("ID 중복 체크를 확인해주세요");
+        return;
+      }
+      if (!this.emailcheck) {
+        alert("이메일 인증을 완료해주세요");
+        return;
       }
       if (!this.isPasswordMatch) {
-        alert("비밀번호가 일치하지 않습니다.")
-        this.password = ""
-        this.passwordConfirm = ""
-        return
+        alert("비밀번호가 일치하지 않습니다.");
+        this.password = "";
+        this.passwordConfirm = "";
+        return;
       }
 
-      alert("회원가입 정보가 유효합니다.")
+      alert("회원가입 정보가 유효합니다.");
 
       const formData = {
         id: this.id,
+        email: this.email,
         name: this.name,
         password: this.password,
         birth: this.birth,
@@ -217,32 +285,35 @@ export default {
         detailAddress: this.detailAddress,
         locateX: this.lanlatlocate.x,
         locateY: this.lanlatlocate.y,
-      }
+      };
 
       axios
         .post("/api2/user/register", formData)
         .then((response) => {
           if (response.data.result === "success") {
-            const cupet_user_id = response.data.cupet_user_id
+            const cupet_user_id = response.data.cupet_user_id;
             if (cupet_user_id && this.selectedFile) {
-              this.uploadImage(cupet_user_id, this.selectedFile)
+              this.uploadImage(cupet_user_id, this.selectedFile);
             }
-            alert("회원가입이 완료되었습니다.")
-            this.$router.push("/Login")
+            alert("회원가입이 완료되었습니다.");
+            this.$router.push("/Login");
           } else {
-            alert("회원가입에 실패했습니다.")
+            alert("회원가입에 실패했습니다.");
           }
         })
         .catch((error) => {
-          alert("서버 연결 실패: " + error.message)
-        })
+          alert("서버 연결 실패: " + error.message);
+        });
+      clearInterval(this.timerInterval);
     },
-
+    beforeDestroy() {
+      clearInterval(this.timerInterval);
+    },
     getCoordinates(address) {
-      const apiKey = "6c6926ac09f27d3575acd4aee7934548" // 발급받은 API 키 사용
+      const apiKey = "6c6926ac09f27d3575acd4aee7934548"; // 발급받은 API 키 사용
       const apiUrl = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(
         address
-      )}`
+      )}`;
       axios
         .get(apiUrl, {
           headers: {
@@ -251,29 +322,28 @@ export default {
         })
         .then((response) => {
           if (response.data.documents.length > 0) {
-            const { x, y } = response.data.documents[0].address
-            this.longitude = x
-            this.latitude = y
-            this.lanlatlocate.x = this.longitude
-            this.lanlatlocate.y = this.latitude
+            const { x, y } = response.data.documents[0].address;
+            this.longitude = x;
+            this.latitude = y;
+            this.lanlatlocate.x = this.longitude;
+            this.lanlatlocate.y = this.latitude;
           }
         })
         .catch((error) => {
-          console.error("좌표 검색 실패:", error)
-        })
+          console.error("좌표 검색 실패:", error);
+        });
     },
-
     openPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
           // 우편번호와 주소 정보를 Vue 데이터 속성에 저장
-          this.postcode = data.zonecode
-          this.roadAddress = data.roadAddress
-          this.jibunAddress = data.jibunAddress
+          this.postcode = data.zonecode;
+          this.roadAddress = data.roadAddress;
+          this.jibunAddress = data.jibunAddress;
           if (this.roadAddress != "") {
-            this.getCoordinates(this.roadAddress)
+            this.getCoordinates(this.roadAddress);
           } else {
-            this.getCoordinates(this.jibunAddress)
+            this.getCoordinates(this.jibunAddress);
           }
         },
         // 팝업 스타일 설정
@@ -290,28 +360,25 @@ export default {
         width: 600,
         height: 400,
         openOnPopup: true,
-      })
+      });
     },
-
     triggerFileInput() {
-      this.$refs.fileInput.click()
+      this.$refs.fileInput.click();
     },
-
     handleFileChange(event) {
-      const file = event.target.files[0]
+      const file = event.target.files[0];
       if (file) {
-        this.selectedFile = file
-        this.imageUrl = URL.createObjectURL(file)
+        this.selectedFile = file;
+        this.imageUrl = URL.createObjectURL(file);
       }
     },
-
     uploadImage(userId, file) {
-      const formData = new FormData()
-      formData.append("file", file)
-      formData.append("image_type", "user")
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("image_type", "user");
 
-      const use_id = userId
-      formData.append("use_id", use_id)
+      const use_id = userId;
+      formData.append("use_id", use_id);
 
       axios
         .post("/api1/images/upload/user", formData, {
@@ -320,71 +387,61 @@ export default {
           },
         })
         .then((response) => {
-          this.imageUrl = response.data.data
-          alert("이미지가 업로드되었습니다.")
+          this.imageUrl = response.data.data;
+          alert("이미지가 업로드되었습니다.");
         })
         .catch((error) => {
-          alert("이미지 업로드에 실패했습니다.")
-          console.error("이미지 업로드 중 에러:", error)
-        })
+          alert("이미지 업로드에 실패했습니다.");
+          console.error("이미지 업로드 중 에러:", error);
+        });
     },
   },
-}
+};
 </script>
 
 <style scoped>
 .logo {
   margin-left: 20px;
 }
-
 .join-container {
   margin-top: 30px;
   display: flex;
   align-items: flex-start;
   min-width: 500px;
 }
-
 .form-group {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-
 label {
   width: 120px;
   margin-right: 10px;
 }
-
 input {
   flex: 1;
 }
-
 button {
   margin-left: 10px;
 }
-
 .register-button {
   margin-top: 13px;
   margin-left: 370px;
   align-self: center;
 }
-
 .image-container {
   margin-right: 10px;
 }
-
 .image_btn {
   border: none;
   background-color: transparent;
   cursor: pointer;
   padding: 0;
 }
-
 .logo {
   width: 180px;
   height: auto;
 }
-
 .join-page {
   display: flex;
   flex-direction: column;
