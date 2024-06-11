@@ -1,4 +1,4 @@
-npm<template>
+<template>
   <div>
     <div class="content">
       <h1 style="color:#7E84A3;">게시물 상세보기</h1>
@@ -9,7 +9,7 @@ npm<template>
         </div>
         <div>
         <label>말머리: </label>
-          <div class="info">{{ state.board.cupet_board_head_no }}</div>
+          <div class="info">{{ state.board.cupet_board_head_name }}</div>
         </div>
         <div class="form-group">
           <label>제목: </label>
@@ -79,6 +79,7 @@ onMounted(() => {
     .then((response) => {
       state.board = response.data.board;
       console.log("data : ", state.board)
+      
     })
     .catch((error) => {
       console.error("Error fetching board details:", error);
@@ -98,13 +99,14 @@ onMounted(() => {
 .form-container {
   display: flex;
   flex-direction: column;
-  width: 50%;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .form-group {
   display: flex;
   margin-bottom: 10px;
+  
 }
 
 .form-group label {
