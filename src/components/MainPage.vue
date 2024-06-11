@@ -46,13 +46,14 @@ export default {
       adImages: [
         "cat_fun.jpg",
         "dog_fun.jpg",
-        // 추가 이미지 파일명 계속 추가
+        "cat_meal.jpg",
+        "hamster_fun.jpg",
       ],
       currentImageIndex: 0,
     };
   },
   mounted() {
-    setInterval(this.changeImage, 10000); // 10초마다 이미지 변경
+    setInterval(this.changeImage, 5000); // 10초마다 이미지 변경
   },
   methods: {
     changeImage() {
