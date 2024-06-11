@@ -1,7 +1,7 @@
 <template>
   <CommonHeader />
   <div class="content-container">
-    <CommonSideBar ref="sidebar"/>
+    <CommonSideBar ref="sidebar" />
     <div class="orderDetailPage">
       <div class="container">
         <div class="text-center mb-4"><h2>주문 상세</h2></div>
@@ -56,6 +56,9 @@ export default {
     };
   },
   methods: {
+    changeSidebarColor() {
+      this.$refs.sidebar.changeBackground("#ffffff");
+    },
     async fetchOrderDetails(cupet_order_no) {
       try {
         const token = localStorage.getItem("Token");
@@ -83,6 +86,7 @@ export default {
     },
   },
   mounted() {
+    this.changeSidebarColor();
     const cupet_order_no = this.$route.params.cupet_order_no;
     this.fetchOrderDetails(cupet_order_no);
   },
