@@ -52,7 +52,6 @@ export default {
 }
 
 .login-container img {
-  border: 1px solid;
   margin-right: 60px;
   user-select: none;
 }
