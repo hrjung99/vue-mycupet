@@ -10,6 +10,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
+    "@portone/browser-sdk": "^0.0.7",
     "axios": "^1.7.2",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
