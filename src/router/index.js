@@ -32,7 +32,7 @@ const routes = [
     { path: '/OrderPage', component: OrderPage },
     { path: '/OrdersPage', component: OrdersPage },
     { path: '/order/:cupet_order_no', name: 'OrderDetail', component: OrderDetailPage },
-    { path: '/PaymentComponent', component: PaymentComponent },
+    { path: '/PayPage', component: PaymentComponent },
     { path: '/BoardMain', component: BoardMain },
     { path: '/BoardInsertMain', component: BoardInsertMain },
     { path: '/BoardUpdateMain', component: BoardUpdateMain },

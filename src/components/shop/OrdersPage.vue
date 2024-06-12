@@ -71,7 +71,6 @@ export default {
     };
 
     const goToOrderDetail = (orderNo) => {
-      // 주문 상세 페이지로 이동
       router.push({ name: 'OrderDetail', params: { cupet_order_no: orderNo } });
     };
 
