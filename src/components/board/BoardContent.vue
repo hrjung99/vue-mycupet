@@ -7,6 +7,7 @@
           name="cupet_board_head_no"
           v-model="localContentData.cupet_board_head_no"
           @selected="updateSelectedOption"
+          
         />
 
         <input
@@ -15,6 +16,7 @@
           required="required"
           placeholder="게시물 제목을 입력해주세요"
           v-model="localContentData.cupet_board_title"
+          value = "initialValue.cupet_board_title"
         />
         <br />
       </div>
@@ -41,12 +43,13 @@ export default {
     BoardSelectOption,
   },
   props: {
-    contentData: Object,
+    viewData: Object, 
   },
   data() {
     return {
       editor: ClassicEditor,
       editorConfig: {
+        editorData:'initialValue.cupet_board_content',
         placeholder: '게시물 내용을 입력해주세요',
         require: 'require',
       },
@@ -54,6 +57,7 @@ export default {
         cupet_board_head_no: '',
         cupet_board_title: '',
         cupet_board_content: '',
+
       },
     }
   },
@@ -65,6 +69,13 @@ export default {
       }
     }
   },
+
+  mounted() {
+    if (this.viewData) {
+      this.setInitialValue(this.viewData);
+        }
+  },
+
   methods: {
     updateSelectedOption(selectedOption) {
       this.localContentData.cupet_board_head_no = selectedOption
@@ -73,6 +84,12 @@ export default {
     handleInput() {
       this.$emit('input-change', this.localContentData)
     },
+    setInitialValue() {
+    this.localContentData.cupet_board_head_no = this.viewData ? this.viewData.cupet_board_head_no : '';
+    this.localContentData.cupet_board_title = this.viewData ? this.viewData.cupet_board_title : '';
+    this.localContentData.cupet_board_content = this.viewData ? this.viewData.cupet_board_content : '';
+  },
+
   },
 }
 </script>

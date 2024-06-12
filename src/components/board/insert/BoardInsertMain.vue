@@ -5,7 +5,7 @@
       <div class="content">
         <h1 style="color:#7E84A3;">게시물 등록</h1>
         <BoardContent v-model:contentData="contentData" @input-change="updateContentData" />
-        <button type="button" class="delete-button" @click="BoardInsert">등록</button>
+        <button type="button" class="insert-button" @click="BoardInsert">등록</button>
       <router-link to="/BoardMain">
         <button type="button" class="cancel-button">취소</button>
       </router-link>
@@ -34,8 +34,6 @@ export default {
 
   data() {
     return {
-
-
       contentData: {
         cupet_board_head_no: '',
         cupet_board_title: '',

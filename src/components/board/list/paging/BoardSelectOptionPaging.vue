@@ -3,10 +3,10 @@
     <select
       class="form-select"
       aria-label="SelectOption"
-      v-model="state.selectedOption"
+      v-model="selectedOption"
       @change="emitSelectedOption"
-
     >
+    <option value="allSelect" selected>전체</option>
       <option
         v-for="item in state.list"
         :key="item.cupet_board_head_no"
@@ -33,7 +33,7 @@ export default {
     };
     onMounted(() => {
       axios
-        .get("/api1/selectOptionList", config)
+        .get("/api1/selectoptionList", config)
         .then((response) => {
           state.list = response.data.list;
           // 초기값 설정

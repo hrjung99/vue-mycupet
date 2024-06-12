@@ -2,11 +2,12 @@
   <div>
     <select
       class="form-select"
-      aria-label="SelectOption"
-      v-model="state.selectedOption"
-      @change="emitSelectedOption"
+      aria-label="SelectOptionList"
+      v-model.number="state.selectedOptionList"
+      @change="emitOptionChange"
 
     >
+      <option value="4">전체</option>
       <option
         v-for="item in state.list"
         :key="item.cupet_board_head_no"
@@ -23,9 +24,10 @@ import axios from "axios";
 import { reactive, onMounted } from "vue";
 
 export default {
-  name: "BoardSelectOption",
-  setup() {
-    const state = reactive({ list: [], selectedOption: null });
+  name: "BoardSelectOptionList",
+  setup(_, { emit }) {
+
+const state = reactive({ list: [], selectedOptionList: null });
     const token = localStorage.getItem("Token");
     const config = {
       // 토큰이 존재하는 경우에만 HTTP 요청 헤더에 토큰을 추가
@@ -37,23 +39,19 @@ export default {
         .then((response) => {
           state.list = response.data.list;
           // 초기값 설정
-          state.selectedOption = state.list[0]
-            ? state.list[0].cupet_board_head_no
-            : null;
+          state.selectedOptionList = "4";
         })
         .catch((error) => {
-          console.error("Error fetching select options:", error);
+          console.error("Error fetching select option list:", error);
         });
     });
 
-    return { state };
-  },
-
-  methods: {
-    emitSelectedOption() {
-    this.$emit('selected', this.selectedOption);
-  },
-  },
+    
+    const emitOptionChange = () => {
+emit("update-selected-option", state.selectedOptionList);
+};
+return { state, emitOptionChange };
+},
 };
 </script>
 

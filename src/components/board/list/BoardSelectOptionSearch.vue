@@ -2,19 +2,19 @@
   <div>
     <select
       class="form-select"
-      aria-label="SelectOption"
-      v-model="state.selectedOption"
-      @change="emitSelectedOption"
-
+      aria-label="SelectOptionSearch"
+      v-model="state.selectedOptionSearch"
+      @change="emitSelectedOptionSearch"
     >
       <option
         v-for="item in state.list"
-        :key="item.cupet_board_head_no"
-        :value="item.cupet_board_head_no"
+        :key="item.cupet_search_code"
+        :value="item.cupet_search_code"
       >
-        {{ item.cupet_board_head_name }}
+        {{ item.cupet_search_name }}
       </option>
     </select>
+    
   </div>
 </template>
 
@@ -23,9 +23,10 @@ import axios from "axios";
 import { reactive, onMounted } from "vue";
 
 export default {
-  name: "BoardSelectOption",
-  setup() {
-    const state = reactive({ list: [], selectedOption: null });
+  name: "BoardSelectOptionSearch",
+  setup(_, { emit }) {
+
+const state = reactive({ list: [], selectedOptionSearch: null });
     const token = localStorage.getItem("Token");
     const config = {
       // 토큰이 존재하는 경우에만 HTTP 요청 헤더에 토큰을 추가
@@ -33,27 +34,31 @@ export default {
     };
     onMounted(() => {
       axios
-        .get("/api1/selectOptionList", config)
+        .get("/api1/selectedOptionSearch", config)
         .then((response) => {
           state.list = response.data.list;
+          console.log("state.list", state.list);
+
           // 초기값 설정
-          state.selectedOption = state.list[0]
-            ? state.list[0].cupet_board_head_no
-            : null;
+          state.selectedOptionSearch = state.list[0]
+            ? state.list[0].cupet_search_code
+            : 'null';
         })
         .catch((error) => {
-          console.error("Error fetching select options:", error);
+          console.error("Error fetching select search options:", error);
         });
     });
 
-    return { state };
-  },
+    const emitSelectedOptionSearch = () => {
 
-  methods: {
-    emitSelectedOption() {
-    this.$emit('selected', this.selectedOption);
-  },
-  },
+emit("update-selected-option-search", state.selectedOptionSearch);
+
+};
+
+return { state, emitSelectedOptionSearch };
+},
+
+
 };
 </script>
 
