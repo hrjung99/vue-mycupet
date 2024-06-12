@@ -101,7 +101,8 @@ export default {
 
         .then((response) => {
           this.boardData = response.data.list
-          console.log('Board Data in BoardMain', this.boardData)
+          console.log("게시물 목록 정보 : ", this.boardData);
+          this.$router.push({ path: '/BoardMain'})
         })
         .catch((error) => {
           console.error('Error fetching board data:', error)
