@@ -7,7 +7,10 @@
       <h1>포인트 충전</h1>
       <label for="cupet_pay_price" class="form-label">충전 금액</label>
       <input type="text" class="form-control" id="cupet_pay_price" v-model="state.form.price"><br/>
-      <button class="paybtn" @click="handlePayment()">결제하기</button>
+      <button class="paybtn" @click="handlePayment()">결제하기</button> &nbsp;
+      <router-link to="/PayList">
+          <button class="paylistbtn">결제내역</button>
+        </router-link>
     </div>
   </div>
 </div>
@@ -34,7 +37,8 @@ export default {
     const state = reactive({
       form: {
         price: "",
-        paymentUid: ""  // 결제 UID를 저장하기 위한 필드 추가
+        paymentUid: "", 
+        date: new Date().toISOString().slice(0, 16)
       }
     });
 
@@ -42,7 +46,8 @@ export default {
       try {
         const args = {
           cupet_pay_price: state.form.price,
-          cupet_payment_uid: state.form.paymentUid
+          cupet_payment_uid: state.form.paymentUid,
+          cupet_pay_date : state.form.date
         };
 
         const response = await axios.post("/api1/pay", args, {
