@@ -12,6 +12,7 @@ import OrderPage from '@/components/shop/OrderPage.vue';
 import OrdersPage from '@/components/shop/OrdersPage.vue';
 import OrderDetailPage from '@/components/shop/OrderDetailPage.vue';
 import PaymentComponent from '@/components/shop/PaymentComponent.vue';
+import PaymentList from '@/components/shop/PaymentList.vue';
 import BoardMain from '@/components/board/list/BoardMain.vue';
 import BoardInsertMain from '@/components/board/insert/BoardInsertMain.vue';
 import BoardUpdateMain from '@/components/board/update/BoardUpdateMain.vue';
@@ -33,6 +34,7 @@ const routes = [
     { path: '/OrdersPage', component: OrdersPage },
     { path: '/order/:cupet_order_no', name: 'OrderDetail', component: OrderDetailPage },
     { path: '/PayPage', component: PaymentComponent },
+    { path: '/PayList', component: PaymentList },
     { path: '/BoardMain', component: BoardMain },
     { path: '/BoardInsertMain', component: BoardInsertMain },
     { path: '/BoardUpdateMain', component: BoardUpdateMain },
