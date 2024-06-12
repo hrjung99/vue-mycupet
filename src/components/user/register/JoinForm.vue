@@ -224,6 +224,8 @@ export default {
           if (res.data === "success") {
             this.emailcheck = true;
             alert("이메일 인증이 완료되었습니다.");
+          } else if (res.data === "vaild") {
+            alert("이미 존재하는 메일입니다.");
           } else {
             alert("인증번호가 일치하지 않습니다.");
           }
