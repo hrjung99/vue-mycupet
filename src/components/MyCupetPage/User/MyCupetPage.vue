@@ -40,7 +40,7 @@
         </div>
         <div class="form-group point-group">
           <label>잔여포인트: {{ state.cupet_user_point }}</label>
-          <router-link to="/MyCupetPointMain">
+          <router-link to="/PayPage">
             <button type="button" class="charge-button-small">충전</button>
           </router-link>
         </div>

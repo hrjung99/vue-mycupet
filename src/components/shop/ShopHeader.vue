@@ -10,6 +10,9 @@
         <router-link to="/OrdersPage" class="orders btn">
           <i class="fa fa-th-list" aria-hidden="true"></i>
         </router-link>
+        <router-link to="/PayPage" class="pay btn">
+          <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+        </router-link>
       </div>
     </div>
   </header>
