@@ -192,7 +192,15 @@ export default {
     sendEmailVerification() {
       axios
         .post("/api2/user/emailcheck", { email: this.email })
-        .then(() => {
+        .then((res) => {
+          if (res.data === "vaild") {
+            alert("중복된 메일 입니다.");
+            return;
+          }
+          if (res.data === "failed") {
+            alert("이메일 인증 발송 실패");
+            return;
+          }
           this.emailSent = true;
           this.startTimer(); // 타이머 시작
           alert(
