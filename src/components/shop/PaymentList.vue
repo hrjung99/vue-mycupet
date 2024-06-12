@@ -8,7 +8,7 @@
           <table class="table">
             <thead>
               <tr>
-                <th>번호</th>
+                <th>결제번호</th>
                 <th>금액</th>
                 <th>결제 UID</th>
                 <th>결제일</th>
@@ -16,10 +16,10 @@
             </thead>
             <tbody>
               <tr v-for="(payment, index) in payments" :key="index">
-                <td>{{ index + 1 }}</td>
+                <td>{{ payment.cupet_payno }}</td>
                 <td>{{ payment.cupet_pay_price }}</td>
                 <td>{{ payment.cupet_payment_uid }}</td>
-                <td>{{ new Date(payment.created_at).toLocaleString() }}</td>
+                <td>{{ payment.cupet_pay_date }}</td>
               </tr>
             </tbody>
           </table>
@@ -72,8 +72,6 @@
   .content-container {
     display: flex;
     flex: 1;
-    padding: 20px;
-    background-color: #f9f9f9;
   }
   
   .paymentList {
@@ -104,6 +102,7 @@
   .table th {
     background-color: #f2f2f2;
     font-weight: bold;
+    color : darkslategray;
   }
   
   .table tr:nth-child(even) {
