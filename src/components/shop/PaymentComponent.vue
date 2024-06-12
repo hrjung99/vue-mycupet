@@ -2,12 +2,15 @@
   <CommonHeader />
   <div class="content-container">
     <CommonSideBar />
+    <div class="payPage">
     <div class="col-12">
-      <label for="cupet_pay_price" class="form-label">결제 금액</label>
+      <h1>포인트 충전</h1>
+      <label for="cupet_pay_price" class="form-label">충전 금액</label>
       <input type="text" class="form-control" id="cupet_pay_price" v-model="state.form.price"><br/>
       <button class="paybtn" @click="handlePayment()">결제하기</button>
     </div>
   </div>
+</div>
   <CommonFooter />
 </template>
 
@@ -50,7 +53,7 @@ export default {
 
         if (response.status === 200) {
           alert('결제 완료');
-          router.push({ path: "/OrdersPage" });
+          router.push({ path: "/MyCupetPage" });
           return response.data.data; // order_uid 반환
         } else {
           console.error('Failed to submit order', response.data);
@@ -75,7 +78,7 @@ export default {
           merchant_uid: `merchant_${new Date().getTime()}`, // 고유 주문번호
           name: 'point_charge', // 주문명
           amount: state.form.price, // 결제 금액
-          buyer_email: 'user@example.com', // 예시 데이터
+          buyer_email: 'jeongmin0521@naver.com', // 예시 데이터
           buyer_name: '구매자 이름', // 예시 데이터
           buyer_tel: '010-1234-5678', // 예시 데이터
           buyer_addr: '서울특별시 강남구 삼성동', // 예시 데이터
@@ -94,11 +97,17 @@ export default {
         console.error('Error during payment process', error);
       }
     };
-
     return { state, submit, handlePayment };
   }
 };
 </script>
 
 <style scoped>
+.payPage { 
+  margin-left: 50px;  
+  position: relative;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
 </style>
