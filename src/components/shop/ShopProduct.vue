@@ -1,6 +1,12 @@
 <template>
   <div class="card shadow-sm" @click="viewDetails(item.cupet_prodno)">
-    <span class="img" :style="{backgroundImage: `url(${item.cupet_prodimgpath})`}"/>
+    <img
+      :src="imageUrl || 'img/logo.png'"
+      alt="new"
+      width="400"
+      height="250"
+      class="logo sub-logo"
+    />
     <div class="card-body">
       <p class="card-text">
         <span>{{ item.cupet_prodname }} &nbsp; </span>
@@ -30,46 +36,61 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
 import lib from "@/scripts/lib";
-import axios from "axios";
-import router from "@/router"; 
+import axios from 'axios';
+import router from '@/router';
 
 export default {
   name: "ShopProduct",
   props: {
     item: Object
   },
-  setup() {
-    const token = localStorage.getItem("Token"); 
+
+  setup(props) {
+    const imageUrl = ref('');
+    const token = localStorage.getItem("Token");
+
+    onMounted(() => {
+      loadProdImage(props.item.cupet_prodno);
+    });
+
+    const loadProdImage = (cupet_prodno) => {
+      axios.get(`/api1/images/shop/${cupet_prodno}`)
+        .then((response) => {
+          imageUrl.value = response.data.data;
+        })
+        .catch((error) => {
+          console.error("Error loading product image:", error);
+        });
+    };
 
     const addToCart = (cupet_prodno) => {
-      console.log("장바구니에 추가: " + cupet_prodno);
-      axios.post(`/api1/cart/items/${cupet_prodno}`, {},  {
-      headers: {
+      axios.post(`/api1/cart/items/${cupet_prodno}`, {}, {
+        headers: {
           Authorization: `Bearer ${token}`
         }
-    }).then(() => {
-      console.log('success')
-    });
+      }).then(() => {
+        console.log('Added to cart successfully');
+      }).catch((error) => {
+        console.error('Error adding to cart:', error);
+      });
     };
 
     const viewDetails = (cupet_prodno) => {
-      console.log("상세보기: " + cupet_prodno);
       router.push({ name: 'ShopDetail', params: { cupet_prodno: cupet_prodno } });
     };
 
-    return { lib, addToCart, viewDetails };
+    return { lib, addToCart, viewDetails, loadProdImage, imageUrl };
   }
 }
 </script>
 
 <style scoped>
-.card .img {
-  display: inline-block;
+.card .logo {
   width: 100%;
   height: 250px;
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
 }
 
 .card .card-body .price {

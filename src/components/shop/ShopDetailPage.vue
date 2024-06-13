@@ -5,7 +5,7 @@
     <div class="container py-5">
       <div v-if="product" class="row">
         <div class="col-md-6">
-          <img :src="product.cupet_prodimgpath" class="img-fluid" alt="Product Image">
+          <img :src="imageUrl || 'img/logo.png'" class="img-fluid" alt="Product Image">
         </div>
         <div class="col-md-6">
           <h2>{{ product.cupet_prodname }}</h2>
@@ -16,8 +16,8 @@
           <p class="content">{{ product.cupet_prodcont }}</p>
           <button button type="button" @click.stop="addToCart" :disabled="product.cupet_prodcnt === 0">장바구니 담기</button>
           <router-link to="/ShopCart" class="cart btn">
-          <button button type="button">장바구니 바로가기</button>
-        </router-link>
+            <button button type="button">장바구니 바로가기</button>
+          </router-link>
         </div>
       </div>
       <div v-else>
@@ -46,9 +46,10 @@ export default {
   },
   setup() {
     const product = ref(null);
+    const imageUrl = ref('');
     const route = useRoute();
     const cupet_prodno = ref(route.params.cupet_prodno);
-    const token = localStorage.getItem("Token"); 
+    const token = localStorage.getItem("Token");
 
     const addToCart = () => {
       if (product.value) {
@@ -70,7 +71,6 @@ export default {
     const loadProduct = async () => {
       try {
         console.log("상품 번호:", cupet_prodno.value);
-        const token = localStorage.getItem("Token");
         const response = await axios.get(`/api1/shop/${cupet_prodno.value}`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -78,6 +78,7 @@ export default {
         });
         console.log("상품 정보:", response.data);
         product.value = response.data;
+        loadProdImage(cupet_prodno.value); // 상품 정보를 받아온 후 이미지 로드 호출
       } catch (error) {
         console.error("상품 정보를 불러오는 중 오류 발생:", error);
         if (error.response) {
@@ -87,9 +88,19 @@ export default {
       }
     };
 
+    const loadProdImage = (cupet_prodno) => {
+      axios.get(`/api1/images/shop/${cupet_prodno}`)
+        .then((response) => {
+          imageUrl.value = response.data.data;
+        })
+        .catch((error) => {
+          console.error("Error loading product image:", error);
+        });
+    };
+
     onMounted(loadProduct);
 
-    return { product, lib, addToCart };
+    return { product, lib, addToCart, imageUrl };
   }
 };
 </script>
