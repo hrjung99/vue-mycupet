@@ -6,13 +6,15 @@
       <h1 style="color: #7e84a3">게시물 수정</h1>
 
       <BoardUpdateContent
-        v-if="viewData.cupet_board_no"  
+        v-if="viewData.cupet_board_no"
         :viewData="viewData"
         v-model:contentData="contentData"
         @input-change="updateContentData"
       />
 
-      <button type="button" class="update-button" @click="BoardUpdate">수정</button>
+      <button type="button" class="update-button" @click="BoardUpdate">
+        수정
+      </button>
       <router-link to="/BoardMain">
         <button type="button" class="cancel-button">취소</button>
       </router-link>
@@ -39,16 +41,15 @@ export default {
     BoardUpdateContent,
   },
 
-
-
   data() {
     return {
       contentData: {
         cupet_board_head_no: '',
+        cupet_board_no: '',
         cupet_board_title: '',
         cupet_board_content: '',
       },
-      
+
       viewData: {},
       state: {
         board: {},
@@ -60,19 +61,24 @@ export default {
     this.changeSidebarColor()
     const cupet_board_no = this.$route.query.cupet_board_no
     this.getViewData(cupet_board_no)
+    console.log('contentData : ', this.contentData)
+
+
   },
 
   methods: {
     getViewData(cupet_board_no) {
       axios
-      .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
-      .then((response) => {
-        this.viewData = response.data.board
-        console.log('viewData : ', this.viewData)
-      })
-      .catch((error) => {
-        console.error('Error fetching board details:', error)
-      })
+        .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
+        .then((response) => {
+          this.viewData = response.data.board
+          this.contentData.cupet_board_content= response.data.board.cupet_board_no;
+          console.log('viewData : ', this.viewData)
+
+        })
+        .catch((error) => {
+          console.error('Error fetching board details:', error)
+        })
     },
     changeSidebarColor() {
       this.$refs.sidebar.changeBackground('#ffffff')
@@ -87,9 +93,15 @@ export default {
       console.log('token: ', token)
       console.log('contentData: ', this.contentData)
 
+      const formDate = {
+        cupet_board_head_no: this.contentData.cupet_board_head_no,
+        cupet_board_no: this.$route.query.cupet_board_no,
+        cupet_board_title: this.contentData.cupet_board_title,
+        cupet_board_content: this.contentData.cupet_board_content,
+      }
 
       axios
-        .post('/api1/boardUpadte', this.contentData, {
+        .post('/api1/boardUpdate', formDate, {
           headers: {
             Authorization: `Bearer ${token}`, // Bearer 스킴을 사용한 토큰 인증
           },
