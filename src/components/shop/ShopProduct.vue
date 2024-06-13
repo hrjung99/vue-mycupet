@@ -9,19 +9,26 @@
         </span>
       </p>
       <div class="d-flex justify-content-between align-items-center">
-        <button class="btn btn-primary" @click="addToCart(item.cupet_prodno)">
+        <button 
+          class="btn btn-primary" 
+          @click="addToCart(item.cupet_prodno)"
+          :disabled="item.cupet_prodcnt === 0">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </button>
         <small class="price text-muted">
-          {{ lib.getNumberFormatted(item.cupet_prodprice) }} 원
+          {{ lib.getNumberFormatted(item.cupet_prodprice) }} 원 
         </small>
         <small class="real text-danger">
-          {{ lib.getNumberFormatted( item.cupet_prodprice - (item.cupet_prodprice * item.cupet_proddiscountper /100)) }} 원
+          {{ lib.getNumberFormatted(item.cupet_prodprice - (item.cupet_prodprice * item.cupet_proddiscountper / 100)) }} 원
         </small>
+      </div>
+      <div v-if="item.cupet_prodcnt === 0" class="out-of-stock">
+        sold out
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import lib from "@/scripts/lib";
@@ -63,7 +70,13 @@ export default {
   background-position: center;
 }
 
-.card .card-body .price{
+.card .card-body .price {
   text-decoration: line-through;
+}
+
+.out-of-stock {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
 }
 </style>
