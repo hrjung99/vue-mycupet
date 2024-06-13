@@ -7,6 +7,7 @@ import MyCupetPage from '@/components/MyCupetPage/MypageMain.vue';
 import MyCupetPointMain from '@/components/MyCupetPage/Point/MyCupetPointMain.vue';
 import UserUpdatePageMain from '@/components/MyCupetPage/User/UserUpdatePageMain.vue';
 import ShopMain from '@/components/shop/ShopMain.vue';
+import ShopAdd from '@/components/shop/ShopAdd.vue';
 import ShopDetailPage from '@/components/shop/ShopDetailPage.vue';
 import ShopCart from '@/components/shop/ShopCart.vue';
 import OrderPage from '@/components/shop/OrderPage.vue';
@@ -30,6 +31,7 @@ const routes = [
     { path: '/MyCupetPointMain', component: MyCupetPointMain },
     { path: '/UserUpdatePageMain', component: UserUpdatePageMain },
     { path: '/ShopMain', component: ShopMain },
+    { path: '/ShopAdd', component: ShopAdd },
     { path: '/shop/:cupet_prodno', name: 'ShopDetail', component: ShopDetailPage },
     { path: '/ShopCart', component: ShopCart },
     { path: '/OrderPage', component: OrderPage },

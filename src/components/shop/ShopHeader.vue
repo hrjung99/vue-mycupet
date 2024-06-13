@@ -13,6 +13,9 @@
         <router-link to="/PayPage" class="pay btn">
           <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
         </router-link>
+        <router-link to="/ShopAdd" class="pay btn">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </router-link>
       </div>
     </div>
   </header>
