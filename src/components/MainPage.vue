@@ -28,6 +28,12 @@
                 </div>
               </div>
             </div>
+            <div class="image-container1">
+              <img :src="currentImage2" alt="반려동물 이미지 1" class="image1" />
+            </div>
+            <div class="image-container2">
+              <img :src="currentImage2" alt="반려동물 이미지 2" class="image2" />
+            </div>
           </div>
         </div>
       </div>
@@ -37,12 +43,12 @@
 </template>
 
 <script>
-import CommonHeader from "@/components/common/CommonHeader.vue"
-import MainPageHeader from "@/components/common/MainPageHeader.vue"
-import CommonFooter from "@/components/common/CommonFooter.vue"
-import KaKaoMapMissingMain from "@/components/cupetfindpet/map/KaKaoMapMissingMain.vue"
-import MainPageList from "@/components/MainPageList.vue"
-import axios from "axios"
+import CommonHeader from "@/components/common/CommonHeader.vue";
+import MainPageHeader from "@/components/common/MainPageHeader.vue";
+import CommonFooter from "@/components/common/CommonFooter.vue";
+import KaKaoMapMissingMain from "@/components/cupetfindpet/map/KaKaoMapMissingMain.vue";
+import MainPageList from "@/components/MainPageList.vue";
+import axios from "axios";
 
 export default {
   name: "MainPage",
@@ -61,36 +67,55 @@ export default {
         "cat_meal.jpg",
         "hamster_fun.jpg",
       ],
+      petImages: [
+        "고양이-1.jpg",
+        "여름이-1.jpg",
+        "여름이-2.jpg",
+        "여름이-3.jpg",
+        "여름이-4.jpg",
+        "여름이-5.jpg",
+        "여름이-6.jpg",
+        "여름이-7.jpg",
+      ],
       currentImageIndex: 0,
+      currentImageIndex2: 0,
       recentBoardList: [],
-    }
+    };
   },
   mounted() {
-    setInterval(this.changeImage, 5000) // 10초마다 이미지 변경
-    this.fetchRecentBoardData()
+    setInterval(this.changeImage, 5000); // 10초마다 이미지 변경
+    setInterval(this.changeImage2, 8000); // 16초마다 반려동물 변경
+    this.fetchRecentBoardData();
   },
   methods: {
     changeImage() {
       this.currentImageIndex =
-        (this.currentImageIndex + 1) % this.adImages.length
+        (this.currentImageIndex + 1) % this.adImages.length;
+    },
+    changeImage2() {
+      this.currentImageIndex2 =
+        (this.currentImageIndex2 + 1) % this.petImages.length;
     },
     fetchRecentBoardData() {
       axios
         .get(`/api1/recentBoardView`)
         .then((response) => {
-          this.recentBoardList = response.data.recentBoardView
+          this.recentBoardList = response.data.recentBoardView;
         })
         .catch((error) => {
-          console.error("Error fetching pet data:", error)
-        })
+          console.error("반려동물 데이터를 불러오는 중 오류 발생:", error);
+        });
     },
   },
   computed: {
     currentImage() {
-      return `/img/${this.adImages[this.currentImageIndex]}`
+      return `/img/${this.adImages[this.currentImageIndex]}`;
+    },
+    currentImage2() {
+      return `/img/${this.petImages[this.currentImageIndex2]}`;
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -119,6 +144,12 @@ export default {
   width: 100%;
 }
 
+.image-container1,
+.image-container2 {
+  display: inline-block;
+  width: 46%;
+}
+
 .contents-container {
   padding: 20px;
   flex: 1;
@@ -132,11 +163,16 @@ export default {
   text-align: center;
 }
 
-.map-main-container,
-.board-main-container {
+.map-main-container {
   border: 1px solid #ccc;
   border-radius: 5px;
   height: 100%;
+}
+
+.board-main-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 50%;
 }
 
 .ad-container {
@@ -150,10 +186,18 @@ export default {
   border-radius: 5px;
 }
 
+.image1,
+.image2 {
+  width: 265px;
+  height: 265
+  px;
+  border-radius: 5px;
+}
+
 .top {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   margin-top: 20px;
   margin-left: 5px;
   font-weight: bold;
