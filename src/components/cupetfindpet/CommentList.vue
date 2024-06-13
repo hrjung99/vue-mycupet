@@ -17,6 +17,13 @@
         >
           <img src="./info/assets/사진아이콘.png" class="logo sub-logo" />
         </button>
+        <button
+          v-if="state.cupet_user_id === comment.cupet_user_id"
+          class="delete-btn"
+          @click="toggleDelete(comment.comment_no)"
+        >
+          X
+        </button>
       </div>
       <img
         v-if="comment.showImage"
@@ -33,6 +40,7 @@ import axios from "axios"
 import { reactive, onMounted } from "vue"
 
 export default {
+  name: "CommentList",
   props: {
     comments: {
       type: Array,
@@ -40,6 +48,20 @@ export default {
     },
   },
   setup(props) {
+    const state = reactive({
+      cupet_user_id: "",
+      cupet_user_nickname: "",
+      cupet_user_name: "",
+      cupet_user_address: "",
+      roadAddress: "",
+      jibunAddress: "",
+      detailAddress: "",
+      cupet_user_phonenumber: "",
+      cupet_user_birth: "",
+      cupet_user_gender: "",
+      cupet_user_point: 0,
+    })
+
     const reactiveComments = reactive(
       props.comments.map((comment) => ({
         ...comment,
@@ -48,6 +70,84 @@ export default {
         imageUrl: "",
       }))
     )
+
+    const fetchUserData = () => {
+      const token = localStorage.getItem("Token")
+
+      if (token) {
+        axios
+          .post(
+            "/api1/userView",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log("Data received:", response.data)
+            Object.assign(state, response.data.cupet_user_address)
+            state.cupet_user_id = response.data.cupet_user_id
+            state.cupet_user_nickname = response.data.cupet_user_nickname
+            state.cupet_user_name = response.data.cupet_user_name
+            state.cupet_user_address = response.data.cupet_user_address
+            state.roadAddress = response.data.address.roadAddress
+            state.jibunAddress = response.data.address.jibunAddress
+            state.detailAddress = response.data.address.detailAddress
+            state.cupet_user_phonenumber = response.data.cupet_user_phonenumber
+            state.cupet_user_birth = response.data.cupet_user_birth
+            state.cupet_user_gender = response.data.cupet_user_gender
+            state.cupet_user_point = response.data.cupet_user_point
+          })
+          .catch((error) => {
+            console.error("Error fetching user details:", error)
+          })
+      } else {
+        console.error("Token not found")
+      }
+    }
+
+    const deleteCommentImage = (comment_no) => {
+      axios
+        .get(`/api1/images/delete/comment?use_id=${comment_no}`)
+        .then(() => {
+          const comment = reactiveComments.find(
+            (c) => c.comment_no === comment_no
+          )
+          if (comment) {
+            comment.imageUrl = null
+          }
+        })
+        .catch((error) => {
+          console.error("사용자 이미지 삭제 중 에러:", error)
+          alert("사용자 이미지 삭제에 실패했습니다.")
+        })
+    }
+
+    const toggleDelete = (comment_no) => {
+      const comment = reactiveComments.find((c) => c.comment_no === comment_no)
+      if (comment && comment.imageUrl) {
+        deleteCommentImage(comment_no)
+      }
+
+      axios
+        .post("/api1/findpet/commentDelete", { comment_no })
+        .then((response) => {
+          console.log("댓글 삭제됨:", response.data)
+          alert("댓글이 삭제되었습니다.")
+          const index = reactiveComments.findIndex(
+            (c) => c.comment_no === comment_no
+          )
+          if (index !== -1) {
+            reactiveComments.splice(index, 1)
+          }
+        })
+        .catch((error) => {
+          console.error("댓글 삭제 중 오류 발생:", error)
+          alert("댓글 삭제에 실패했습니다.")
+        })
+    }
 
     const checkImages = () => {
       reactiveComments.forEach((comment) => {
@@ -77,11 +177,16 @@ export default {
       }
     }
 
-    onMounted(checkImages)
+    onMounted(() => {
+      fetchUserData()
+      checkImages()
+    })
 
     return {
+      state,
       reactiveComments,
       toggleImage,
+      toggleDelete,
     }
   },
 }
@@ -98,16 +203,28 @@ export default {
   align-items: center;
 }
 
-.comment-text p {
-  margin-right: 10px;
-}
-
 .image_btn {
   border: none;
   background-color: transparent;
   cursor: pointer;
   margin-top: -45px;
-  margin-left: -65px;
+  margin-left: -200px;
+  margin-left: 5px;
+  z-index: 1;
+}
+
+.delete-btn {
+  background-color: transparent;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  color: black;
+  margin-right: 120px;
+  margin-top: -3px;
+  position: absolute;
+  align-self: center;
+  right: 0;
+  z-index: 1;
 }
 
 .logo.sub-logo {
