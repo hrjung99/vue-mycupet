@@ -1,6 +1,5 @@
 <template>
   <header>
-    <!-- Header content here -->
     <div class="header-content">
       <router-link to="/">
         <img src="./assets/logo.png" alt="new" width="60" height="40" />
@@ -15,8 +14,38 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "TestHeader",
+  async mounted() {
+    const token = localStorage.getItem("Token");
+    if (token) {
+      try {
+        const res = await axios.post(
+          "/api2/user/tokenexpcheck",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (res.headers.authorization) {
+          const newToken = res.headers.authorization.split(" ")[1];
+          localStorage.removeItem("Token");
+          localStorage.setItem("Token", newToken); // 새 토큰 저장
+
+          // Check if a new token was received and trigger reload
+        }
+        if (res.headers.exptoken) {
+          localStorage.removeItem("Token");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  },
 };
 </script>
 
