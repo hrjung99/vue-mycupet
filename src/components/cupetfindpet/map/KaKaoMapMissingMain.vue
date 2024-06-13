@@ -30,7 +30,12 @@ export default {
           })
           .then((res) => {
             const data = res.data;
-            updateCoordinate(data.UserLocate.locateY, data.UserLocate.locateX);
+            if (data.msg === "success") {
+              updateCoordinate(
+                data.UserLocate.locateY,
+                data.UserLocate.locateX
+              );
+            }
             initializeMap();
           })
           .catch((error) => {

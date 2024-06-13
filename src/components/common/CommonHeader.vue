@@ -38,8 +38,9 @@ export default {
 
           // Check if a new token was received and trigger reload
         }
-        if (res.headers.exptoken) {
+        if (res.headers.jwtres === "failed") {
           localStorage.removeItem("Token");
+          window.location.reload();
         }
       } catch (err) {
         console.log(err);
