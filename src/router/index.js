@@ -7,11 +7,14 @@ import MyCupetPage from '@/components/MyCupetPage/MypageMain.vue';
 import MyCupetPointMain from '@/components/MyCupetPage/Point/MyCupetPointMain.vue';
 import UserUpdatePageMain from '@/components/MyCupetPage/User/UserUpdatePageMain.vue';
 import ShopMain from '@/components/shop/ShopMain.vue';
+import ShopAdd from '@/components/shop/ShopAdd.vue';
+import ShopDetailPage from '@/components/shop/ShopDetailPage.vue';
 import ShopCart from '@/components/shop/ShopCart.vue';
 import OrderPage from '@/components/shop/OrderPage.vue';
 import OrdersPage from '@/components/shop/OrdersPage.vue';
 import OrderDetailPage from '@/components/shop/OrderDetailPage.vue';
 import PaymentComponent from '@/components/shop/PaymentComponent.vue';
+import PaymentList from '@/components/shop/PaymentList.vue';
 import BoardMain from '@/components/board/list/BoardMain.vue';
 import BoardInsertMain from '@/components/board/insert/BoardInsertMain.vue';
 import BoardUpdateMain from '@/components/board/update/BoardUpdateMain.vue';
@@ -28,11 +31,14 @@ const routes = [
     { path: '/MyCupetPointMain', component: MyCupetPointMain },
     { path: '/UserUpdatePageMain', component: UserUpdatePageMain },
     { path: '/ShopMain', component: ShopMain },
+    { path: '/ShopAdd', component: ShopAdd },
+    { path: '/shop/:cupet_prodno', name: 'ShopDetail', component: ShopDetailPage },
     { path: '/ShopCart', component: ShopCart },
     { path: '/OrderPage', component: OrderPage },
     { path: '/OrdersPage', component: OrdersPage },
     { path: '/order/:cupet_order_no', name: 'OrderDetail', component: OrderDetailPage },
     { path: '/PayPage', component: PaymentComponent },
+    { path: '/PayList', component: PaymentList },
     { path: '/BoardMain', component: BoardMain },
     { path: '/BoardInsertMain', component: BoardInsertMain },
     { path: '/BoardUpdateMain', component: BoardUpdateMain },

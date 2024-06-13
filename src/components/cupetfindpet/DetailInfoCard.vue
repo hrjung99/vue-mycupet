@@ -4,7 +4,7 @@
     class="card"
     style="width: 25rem; max-height: 80vh; overflow: auto"
   >
-    <img src="img/logo.png" class="card-img-top" alt="Pet Image" />
+    <img :src="petDetail.ImageUrl" class="card-img-top" alt="Pet Image" />
     <div class="card-body">
       <h5 class="card-title">펫 이름: {{ petDetail.cupet_pet_name }}</h5>
       <br />

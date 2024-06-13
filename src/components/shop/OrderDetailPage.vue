@@ -21,7 +21,7 @@
             <ul class="list-group">
               <li v-for="item in orderItems" :key="item.cupet_prodno" class="list-group-item d-flex justify-content-between align-items-center">
                 <span>{{ item.cupet_prodname }}</span>
-                <span>{{ item.cupet_prodprice }} 원</span>
+                <span>{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원</span>
               </li>
             </ul>
           </div>
