@@ -13,7 +13,7 @@
           <p class="discount">{{ product.cupet_proddiscountper }}% 할인</p>
           <p class="final-price">{{ lib.getNumberFormatted(product.cupet_prodprice - (product.cupet_prodprice * product.cupet_proddiscountper / 100)) }} 원</p>
           <p v-if="product.cupet_prodcnt === 0" class="out-of-stock">Sold Out</p>
-          <p>{{ product.cupet_proddesc }}</p>
+          <p class="content">{{ product.cupet_prodcont }}</p>
           <button button type="button" @click.stop="addToCart" :disabled="product.cupet_prodcnt === 0">장바구니 담기</button>
           <router-link to="/ShopCart" class="cart btn">
           <button button type="button">장바구니 바로가기</button>
