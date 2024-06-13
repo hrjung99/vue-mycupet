@@ -4,7 +4,7 @@
       <CommonSideBar ref="sidebar" />
       <div class="content">
         <h1 style="color:#7E84A3;">게시물 등록</h1>
-        <BoardContent v-model:contentData="contentData" @input-change="updateContentData" />
+        <BoardInsertContent v-model:contentData="contentData" @input-change="updateContentData" />
         <button type="button" class="insert-button" @click="BoardInsert">등록</button>
       <router-link to="/BoardMain">
         <button type="button" class="cancel-button">취소</button>
@@ -19,7 +19,7 @@
 import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
-import BoardContent from "@/components/board/BoardContent.vue";
+import BoardInsertContent from "@/components/board/insert/BoardInsertContent.vue";
 import '@/components/common/CommonButtonStyle.css';
 import axios from 'axios'
 
@@ -29,7 +29,7 @@ export default {
     CommonHeader,
     CommonFooter,
     CommonSideBar,
-    BoardContent,
+    BoardInsertContent,
   },
 
   data() {
@@ -60,10 +60,9 @@ export default {
       console.log("contentData: ", this.contentData);
       console.log("token: ", token);
 
-      const contentData = this.contentData
 
       axios
-        .post('/api1/boardInsert', contentData, {
+        .post('/api1/boardInsert', this.contentData, {
           headers: {
             Authorization: `Bearer ${token}`, // Bearer 스킴을 사용한 토큰 인증
           },

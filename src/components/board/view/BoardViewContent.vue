@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="content">
-      <h1 style="color:#7E84A3;">게시물 상세보기</h1>
+      <h1 style="color: #7e84a3">게시물 상세보기</h1>
       <div class="form-container">
         <div class="form-group">
           <label>게시물 번호: </label>
           <div class="info">{{ state.board.cupet_board_no }}</div>
         </div>
         <div>
-        <label>말머리: </label>
+          <label>머릿말: </label>
           <div class="info">{{ state.board.cupet_board_head_name }}</div>
         </div>
         <div class="form-group">
@@ -34,10 +34,8 @@
       </div>
     </div>
     <div class="change-button">
-      <router-link :to="{ path: '/BoardUpdateMain', query: { viewData: state.board}}">
-        <button type="button" class="update-button">수정</button>
-      </router-link>
-      <button type="button" class="delete-button" @click="BoardDelete(state.board.cupet_board_no)">삭제</button>
+        <button type="button" class="update-button" @click="GoToUpdate(state.board.cupet_board_no)">수정</button>
+        <button type="button" class="delete-button" @click="BoardDelete(state.board.cupet_board_no)">삭제</button>
       <router-link to="/BoardMain">
         <button type="button" class="cancel-button">취소</button>
       </router-link>
@@ -45,47 +43,54 @@
   </div>
 </template>
 
-<script setup>
-import axios from "axios";
-import { reactive, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import '@/components/common/CommonButtonStyle.css';
+<script>
+import axios from 'axios'
+import '@/components/common/CommonButtonStyle.css'
 
 
-const router = useRouter();
-const route = useRoute();
-const state = reactive({ board: {} });
+export default {
+  data() {
+    return {
+    state: {
+        board: {},
+      },
+    }
+  },
+  mounted() {
+    const cupet_board_no = this.$route.query.cupet_board_no
+    axios
+      .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
+      .then((response) => {
+        this.state.board = response.data.board
+        console.log('data : ', this.state.board)
+      })
+      .catch((error) => {
+        console.error('Error fetching board details:', error)
+      })
+
+  },
 
 
-const BoardDelete = (cupet_board_no) => {
-  axios
-    .get(`/api1/boardDelete?cupet_board_no=${cupet_board_no}`)
-    .then((response) => {
-      console.log("Board deleted:", response.data);
-      // 삭제 후 BoardMain 페이지로 이동
-      router.push({ path: '/BoardMain' });
-    })
-    .catch((error) => {
-      console.error("Error deleting board:", error);
-    });
-};
+  methods: {
+    BoardDelete(cupet_board_no) {
+      axios
+        .get(`/api1/boardDelete?cupet_board_no=${cupet_board_no}`)
+        .then((response) => {
+          console.log('Board deleted:', response.data)
+          // 삭제 후 BoardMain 페이지로 이동
+          this.$router.push('/BoardMain')
+        })
+        .catch((error) => {
+          console.error('Error deleting board:', error)
+        })
 
+    },
 
-
-onMounted(() => {
-  const cupet_board_no = route.query.cupet_board_no;
-  axios
-    .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
-    .then((response) => {
-      state.board = response.data.board;
-      console.log("data : ", state.board)
-      
-    })
-    .catch((error) => {
-      console.error("Error fetching board details:", error);
-    });
-});
-
+    GoToUpdate(cupet_board_no){
+      this.$router.push({ path: '/BoardUpdateMain', query: { cupet_board_no } })
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -106,7 +111,6 @@ onMounted(() => {
 .form-group {
   display: flex;
   margin-bottom: 10px;
-  
 }
 
 .form-group label {
