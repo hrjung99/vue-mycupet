@@ -21,7 +21,13 @@
                   <span class="text-muted">{{ lib.getNumberFormatted(getItemTotalPrice(item)) }}원</span>
                 </li>
               </ul>
-              <h3 class="text-center total-price">{{ lib.getNumberFormatted(computedPrice) }}원</h3>
+              <div class="total-info">
+                <h4 class="text-right">현재 보유 Point: {{ state.form.point }} &nbsp; 
+                  <router-link to="/PayPage">
+                    <button type="button" class="charge-button-small">충전</button>
+                  </router-link>
+                </h4>
+              </div>
             </div>
             <div class="col-md-7 col-lg-8">
               <h4 class="mb-3">주문자 정보</h4>
@@ -57,9 +63,8 @@
       </div>
     </div>
   </div>
-<CommonFooter />
+  <CommonFooter />
 </template>
-
 
 <script>
 import { computed, reactive } from "vue";
@@ -87,7 +92,8 @@ export default {
         address: "",
         phone: "",
         price: "",
-        date: new Date().toISOString().slice(0, 16)
+        date: new Date().toISOString().slice(0, 16),
+        point: 0
       }
     });
 
@@ -104,6 +110,19 @@ export default {
         })
         .catch(error => {
           console.error("Error fetching cart items:", error);
+        });
+
+      // 사용자 포인트 로드
+      axios.get("/api1/user/point", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(({ data }) => {
+          state.form.point = data;
+        })
+        .catch(error => {
+          console.error("Error fetching user points:", error);
         });
     };
 
@@ -138,6 +157,11 @@ export default {
     });
 
     const submit = () => {
+      if (computedPrice.value > state.form.point) {
+        alert("포인트가 부족합니다.");
+        return;
+      }
+
       const args = JSON.parse(JSON.stringify(state.form));
       args.items = JSON.stringify(state.items);
       args.price = computedPrice.value;
@@ -160,3 +184,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .content-container {
+    display: flex;
+  }
+
+  .orderPage {
+    flex: 1;
+    padding: 20px;
+  }
+
+  .total-info {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  </style>
