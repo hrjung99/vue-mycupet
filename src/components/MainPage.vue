@@ -16,8 +16,17 @@
           </div>
           <div class="col-md-6">
             <div class="board-main-container p-3 mb-3 text-center">
-              <h5 class="container-title">최근 핫한 게시물</h5>
-              <!-- 여기에 게시물 내용을 추가하세요 -->
+              <h5 class="container-title">최근 게시물</h5>
+              <div class="top">
+                <h5 class="top-head">머릿말</h5>
+                <h5 class="top-title">제목</h5>
+                <h5 class="top-writer">작성자</h5>
+              </div>
+              <div class="recent_board_list">
+                <div v-for="(board, index) in recentBoardList" :key="index">
+                  <MainPageList :board="board" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -28,10 +37,12 @@
 </template>
 
 <script>
-import CommonHeader from "@/components/common/CommonHeader.vue";
-import MainPageHeader from "@/components/common/MainPageHeader.vue";
-import CommonFooter from "@/components/common/CommonFooter.vue";
-import KaKaoMapMissingMain from "@/components/cupetfindpet/map/KaKaoMapMissingMain.vue";
+import CommonHeader from "@/components/common/CommonHeader.vue"
+import MainPageHeader from "@/components/common/MainPageHeader.vue"
+import CommonFooter from "@/components/common/CommonFooter.vue"
+import KaKaoMapMissingMain from "@/components/cupetfindpet/map/KaKaoMapMissingMain.vue"
+import MainPageList from "@/components/MainPageList.vue"
+import axios from "axios"
 
 export default {
   name: "MainPage",
@@ -40,6 +51,7 @@ export default {
     MainPageHeader,
     CommonFooter,
     KaKaoMapMissingMain,
+    MainPageList,
   },
   data() {
     return {
@@ -50,44 +62,61 @@ export default {
         "hamster_fun.jpg",
       ],
       currentImageIndex: 0,
-    };
+      recentBoardList: [],
+    }
   },
   mounted() {
-    setInterval(this.changeImage, 5000); // 10초마다 이미지 변경
+    setInterval(this.changeImage, 5000) // 10초마다 이미지 변경
+    this.fetchRecentBoardData()
   },
   methods: {
     changeImage() {
       this.currentImageIndex =
-        (this.currentImageIndex + 1) % this.adImages.length;
+        (this.currentImageIndex + 1) % this.adImages.length
+    },
+    fetchRecentBoardData() {
+      axios
+        .get(`/api1/recentBoardView`)
+        .then((response) => {
+          this.recentBoardList = response.data.recentBoardView
+        })
+        .catch((error) => {
+          console.error("Error fetching pet data:", error)
+        })
     },
   },
   computed: {
     currentImage() {
-      return `/img/${this.adImages[this.currentImageIndex]}`;
+      return `/img/${this.adImages[this.currentImageIndex]}`
     },
   },
-};
+}
 </script>
 
 <style scoped>
-/* 스타일 추가 */
 .main-container {
   display: flex;
   user-select: none;
   flex-direction: column;
-  height: 100vh; /* 화면 전체 높이에 맞추기 위해 */
+  height: 100vh;
   font-family: "Roboto", sans-serif;
 }
 
 .child-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* 내부 요소를 수직 가운데 정렬합니다. */
+  align-items: center;
+}
+
+.recent_board_list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 3px;
 }
 
 .ad-container,
 .contents-container {
-  width: 100%; /* 내부 요소의 너비를 100%로 설정합니다. */
+  width: 100%;
 }
 
 .contents-container {
@@ -105,9 +134,9 @@ export default {
 
 .map-main-container,
 .board-main-container {
-  border: 1px solid #ccc; /* 컨테이너 스타일을 추가할 수 있습니다 */
+  border: 1px solid #ccc;
   border-radius: 5px;
-  height: 100%; /* 부모 요소와 높이를 맞추기 위해 추가 */
+  height: 100%;
 }
 
 .ad-container {
@@ -119,5 +148,34 @@ export default {
   width: 70vmax;
   height: 100px;
   border-radius: 5px;
+}
+
+.top {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.top-head {
+  width: 30%;
+  margin-right: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.top-title {
+  width: 50%;
+  margin-right: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.top-writer {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
 }
 </style>
