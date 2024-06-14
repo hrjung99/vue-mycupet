@@ -7,7 +7,7 @@
           <label>게시물 번호: </label>
           <div class="info">{{ state.board.cupet_board_no }}</div>
         </div>
-        <div>
+        <div class="form-group">
           <label>머릿말: </label>
           <div class="info">{{ state.board.cupet_board_head_name }}</div>
         </div>
@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
           <label>내용: </label>
-          <div class="info">{{ state.board.cupet_board_content }}</div>
+          <div class="info" v-html="cleanContent(state.board.cupet_board_content)"></div>
         </div>
         <div class="form-group">
           <label>작성자: </label>
@@ -82,8 +82,13 @@ export default {
       })
     this.fetchUserData()
   },
-
   methods: {
+    cleanContent(content) {
+      if (content) {
+        return content.replace(/<p><\/p>/g, '')
+      }
+      return content
+    },
     BoardDelete(cupet_board_no) {
       axios
         .get(`/api1/boardDelete?cupet_board_no=${cupet_board_no}`)
