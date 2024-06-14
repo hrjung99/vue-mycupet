@@ -72,10 +72,9 @@ export default {
   data() {
     return {
       adImages: [
-        "cat_fun.jpg",
-        "dog_fun.jpg",
-        "cat_meal.jpg",
-        "hamster_fun.jpg",
+        "ad-image1.png",
+        "ad-image2.png",
+        "ad-image3.png",
       ],
       petImages: [
         "고양이-1.jpg",
