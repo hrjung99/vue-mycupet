@@ -15,13 +15,12 @@
         @click="goToView(item.cupet_board_no)"
         style="cursor: pointer"
       >
-        <td>
-          <img
-            src="@/components/common/assets/newicon.png"
-            width="25"
-            height="11"
-          />
+        <td v-if="item.isNew==1">
+          <img src="@/components/common/assets/newicon.png" alt="new" width="25" height="11">
         </td>
+        <td v-else>
+        </td>
+
         <td>{{ item.cupet_board_head_name }}</td>
         <td>{{ item.cupet_board_title }}</td>
         <td>{{ item.cupet_user_nickname }}</td>
