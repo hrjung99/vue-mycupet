@@ -2,6 +2,7 @@
     <CommonHeader />
     <div class="content-container">
       <CommonSideBar />
+      <div class="table-container"></div>
       <div v-if="user">
         <h2>{{ user.cupet_user_name }}님의 상세 정보</h2>
         <table class="table table-bordered">
@@ -23,6 +24,14 @@
               <td>{{ user.cupet_user_address }}</td>
             </tr>
             <tr>
+              <th>주소</th>
+              <td>{{ user.roadAddress }}</td>
+            </tr>
+            <tr>
+              <th>상세주소</th>
+              <td>{{ user.detailAddress }}</td>
+            </tr>
+            <tr>
               <th>성별</th>
               <td>{{ user.cupet_user_gender }}</td>
             </tr>
@@ -42,10 +51,11 @@
               <th>포인트</th>
               <td>{{ user.cupet_user_point }}</td>
             </tr>
+            
           </tbody>
         </table>
       </div>
-    </div>
+      </div>
     <CommonFooter />
   </template>
   
@@ -91,6 +101,10 @@
   <style scoped>
   .content-container {
     text-align: center;
+  }
+
+  .table-container{
+    margin-left: 50px;
   }
   
   .table {
