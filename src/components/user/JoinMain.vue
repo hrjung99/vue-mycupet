@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import CommonHeader from "@/components/common/CommonHeader.vue"
-import CommonSideBar from "@/components/common/CommonSideBar.vue"
-import CommonFooter from "@/components/common/CommonFooter.vue"
-import JoinForm from "@/components/user/register/JoinForm.vue"
-import "./../common/CommonButtonStyle.css"
+import CommonHeader from "@/components/common/CommonHeader.vue";
+import CommonSideBar from "@/components/common/CommonSideBar.vue";
+import CommonFooter from "@/components/common/CommonFooter.vue";
+import JoinForm from "@/components/user/register/JoinForm.vue";
+import "./../common/CommonButtonStyle.css";
 
 export default {
   name: "JoinMain",
@@ -36,17 +36,17 @@ export default {
       nickname: "",
       gender: "",
       add: "",
-    }
+    };
   },
   mounted() {
-    this.changeSidebarColor()
+    this.changeSidebarColor();
   },
   methods: {
     changeSidebarColor() {
-      this.$refs.sidebar.changeBackground("#ffffff")
+      this.$refs.sidebar.changeBackground("#ffffff");
     },
   },
-}
+};
 </script>
 
 <style scoped>
