@@ -1,46 +1,28 @@
 <template>
   <div class="card shadow-sm" @click="viewDetails(item.cupet_prodno)">
-    <img
-      :src="imageUrl || 'img/logo.png'"
-      alt="new"
-      width="400"
-      height="250"
-      class="logo sub-logo"
-    />
+    <img :src="imageUrl || 'img/logo.png'" alt="new" width="400" height="250" class="logo sub-logo" />
     <div class="card-body">
       <p class="card-text">
         <span>{{ item.cupet_prodname }} &nbsp; </span>
-        <span class="discount badge bg-danger">
-          {{ item.cupet_proddiscountper }} % 
-        </span> &nbsp;
-        <span v-if="state.cupet_user_principle === 'admin'" @click.stop="deleteProduct(item.cupet_prodno)" >
-        <i class="fa fa-trash" aria-hidden="true"></i>
+        <span class="discount badge bg-danger"> {{ item.cupet_proddiscountper }} % </span> &nbsp;
+        <span v-if="state.cupet_user_principle === 'admin'" @click.stop="deleteProduct(item.cupet_prodno)">
+          <i class="fa fa-trash" aria-hidden="true"></i>
         </span>
-      </p> 
+      </p>
       <div class="d-flex justify-content-between align-items-center">
-        <button 
-          class="btn btn-primary" 
-          @click.stop="addToCart(item.cupet_prodno)"
-          :disabled="item.cupet_prodcnt === 0">
+        <button class="btn btn-primary" @click.stop="addToCart(item.cupet_prodno)" :disabled="item.cupet_prodcnt === 0">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </button>
-        <small class="price text-muted">
-          {{ lib.getNumberFormatted(item.cupet_prodprice) }} 원 
-        </small>
-        <small class="real text-danger">
-          {{ lib.getNumberFormatted(item.cupet_prodprice - (item.cupet_prodprice * item.cupet_proddiscountper / 100)) }} 원
-        </small>
+        <small class="price text-muted"> {{ lib.getNumberFormatted(item.cupet_prodprice) }} 원 </small>
+        <small class="real text-danger"> {{ lib.getNumberFormatted(item.cupet_prodprice - (item.cupet_prodprice * item.cupet_proddiscountper / 100)) }} 원 </small>
       </div>
-      <div v-if="item.cupet_prodcnt === 0" class="out-of-stock">
-        sold out
-      </div>
-      
+      <div v-if="item.cupet_prodcnt === 0" class="out-of-stock"> sold out </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, reactive } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import lib from "@/scripts/lib";
 import axios from 'axios';
 import router from '@/router';
@@ -56,10 +38,6 @@ export default {
     const token = localStorage.getItem("Token");
     const state = reactive({
       cupet_user_principle: "",
-    });
-
-    onMounted(() => {
-      loadProdImage(props.item.cupet_prodno);
     });
 
     const loadProdImage = (cupet_prodno) => {
@@ -108,9 +86,7 @@ export default {
         }
       })
       .then(response => {
-        console.log("Data received:", response.data)
-        Object.assign(state, response.data.cupet_user_principle)
-            state.cupet_user_principle = response.data.cupet_user_principle
+        state.cupet_user_principle = response.data.cupet_user_principle
       })
       .catch(error => {
         console.error("Error fetching cart count:", error);
@@ -119,7 +95,12 @@ export default {
 
     loaduserdata();
 
-    return { lib, addToCart, viewDetails, loadProdImage, imageUrl, state, deleteProduct };
+    // 항목이 변경될 때마다 이미지 다시 로드
+    watch(() => props.item, (newItem) => {
+      loadProdImage(newItem.cupet_prodno);
+    }, { immediate: true });
+
+    return { lib, addToCart, viewDetails, imageUrl, state, deleteProduct };
   }
 }
 </script>
