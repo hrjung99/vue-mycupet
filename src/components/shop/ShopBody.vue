@@ -15,6 +15,19 @@
           <ShopProduct :item="item" />
         </div>
       </div>
+      <div class="pagination">
+        <button @click="changePage(pageNo - 1)" :disabled="pageNo === 1">&laquo;</button>
+        <button
+          v-for="page in pages"
+          :key="page"
+          @click="changePage(page)"
+          :disabled="page === pageNo"
+          :class="{ active: page === pageNo }"
+        >
+          {{ page }}
+        </button>
+        <button @click="changePage(pageNo + 1)" :disabled="pageNo === totalPages">&raquo;</button>
+      </div>
     </div>
   </div>
 </template>
@@ -29,18 +42,35 @@ export default {
   components: { ShopProduct },
 
   setup() {
-    const state = reactive({ items: [] });
+    const state = reactive({
+      items: [],
+      total: 0,
+      pageNo: 1,
+      size: 9,
+      totalPages: 0,
+    });
     const selectedSortOption = ref('latest');
 
-    onMounted(() => {
-      axios.get("/api1/products")
+    const fetchData = () => {
+      axios.get("/api1/products", {
+        params: {
+          pageNo: state.pageNo,
+          size: state.size,
+        },
+      })
         .then(res => {
           state.items = res.data.list;
-          sortItems();  // Fetch 후에 정렬 수행
+          state.total = res.data.total;
+          state.totalPages = Math.ceil(state.total / state.size);
+          sortItems();
         })
         .catch(error => {
-          console.error("Error fetching select options:", error);
+          console.error("Error fetching items:", error);
         });
+    };
+
+    onMounted(() => {
+      fetchData();
     });
 
     const sortItems = () => {
@@ -53,14 +83,54 @@ export default {
       }
     };
 
+    const changePage = (page) => {
+      if (page < 1 || page > state.totalPages) return;
+      state.pageNo = page;
+      fetchData();
+    };
+
     const sortedItems = computed(() => {
       return [...state.items];
     });
 
-    return { state, selectedSortOption, sortedItems, sortItems };
+    const pages = computed(() => {
+      let startPage = Math.max(1, state.pageNo - 2);
+      let endPage = Math.min(state.totalPages, state.pageNo + 2);
+      let pages = [];
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      return pages;
+    });
+
+    return { state, selectedSortOption, sortedItems, sortItems, changePage, pages };
   },
 };
 </script>
 
 <style scoped>
+.pagination {
+  flex: 1;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 </style>

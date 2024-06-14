@@ -31,6 +31,10 @@ export default {
 </script>
 
 <style>
+.home{
+  width: 100%;
+}
+
 .bd-placeholder-img {
   font-size: 1.125rem;
   text-anchor: middle;
