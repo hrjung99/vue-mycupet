@@ -3,41 +3,28 @@
     <div class="main-content">
       <div class="image-container">
         <button class="image_btn" @click="triggerFileInput">
-          <img
-            :src="imageUrl || 'img/logo.png'"
-            alt="new"
-            width="180"
-            height="120"
-            class="logo"
-          />
+          <img :src="imageUrl || 'img/logo.png'" alt="new" width="180" height="120" class="logo" />
         </button>
         <button v-if="imageUrl" class="delete-image-btn" @click="deleteImage">
           X
         </button>
       </div>
-      <input
-        type="file"
-        ref="fileInput"
-        style="display: none"
-        @change="handleFileChange"
-      />
+      <input type="file" ref="fileInput" style="display: none" @change="handleFileChange" />
       <div class="join-container">
         <div class="page-header">
           <h2>마이페이지</h2>
           <router-link to="/UserUpdatePageMain">
             <button type="submit" class="user-update-button">
-              <img
-                src="./../../MyCupetPage/image/수정아이콘.png"
-                alt="new"
-                width="30"
-                height="30"
-              />
+              <img src="./../../MyCupetPage/image/수정아이콘.png" alt="new" width="30" height="30" />
             </button>
           </router-link>
         </div>
         <div class="form-group" v-for="(value, key) in userFields" :key="key">
           <label :for="key">{{ key }}: {{ value }}</label>
         </div>
+        <router-link v-if="state.cupet_user_principle === 'admin'" to="/UserView">
+          <button type="button" class="manage-users-button">회원 관리</button>
+        </router-link>
         <div class="form-group point-group">
           <label>잔여포인트: {{ state.cupet_user_point }}</label>
           <router-link to="/PayPage">
@@ -51,12 +38,7 @@
         <h2>나의 애완동물</h2>
         <div class="pet-button-container">
           <button type="submit" class="plus-button" @click="addNewPet">
-            <img
-              src="./../../MyCupetPage/image/플러스버튼.png"
-              alt="new"
-              width="30"
-              height="30"
-            />
+            <img src="./../../MyCupetPage/image/플러스버튼.png" alt="new" width="30" height="30" />
           </button>
         </div>
       </div>
@@ -100,6 +82,7 @@ export default {
         cupet_user_birth: "",
         cupet_user_gender: "",
         cupet_user_point: 0,
+        cupet_user_principle: "",
       }),
       imageUrl: null,
     }
@@ -117,6 +100,7 @@ export default {
         전화번호: this.state.cupet_user_phonenumber,
         생년월일: this.state.cupet_user_birth,
         성별: this.state.cupet_user_gender,
+        권한: this.state.cupet_user_principle,
       }
     },
   },
@@ -198,6 +182,7 @@ export default {
             this.state.cupet_user_birth = response.data.cupet_user_birth
             this.state.cupet_user_gender = response.data.cupet_user_gender
             this.state.cupet_user_point = response.data.cupet_user_point
+            this.state.cupet_user_principle = response.data.cupet_user_principle
 
             this.fetchPetData()
             this.fetchUserImage(this.state.cupet_user_id)

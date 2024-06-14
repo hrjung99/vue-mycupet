@@ -20,6 +20,8 @@ import BoardInsertMain from '@/components/board/insert/BoardInsertMain.vue';
 import BoardUpdateMain from '@/components/board/update/BoardUpdateMain.vue';
 import BoardViewMain from '@/components/board/view/BoardViewMain.vue';
 import MissingPetMain from '@/components/cupetfindpet/MissingPetMain.vue';
+import UserView from '@/components/user/AdminUser/UserView.vue'
+import UserDetailView from '@/components/user/AdminUser/UserDetailView.vue'
 
 
 const routes = [
@@ -44,6 +46,8 @@ const routes = [
     { path: '/BoardUpdateMain', component: BoardUpdateMain },
     { path: '/BoardViewMain', component: BoardViewMain },
     { path: '/MissingPetMain', component: MissingPetMain },
+    { path: '/UserView', component: UserView },
+    { path: '/User/:cupet_user_id',name: 'UserDetail', component: UserDetailView },
 ];
 
 const router = createRouter({
