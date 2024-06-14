@@ -10,9 +10,11 @@
                         <th>선택</th>
                         <th>이름</th>
                         <th>닉네임</th>
-                        <th>주소</th>
+                        <th>우편번호</th>
                         <th>생년월일</th>
                         <th>전화번호</th>
+                        <th>성별</th>
+                        <th>이메일</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,6 +25,8 @@
                         <td>{{ user.cupet_user_address }}</td>
                         <td>{{ user.cupet_user_birth }}</td>
                         <td>{{ user.cupet_user_phonenumber }}</td>
+                        <td>{{ user.cupet_user_gender }}</td>
+                        <td>{{ user.cupet_user_email }}</td>
                     </tr>
                 </tbody>
                 <br/>
@@ -116,8 +120,8 @@ export default {
 }
 
 .table-container {
-    margin: 0 auto; 
-    max-width: 800px; 
+    margin-left: 50px;
+    text-align: center;
 }
 
 .table {

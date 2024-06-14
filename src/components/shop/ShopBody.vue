@@ -16,17 +16,7 @@
         </div>
       </div>
       <div class="pagination">
-        <button @click="changePage(pageNo - 1)" :disabled="pageNo === 1">&laquo;</button>
-        <button
-          v-for="page in pages"
-          :key="page"
-          @click="changePage(page)"
-          :disabled="page === pageNo"
-          :class="{ active: page === pageNo }"
-        >
-          {{ page }}
-        </button>
-        <button @click="changePage(pageNo + 1)" :disabled="pageNo === totalPages">&raquo;</button>
+        <button v-for="page in pages" :key="page" @click="changePage(page)" :disabled="page === pageNo" :class="{ active: page === pageNo, highlighted: hoveredPage === page }">{{ page }}</button>
       </div>
     </div>
   </div>
@@ -50,6 +40,7 @@ export default {
       totalPages: 0,
     });
     const selectedSortOption = ref('latest');
+    const hoveredPage = ref(null);
 
     const fetchData = () => {
       axios.get("/api1/products", {
@@ -89,6 +80,7 @@ export default {
       fetchData();
     };
 
+
     const sortedItems = computed(() => {
       return [...state.items];
     });
@@ -103,7 +95,7 @@ export default {
       return pages;
     });
 
-    return { state, selectedSortOption, sortedItems, sortItems, changePage, pages };
+    return { state, selectedSortOption, sortedItems, sortItems, changePage, pages, hoveredPage };
   },
 };
 </script>
@@ -123,9 +115,9 @@ export default {
   cursor: pointer;
 }
 
-.pagination button.active {
+.pagination button:hover {
   font-weight: bold;
-  background-color: #007bff;
+  background-color: #c0f8d1;
   color: white;
 }
 
@@ -133,4 +125,5 @@ export default {
   cursor: not-allowed;
   opacity: 0.5;
 }
+
 </style>
