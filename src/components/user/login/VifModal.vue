@@ -52,7 +52,7 @@ export default {
         .then((response) => {
           if (response.data === "success") {
             alert("이메일 인증이 성공적으로 완료되었습니다.");
-            this.close();
+
             this.showNewPasswordModal = true; // 새로운 비밀번호 입력 모달을 보이게 설정
           } else {
             alert("이메일 인증에 실패했습니다. 다시 시도해주세요.");

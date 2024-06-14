@@ -23,7 +23,7 @@
 
 <script>
 import PasswordRecoveryModal from "./PRModal.vue";
-import VerificationModal from "./VifModal.vue";
+import VerificationModal from "@/components/user/login/VifModal.vue";
 import axios from "axios";
 
 export default {

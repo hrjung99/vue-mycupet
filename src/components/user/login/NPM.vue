@@ -49,6 +49,7 @@ export default {
         .then((response) => {
           if (response.data === "success") {
             alert("비밀번호가 성공적으로 변경되었습니다.");
+            window.location.reload();
             this.close(); // 모달 닫기
           } else {
             alert("비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
