@@ -14,8 +14,8 @@
     </div>
 
     <label style="font-size: 1.2em; font-weight: bold; margin-top: 1em">
-      - 제보 목록 -</label
-    >
+      - 제보 목록 -
+    </label>
     <div
       class="comment-list"
       style="
@@ -70,23 +70,21 @@ export default {
   },
   methods: {
     // 서버로부터 댓글을 가져오는 함수
-    getComments() {
+    async getComments() {
       // petDetail에 값이 있는 경우에만 요청 보냄
       if (this.petDetail && this.petDetail.cupet_pet_no) {
         this.loadingComments = true; // 댓글을 불러오는 중임을 표시
-        axios
-          .post("/api1/findpet/MisssingPetComments", {
+        try {
+          const res = await axios.post("/api1/findpet/MisssingPetComments", {
             cupetPetNo: this.petDetail.cupet_pet_no,
-          })
-          .then((res) => {
-            this.comments = res.data.list;
-            this.loadingComments = false; // 댓글 로딩 완료
-          })
-          .catch((err) => {
-            console.error("Error fetching comments:", err);
-            this.loadingComments = false; // 댓글 로딩 실패 시도
-            // 에러 처리: 적절한 메시지 표시 또는 기타 작업 수행
           });
+          this.comments = res.data.list;
+        } catch (err) {
+          console.error("Error fetching comments:", err);
+          // 에러 처리: 적절한 메시지 표시 또는 기타 작업 수행
+        } finally {
+          this.loadingComments = false; // 댓글 로딩 완료 또는 실패 후에도 로딩 상태 해제
+        }
       }
     },
   },

@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import axios from "axios"
-import { reactive, onMounted } from "vue"
+import axios from "axios";
+import { reactive, onMounted, watch } from "vue";
 
 export default {
   name: "CommentList",
@@ -50,17 +50,7 @@ export default {
   setup(props) {
     const state = reactive({
       cupet_user_id: "",
-      cupet_user_nickname: "",
-      cupet_user_name: "",
-      cupet_user_address: "",
-      roadAddress: "",
-      jibunAddress: "",
-      detailAddress: "",
-      cupet_user_phonenumber: "",
-      cupet_user_birth: "",
-      cupet_user_gender: "",
-      cupet_user_point: 0,
-    })
+    });
 
     const reactiveComments = reactive(
       props.comments.map((comment) => ({
@@ -69,10 +59,10 @@ export default {
         showImage: false,
         imageUrl: "",
       }))
-    )
+    );
 
     const fetchUserData = () => {
-      const token = localStorage.getItem("Token")
+      const token = localStorage.getItem("Token");
 
       if (token) {
         axios
@@ -86,27 +76,15 @@ export default {
             }
           )
           .then((response) => {
-            console.log("Data received:", response.data)
-            Object.assign(state, response.data.cupet_user_address)
-            state.cupet_user_id = response.data.cupet_user_id
-            state.cupet_user_nickname = response.data.cupet_user_nickname
-            state.cupet_user_name = response.data.cupet_user_name
-            state.cupet_user_address = response.data.cupet_user_address
-            state.roadAddress = response.data.address.roadAddress
-            state.jibunAddress = response.data.address.jibunAddress
-            state.detailAddress = response.data.address.detailAddress
-            state.cupet_user_phonenumber = response.data.cupet_user_phonenumber
-            state.cupet_user_birth = response.data.cupet_user_birth
-            state.cupet_user_gender = response.data.cupet_user_gender
-            state.cupet_user_point = response.data.cupet_user_point
+            state.cupet_user_id = response.data.cupet_user_id;
           })
           .catch((error) => {
-            console.error("Error fetching user details:", error)
-          })
+            console.error("Error fetching user details:", error);
+          });
       } else {
-        console.error("Token not found")
+        console.error("Token not found");
       }
-    }
+    };
 
     const deleteCommentImage = (comment_no) => {
       axios
@@ -114,40 +92,40 @@ export default {
         .then(() => {
           const comment = reactiveComments.find(
             (c) => c.comment_no === comment_no
-          )
+          );
           if (comment) {
-            comment.imageUrl = null
+            comment.imageUrl = null;
           }
         })
         .catch((error) => {
-          console.error("사용자 이미지 삭제 중 에러:", error)
-          alert("사용자 이미지 삭제에 실패했습니다.")
-        })
-    }
+          console.error("사용자 이미지 삭제 중 에러:", error);
+          alert("사용자 이미지 삭제에 실패했습니다.");
+        });
+    };
 
     const toggleDelete = (comment_no) => {
-      const comment = reactiveComments.find((c) => c.comment_no === comment_no)
+      const comment = reactiveComments.find((c) => c.comment_no === comment_no);
       if (comment && comment.imageUrl) {
-        deleteCommentImage(comment_no)
+        deleteCommentImage(comment_no);
       }
 
       axios
         .post("/api1/findpet/commentDelete", { comment_no })
         .then((response) => {
-          console.log("댓글 삭제됨:", response.data)
-          alert("댓글이 삭제되었습니다.")
+          console.log("댓글 삭제됨:", response.data);
+          alert("댓글이 삭제되었습니다.");
           const index = reactiveComments.findIndex(
             (c) => c.comment_no === comment_no
-          )
+          );
           if (index !== -1) {
-            reactiveComments.splice(index, 1)
+            reactiveComments.splice(index, 1);
           }
         })
         .catch((error) => {
-          console.error("댓글 삭제 중 오류 발생:", error)
-          alert("댓글 삭제에 실패했습니다.")
-        })
-    }
+          console.error("댓글 삭제 중 오류 발생:", error);
+          alert("댓글 삭제에 실패했습니다.");
+        });
+    };
 
     const checkImages = () => {
       reactiveComments.forEach((comment) => {
@@ -155,41 +133,58 @@ export default {
           .get(`/api1/images/comment/${comment.comment_no}`)
           .then((response) => {
             if (response.data.data) {
-              console.log(`Image found for comment ${comment.comment_no}`)
-              comment.hasImage = true
-              comment.imageUrl = response.data.data
+              console.log(`Image found for comment ${comment.comment_no}`);
+              comment.hasImage = true;
+              comment.imageUrl = response.data.data;
             } else {
-              console.log(`No image for comment ${comment.comment_no}`)
+              console.log(`No image for comment ${comment.comment_no}`);
             }
           })
           .catch((error) => {
-            console.error("Error checking pet image:", error)
-          })
-      })
-    }
+            console.error("Error checking pet image:", error);
+          });
+      });
+    };
 
     const toggleImage = (comment_no) => {
-      const comment = reactiveComments.find((c) => c.comment_no === comment_no)
+      const comment = reactiveComments.find((c) => c.comment_no === comment_no);
       if (comment) {
-        comment.showImage = !comment.showImage
+        comment.showImage = !comment.showImage;
       } else {
-        console.error(`Comment with comment_no ${comment_no} not found`)
+        console.error(`Comment with comment_no ${comment_no} not found`);
       }
-    }
+    };
 
     onMounted(() => {
-      fetchUserData()
-      checkImages()
-    })
+      fetchUserData();
+      checkImages();
+    });
+
+    watch(
+      () => props.comments,
+      (newComments) => {
+        reactiveComments.splice(
+          0,
+          reactiveComments.length,
+          ...newComments.map((comment) => ({
+            ...comment,
+            hasImage: false,
+            showImage: false,
+            imageUrl: "",
+          }))
+        );
+        checkImages();
+      }
+    );
 
     return {
       state,
       reactiveComments,
       toggleImage,
       toggleDelete,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped>
