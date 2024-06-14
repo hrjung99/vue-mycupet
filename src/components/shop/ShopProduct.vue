@@ -11,9 +11,12 @@
       <p class="card-text">
         <span>{{ item.cupet_prodname }} &nbsp; </span>
         <span class="discount badge bg-danger">
-          {{ item.cupet_proddiscountper }} %
+          {{ item.cupet_proddiscountper }} % 
+        </span> &nbsp;
+        <span v-if="state.cupet_user_principle === 'admin'" @click.stop="deleteProduct(item.cupet_prodno)" >
+        <i class="fa fa-trash" aria-hidden="true"></i>
         </span>
-      </p>
+      </p> 
       <div class="d-flex justify-content-between align-items-center">
         <button 
           class="btn btn-primary" 
@@ -31,12 +34,13 @@
       <div v-if="item.cupet_prodcnt === 0" class="out-of-stock">
         sold out
       </div>
+      
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import lib from "@/scripts/lib";
 import axios from 'axios';
 import router from '@/router';
@@ -50,6 +54,9 @@ export default {
   setup(props) {
     const imageUrl = ref('');
     const token = localStorage.getItem("Token");
+    const state = reactive({
+      cupet_user_principle: "",
+    });
 
     onMounted(() => {
       loadProdImage(props.item.cupet_prodno);
@@ -81,7 +88,38 @@ export default {
       router.push({ name: 'ShopDetail', params: { cupet_prodno: cupet_prodno } });
     };
 
-    return { lib, addToCart, viewDetails, loadProdImage, imageUrl };
+    const deleteProduct = (cupet_prodno) => {
+      axios.delete(`/api1/shop/delete/${cupet_prodno}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(() => {
+        console.log('Deleted successfully');
+        location.reload(true);
+      }).catch((error) => {
+        console.error('Error deleting product:', error);
+      });
+    };
+
+    const loaduserdata = () => {
+      axios.post("/api1/userView", {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        console.log("Data received:", response.data)
+        Object.assign(state, response.data.cupet_user_principle)
+            state.cupet_user_principle = response.data.cupet_user_principle
+      })
+      .catch(error => {
+        console.error("Error fetching cart count:", error);
+      });
+    };
+
+    loaduserdata();
+
+    return { lib, addToCart, viewDetails, loadProdImage, imageUrl, state, deleteProduct };
   }
 }
 </script>
