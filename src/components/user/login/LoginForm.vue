@@ -1,46 +1,50 @@
 <template>
-  <div style="user-select: none">
+  <div>
     <h2>로그인</h2>
+    <!-- 로그인 폼 내용 -->
     <form class="login-form" @submit.prevent="submitBtn">
-      <label for="username"
-        >아이디
-        <input
-          type="text"
-          v-model="formData.username"
-          id="username"
-          name="username"
-          autocomplete="username"
-          required
-        />
-      </label>
-      <label for="password"
-        >비밀번호
-        <input
-          type="password"
-          v-model="formData.password"
-          id="password"
-          name="password"
-          autocomplete="current-password"
-          required
-        />
-      </label>
+      <label for="username">아이디</label>
+      <input
+        type="text"
+        v-model="formData.username"
+        id="username"
+        name="username"
+        required
+      />
+
+      <label for="password">비밀번호</label>
+      <input
+        type="password"
+        v-model="formData.password"
+        id="password"
+        name="password"
+        required
+      />
+
       <div class="button-container">
         <button type="submit">로그인</button>
-        <button type="button" @click="registerBtn">회원가입</button>
+        <button type="button" @click="goToRegister">회원가입</button>
+
+        <IDRecovery />
+        <PasswordRecovery />
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import PasswordRecovery from "./PasswordRecovery.vue"; // 경로는 실제 파일 경로에 맞게 수정해야 합니다.
+import IDRecovery from "./IDRecovery.vue";
 import axios from "axios";
-import "./../../common/CommonButtonStyle.css";
 
 export default {
   name: "LoginForm",
+  components: {
+    PasswordRecovery,
+    IDRecovery,
+  },
   data() {
     return {
-      responseData: null,
       formData: {
         username: "",
         password: "",
@@ -49,22 +53,18 @@ export default {
   },
   methods: {
     submitBtn() {
-      console.log("Sending login request to API2");
       axios
         .post("/api2/user/login", null, { params: this.formData })
         .then((response) => {
-          this.responseData = response.data;
           localStorage.setItem("Token", response.data.token);
-          this.$router.push("/"); // "/" 경로로 이동
+          this.$router.push("/");
         })
         .catch((error) => {
-          alert("올바르지 않은 사용자 정보 입니다.", error);
+          alert("올바르지 않은 사용자 정보입니다.");
+          console.error(error);
         });
     },
-
-    registerBtn() {
-      console.log("Sending registration request to API2");
-      alert("회원가입 페이지로 이동합니다.");
+    goToRegister() {
       this.$router.push("/JoinUser");
     },
   },
@@ -111,6 +111,7 @@ export default {
 
 .button-container {
   display: flex;
+  padding-top: 25px;
   gap: 8px;
 }
 
