@@ -2,7 +2,7 @@
   <div class="recent_board_list">
     <div class="form-group">
       <label class="recent_board_head">[{{ board.cupet_board_head_name }}]</label>
-      <label class="recent_board_title">{{ board.cupet_board_title }}</label>
+      <label class="recent_board_title" @click="goToView(board.cupet_board_no)">{{ board.cupet_board_title }}</label>
       <label class="recent_board_nickname">{{ board.cupet_user_nickname }}</label>
     </div>
   </div>
@@ -11,6 +11,11 @@
 <script>
 export default {
   props: ["board"],
+  methods: {
+    goToView(cupet_board_no) {
+      this.$router.push({ path: '/BoardViewMain', query: { cupet_board_no } })
+    },
+  }
 }
 </script>
 
@@ -32,6 +37,7 @@ export default {
 .recent_board_title {
   width: 50%;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .recent_board_nickname {

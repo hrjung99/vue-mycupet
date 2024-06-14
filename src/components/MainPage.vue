@@ -10,7 +10,9 @@
         <div class="row">
           <div class="col-md-6">
             <div class="map-main-container p-3 mb-3 text-center">
-              <h5 class="container-title">내 근처 잃어버린 반려동물</h5>
+              <router-link class="nav-link" to="/MissingPetMain">
+                <h5 class="container-title">내 근처 잃어버린 반려동물</h5>
+              </router-link>
               <KaKaoMapMissingMain />
             </div>
           </div>
@@ -29,10 +31,18 @@
               </div>
             </div>
             <div class="image-container1">
-              <img :src="currentImage2" alt="반려동물 이미지 1" class="image1" />
+              <img
+                :src="currentImage2"
+                alt="반려동물 이미지 1"
+                class="image1"
+              />
             </div>
             <div class="image-container2">
-              <img :src="currentImage2" alt="반려동물 이미지 2" class="image2" />
+              <img
+                :src="currentImage3"
+                alt="반려동물 이미지 2"
+                class="image2"
+              />
             </div>
           </div>
         </div>
@@ -43,12 +53,12 @@
 </template>
 
 <script>
-import CommonHeader from "@/components/common/CommonHeader.vue";
-import MainPageHeader from "@/components/common/MainPageHeader.vue";
-import CommonFooter from "@/components/common/CommonFooter.vue";
-import KaKaoMapMissingMain from "@/components/cupetfindpet/map/KaKaoMapMissingMain.vue";
-import MainPageList from "@/components/MainPageList.vue";
-import axios from "axios";
+import CommonHeader from "@/components/common/CommonHeader.vue"
+import MainPageHeader from "@/components/common/MainPageHeader.vue"
+import CommonFooter from "@/components/common/CommonFooter.vue"
+import KaKaoMapMissingMain from "@/components/cupetfindpet/map/KaKaoMapMissingMain.vue"
+import MainPageList from "@/components/MainPageList.vue"
+import axios from "axios"
 
 export default {
   name: "MainPage",
@@ -72,6 +82,8 @@ export default {
         "여름이-1.jpg",
         "여름이-2.jpg",
         "여름이-3.jpg",
+      ],
+      petImages2: [
         "여름이-4.jpg",
         "여름이-5.jpg",
         "여름이-6.jpg",
@@ -79,43 +91,52 @@ export default {
       ],
       currentImageIndex: 0,
       currentImageIndex2: 0,
+      currentImageIndex3: 0,
       recentBoardList: [],
-    };
+    }
   },
   mounted() {
-    setInterval(this.changeImage, 5000); // 10초마다 이미지 변경
-    setInterval(this.changeImage2, 8000); // 16초마다 반려동물 변경
-    this.fetchRecentBoardData();
+    setInterval(this.changeImage, 5000)
+    setInterval(this.changeImage2, 5000)
+    setInterval(this.changeImage3, 5000)
+    this.fetchRecentBoardData()
   },
   methods: {
     changeImage() {
       this.currentImageIndex =
-        (this.currentImageIndex + 1) % this.adImages.length;
+        (this.currentImageIndex + 1) % this.adImages.length
     },
     changeImage2() {
       this.currentImageIndex2 =
-        (this.currentImageIndex2 + 1) % this.petImages.length;
+        (this.currentImageIndex2 + 1) % this.petImages.length
+    },
+    changeImage3() {
+      this.currentImageIndex3 =
+        (this.currentImageIndex3 + 1) % this.petImages2.length
     },
     fetchRecentBoardData() {
       axios
         .get(`/api1/recentBoardView`)
         .then((response) => {
-          this.recentBoardList = response.data.recentBoardView;
+          this.recentBoardList = response.data.recentBoardView
         })
         .catch((error) => {
-          console.error("반려동물 데이터를 불러오는 중 오류 발생:", error);
-        });
+          console.error("반려동물 데이터를 불러오는 중 오류 발생:", error)
+        })
     },
   },
   computed: {
     currentImage() {
-      return `/img/${this.adImages[this.currentImageIndex]}`;
+      return `/img/${this.adImages[this.currentImageIndex]}`
     },
     currentImage2() {
-      return `/img/${this.petImages[this.currentImageIndex2]}`;
+      return `/img/${this.petImages[this.currentImageIndex2]}`
+    },
+    currentImage3() {
+      return `/img/${this.petImages2[this.currentImageIndex3]}`
     },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -157,6 +178,7 @@ export default {
 
 .container-title {
   font-weight: 700;
+  cursor: pointer;
 }
 
 .text-center {
@@ -189,8 +211,7 @@ export default {
 .image1,
 .image2 {
   width: 265px;
-  height: 265
-  px;
+  height: 265 px;
   border-radius: 5px;
 }
 
@@ -221,5 +242,12 @@ export default {
   width: 20%;
   text-align: left;
   font-weight: bold;
+}
+
+.nav-link {
+  text-decoration: none;
+  padding: 10px 0;
+  display: block;
+  text-align: center;
 }
 </style>
