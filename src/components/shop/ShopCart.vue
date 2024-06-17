@@ -8,13 +8,13 @@
           <div class="py-3 text-center"><h2>장바구니</h2></div>
           <ul>
             <li v-for="(item, idx) in state.items" :key="idx" class="cart-item">
-              <img :src="item.cupet_prodimgpath" />
+              <img :src="getProductImage(item)" class="img-fluid" alt="Product Image">
               <span class="name">{{ item.cupet_prodname }}</span>
               <span class="price">{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원 &nbsp;</span>
               <div class="quantity-control">
-                <button @click="decreaseQuantity(item)">-</button>
+                <button @click="updateQuantity(item, -1)">-</button>
                 <span>{{ getItemCount(item.cupet_prodno) }}</span>
-                <button @click="increaseQuantity(item)">+</button> &nbsp;
+                <button @click="updateQuantity(item, 1)">+</button>
               </div>
               <i class="fa fa-trash" @click="remove(item.cupet_prodno)"></i>
             </li>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { reactive, computed } from "vue";
+import { ref, reactive, computed } from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
 import CommonHeader from "@/components/common/CommonHeader.vue";
@@ -46,8 +46,10 @@ export default {
   setup() {
     const state = reactive({
       items: [],
-      data: {}
+      data: {},
     });
+    
+    const imageUrlMap = ref({}); // Map to store product images
 
     const token = localStorage.getItem("Token");
 
@@ -59,10 +61,31 @@ export default {
       })
       .then(response => {
         state.items = response.data;
+        loadImages(); // Load images when items are loaded
       })
       .catch(error => {
         console.error("Error fetching cart items:", error);
       });
+    };
+
+    const loadImages = () => {
+      for (const item of state.items) {
+        loadProdImage(item.cupet_prodno);
+      }
+    };
+
+    const loadProdImage = (cupet_prodno) => {
+      axios.get(`/api1/images/shop/${cupet_prodno}`)
+        .then((response) => {
+          imageUrlMap.value[cupet_prodno] = response.data.data;
+        })
+        .catch((error) => {
+          console.error("Error loading product image:", error);
+        });
+    };
+
+    const getProductImage = (item) => {
+      return imageUrlMap.value[item.cupet_prodno] || 'img/logo.png';
     };
 
     const loaddata = () => {
@@ -102,36 +125,26 @@ export default {
       });
     };
 
-    const updateQuantity = (item, newQuantity) => {
-      axios.put(`/api1/cart/items/${item.cupet_prodno}`, { quantity: newQuantity }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }).then(() => {
-        loadItems();
-        loaddata();
-      }).catch(error => {
-        console.error('Error updating quantity:', error);
-      });
-    };
-
-    const increaseQuantity = (item) => {
-      const newQuantity = getItemCount(item.cupet_prodno) + 1;
-      state.data[item.cupet_prodno] = newQuantity;
-      updateQuantity(item, newQuantity);
-    };
-
-    const decreaseQuantity = (item) => {
-      const newQuantity = getItemCount(item.cupet_prodno) - 1;
+    const updateQuantity = (item, quantity) => {
+      const newQuantity = getItemCount(item.cupet_prodno) + quantity;
       if (newQuantity > 0) {
         state.data[item.cupet_prodno] = newQuantity;
-        updateQuantity(item, newQuantity);
+        axios.put(`/api1/cart/items/${item.cupet_prodno}`, { quantity: newQuantity }, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then(() => {
+          loadItems();
+          loaddata();
+        }).catch(error => {
+          console.error('Error updating quantity:', error);
+        });
       }
     };
 
     loadItems();
     loaddata();
-    return { state, token, computedPrice, remove, increaseQuantity, decreaseQuantity, lib, getItemCount };
+    return { state, token, computedPrice, remove, updateQuantity, getItemCount, getProductImage, lib };
   }
 }
 </script>
@@ -140,6 +153,7 @@ export default {
 .content-container {
   display: flex;
   height: 100%;
+  min-height: 85vh;
 }
 
 .container {

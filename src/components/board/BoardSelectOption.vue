@@ -3,7 +3,7 @@
     <select
       class="form-select"
       aria-label="SelectOption"
-      v-model="selectedOption"
+      v-model="state.selectedOption"
       @change="emitSelectedOption"
 
     >
@@ -33,7 +33,7 @@ export default {
     };
     onMounted(() => {
       axios
-        .get("/api1/selectoptionList", config)
+        .get("/api1/selectOptionList", config)
         .then((response) => {
           state.list = response.data.list;
           // 초기값 설정

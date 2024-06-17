@@ -1,7 +1,7 @@
 <template>
   <CommonHeader />
   <div class="content-container">
-    <CommonSideBar ref="sidebar"/>
+    <CommonSideBar ref="sidebar" />
     <div class="orderDetailPage">
       <div class="container">
         <div class="text-center mb-4"><h2>주문 상세</h2></div>
@@ -10,6 +10,7 @@
             <div class="card-body">
               <h3 class="card-title">주문 번호: {{ orderDetails.cupet_order_no }}</h3>
               <p class="card-text">수신자 이름: {{ orderDetails.cupet_receiver_name }}</p>
+              <p class="card-text">우편번호: {{ orderDetails.cupet_receiver_postcode }}</p>
               <p class="card-text">주소: {{ orderDetails.cupet_receiver_add }}</p>
               <p class="card-text">전화번호: {{ orderDetails.cupet_receiver_phone }}</p>
               <p class="card-text">총 가격: {{ lib.getNumberFormatted(orderDetails.cupet_total_price) }} 원</p>
@@ -19,9 +20,10 @@
           <div v-if="orderItems.length > 0">
             <h4>주문 상품</h4>
             <ul class="list-group">
-              <li v-for="item in orderItems" :key="item.cupet_prodno" class="list-group-item d-flex justify-content-between align-items-center">
+              <li v-for="item in orderItems" :key="item.cupet_prodno"
+                class="list-group-item d-flex justify-content-between align-items-center"  @click="viewDetails(item.cupet_prodno)">
                 <span>{{ item.cupet_prodname }}</span>
-                <span>{{ item.cupet_prodprice }} 원</span>
+                <span>{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원</span>
               </li>
             </ul>
           </div>
@@ -41,6 +43,7 @@ import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import lib from "@/scripts/lib";
+import router from '@/router';
 
 export default {
   components: {
@@ -56,6 +59,14 @@ export default {
     };
   },
   methods: {
+    viewDetails(cupet_prodno) {
+      router.push({ name: 'ShopDetail', params: { cupet_prodno: cupet_prodno } });
+    },
+
+    changeSidebarColor() {
+      this.$refs.sidebar.changeBackground("#ffffff");
+    },
+
     async fetchOrderDetails(cupet_order_no) {
       try {
         const token = localStorage.getItem("Token");
@@ -66,8 +77,7 @@ export default {
           withCredentials: true,
         });
         this.orderDetails = response.data;
-
-        // Fetch order items details
+        
         const itemsResponse = await axios.post('/api1/order/items', {}, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -83,6 +93,7 @@ export default {
     },
   },
   mounted() {
+    this.changeSidebarColor();
     const cupet_order_no = this.$route.params.cupet_order_no;
     this.fetchOrderDetails(cupet_order_no);
   },
@@ -90,6 +101,30 @@ export default {
 </script>
 
 <style scoped>
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+}
+
+.orderDetailPage {
+  flex: 1;
+}
+
+.container {
+  padding: 20px;
+}
 .orderDetailPage { 
   background-color: #f2fff2;    
   position: relative;
@@ -112,9 +147,11 @@ export default {
 .list-group-item {
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.container {
-  padding: 20px;
+.list-group-item:hover {
+  background-color: #f1f1f1;
 }
 </style>

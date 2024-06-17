@@ -10,15 +10,51 @@
         <router-link to="/OrdersPage" class="orders btn">
           <i class="fa fa-th-list" aria-hidden="true"></i>
         </router-link>
+        <router-link to="/PayPage" class="pay btn">
+          <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+        </router-link>
+        <router-link v-if="state.cupet_user_principle === 'admin'" to="/ShopAdd" class="pay btn">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </router-link>
       </div>
     </div>
   </header>
 
 </template>
+
 <script>
+import axios from "axios"
+import { reactive } from "vue"
+
 export default {
   name: "ShopHeader",
+
+setup() {
+    const state = reactive({
+      cupet_user_principle: "",
+    });
+    const token = localStorage.getItem("Token");
+    const loaddata = () => {
+      axios.post("/api1/userView", {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        console.log("Data received:", response.data)
+        Object.assign(state, response.data.cupet_user_principle)
+            state.cupet_user_principle = response.data.cupet_user_principle
+      })
+      .catch(error => {
+        console.error("Error fetching cart count:", error);
+      });
+    };
+
+    loaddata();
+    return { state}
+  }
 }
+
 </script>
 
   <style scoped> 

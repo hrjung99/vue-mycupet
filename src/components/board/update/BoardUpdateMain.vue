@@ -3,43 +3,123 @@
   <div class="main-container">
     <CommonSideBar ref="sidebar" />
     <div class="content">
-      <h1 style="color:#7E84A3;">게시물 수정</h1>
-      <BoardContent />
-      <div class="change-button">
-        <button class="update2-button">수정</button>
-        <router-link to="/BoardMain">
-          <button type="button" class="cancel2-button">취소</button>
-        </router-link>
-      </div>
+      <h1 style="color: #7e84a3">게시물 수정</h1>
+
+      <BoardUpdateContent
+        v-if="viewData.cupet_board_no"
+        :viewData="viewData"
+        v-model:contentData="contentData"
+        @input-change="updateContentData"
+      />
+
+      <button type="button" class="update-button" @click="BoardUpdate">
+        수정
+      </button>
+      <router-link to="/BoardMain">
+        <button type="button" class="cancel-button">취소</button>
+      </router-link>
     </div>
   </div>
+
   <CommonFooter />
 </template>
 
 <script>
-import CommonHeader from "@/components/common/CommonHeader.vue";
-import CommonFooter from "@/components/common/CommonFooter.vue";
-import CommonSideBar from "@/components/common/CommonSideBar.vue";
-import BoardContent from "@/components/board/BoardContent.vue";
-import '@/components/common/CommonButtonStyle.css';
+import CommonHeader from '@/components/common/CommonHeader.vue'
+import CommonFooter from '@/components/common/CommonFooter.vue'
+import CommonSideBar from '@/components/common/CommonSideBar.vue'
+import BoardUpdateContent from '@/components/board/update/BoardUpdateContent.vue'
+import '@/components/common/CommonButtonStyle.css'
+import axios from 'axios'
 
 export default {
-  name: "MainPage",
+  name: 'MainPage',
   components: {
     CommonHeader,
     CommonFooter,
     CommonSideBar,
-    BoardContent,
+    BoardUpdateContent,
   },
-  mounted() {
-    this.changeSidebarColor();
-  },
-  methods: {
-    changeSidebarColor() {
-      this.$refs.sidebar.changeBackground("#ffffff");
+
+  data() {
+    return {
+      contentData: {
+        cupet_board_head_no: '',
+        cupet_board_no: '',
+        cupet_board_title: '',
+        cupet_board_content: '',
+      },
+
+      viewData: {},
+      state: {
+        board: {},
+      },
     }
   },
-};
+
+  mounted() {
+    this.changeSidebarColor()
+    const cupet_board_no = this.$route.query.cupet_board_no
+    this.getViewData(cupet_board_no)
+    console.log('contentData : ', this.contentData)
+
+
+  },
+
+  methods: {
+    getViewData(cupet_board_no) {
+      axios
+        .get(`/api1/boardView?cupet_board_no=${cupet_board_no}`)
+        .then((response) => {
+          this.viewData = response.data.board
+          this.contentData.cupet_board_content= response.data.board.cupet_board_no;
+          console.log('viewData : ', this.viewData)
+
+        })
+        .catch((error) => {
+          console.error('Error fetching board details:', error)
+        })
+    },
+    changeSidebarColor() {
+      this.$refs.sidebar.changeBackground('#ffffff')
+    },
+    updateContentData(data) {
+      // 자식 컴포넌트로부터 변경된 데이터를 받아옴
+      this.contentData = data
+    },
+    BoardUpdate() {
+      const token = localStorage.getItem('Token')
+
+      console.log('token: ', token)
+      console.log('contentData: ', this.contentData)
+
+      const formDate = {
+        cupet_board_head_no: this.contentData.cupet_board_head_no,
+        cupet_board_no: this.$route.query.cupet_board_no,
+        cupet_board_title: this.contentData.cupet_board_title,
+        cupet_board_content: this.contentData.cupet_board_content,
+      }
+
+      axios
+        .post('/api1/boardUpdate', formDate, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Bearer 스킴을 사용한 토큰 인증
+          },
+        })
+        .then((response) => {
+          if (response.data === '성공') {
+            alert('게시물이 수정되었습니다.')
+          } else {
+            alert('게시물 수정이 실패했습니다.')
+          }
+          this.$router.push({ path: '/BoardMain' })
+        })
+        .catch((error) => {
+          console.error('updating board:', error)
+        })
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -56,18 +136,8 @@ export default {
   margin-top: 25px;
 }
 
-.change-button {
-  display: flex;
-  justify-content: flex-start;
+.update-button {
   margin-top: 10px;
-  gap: 10px;
-}
-
-.update2-button {
-  margin-left: 0;
-}
-
-.cancel2-button {
-  margin-left: 0;
+  margin-right: 10px;
 }
 </style>

@@ -2,19 +2,19 @@
   <div>
     <form id="BoardContent" name="BoardContent" @input="handleInput">
       <div class="HeaderAndTitle">
-        <BoardSelectOption
+        <BoardUpdateOption
           id="cupet_board_head_no"
           name="cupet_board_head_no"
           v-model="localContentData.cupet_board_head_no"
-          @selected="updateSelectedOption"
-        />
+          :value="localContentData.cupet_board_title" />
 
         <input
           class="cupet_board_title"
           name="cupet_board_title"
           required="required"
+          :value="localContentData.cupet_board_title"
           placeholder="게시물 제목을 입력해주세요"
-          v-model="localContentData.cupet_board_title"
+          @input="updateTitle($event.target.value)"
         />
         <br />
       </div>
@@ -25,7 +25,7 @@
         :editor="editor"
         v-model="localContentData.cupet_board_content"
         :config="editorConfig"
-		@input="handleInput"
+        @input="handleInput"
       ></ckeditor>
     </form>
   </div>
@@ -33,22 +33,33 @@
 
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import BoardSelectOption from '@/components/board/BoardSelectOption.vue'
+import BoardUpdateOption from '@/components/board/update/BoardUpdateOption.vue'
 
 export default {
-  name: 'BoardContent',
+  name: 'BoardUpdateContent',
   components: {
-    BoardSelectOption,
+    BoardUpdateOption,
   },
   props: {
-    contentData: Object,
+    viewData: {
+      type: Object,
+      required: true,
+    },
+    contentData: {
+      type: Object,
+
+      default: () => ({
+        cupet_board_head_no: '',
+        cupet_board_title: '',
+        cupet_board_content: '',
+      }),
+    },
   },
   data() {
     return {
       editor: ClassicEditor,
       editorConfig: {
         placeholder: '게시물 내용을 입력해주세요',
-        require: 'require',
       },
       localContentData: {
         cupet_board_head_no: '',
@@ -57,22 +68,27 @@ export default {
       },
     }
   },
-  watch: {
-    contentData: {
-      immediate: true,
-      handler(newVal) {
-        this.localContentData = { ...newVal }
-      }
-    }
+
+
+  mounted() {
+    console.log('viewData in update content : ', this.viewData)
+    // viewData로 초기값 설정
+    this.localContentData.cupet_board_head_no = this.viewData.cupet_board_head_no
+    this.localContentData.cupet_board_title = this.viewData.cupet_board_title
+    this.localContentData.cupet_board_content = this.viewData.cupet_board_content
+
+    
   },
+
   methods: {
-    updateSelectedOption(selectedOption) {
-      this.localContentData.cupet_board_head_no = selectedOption
-      this.handleInput()
-    },
     handleInput() {
       this.$emit('input-change', this.localContentData)
     },
+      updateTitle(value) {
+        this.localContentData.cupet_board_title = value
+        this.handleInput()
+
+},
   },
 }
 </script>

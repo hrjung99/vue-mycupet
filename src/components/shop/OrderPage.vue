@@ -21,10 +21,16 @@
                   <span class="text-muted">{{ lib.getNumberFormatted(getItemTotalPrice(item)) }}원</span>
                 </li>
               </ul>
-              <h3 class="text-center total-price">{{ lib.getNumberFormatted(computedPrice) }}원</h3>
+              <div class="total-info">
+                <h4 class="text-right">현재 보유 Point: {{ state.form.point }} &nbsp; 
+                  <router-link to="/PayPage">
+                    <button type="button" class="charge-button-small">충전</button>
+                  </router-link>
+                </h4>
+              </div>
             </div>
             <div class="col-md-7 col-lg-8">
-              <h4 class="mb-3">주문자 정보</h4>
+              <h4 class="mb-3">배송 정보</h4>
               <div class="needs-validation" novalidate="">
                 <div class="row g-3">
                   <div class="col-12">
@@ -32,9 +38,16 @@
                     <input type="text" class="form-control" id="cupet_user_name" v-model="state.form.name">
                   </div>
                   <div class="col-12">
-                    <label for="cupet_user_address" class="form-label">주소</label>
-                    <input type="text" class="form-control" id="cupet_user_address" v-model="state.form.address">
+                    <label for="cupet_receiver_postcode">우편번호</label>
+                    <div class="d-flex">
+                      <input type="text" class="form-control short-input" id="cupet_receiver_postcode" v-model="state.form.postcode" readonly required />
+                      <button type="button" class="search-btn" @click="openPostcode">우편번호 찾기</button>
+                    </div>
                   </div>
+                  <div class="col-12">
+                    <label for="cupet_receiver_add">상세 주소</label>
+                    <input type="text" class="form-control" id="cupet_receiver_add" v-model="state.form.address" required/>
+                </div>
                   <div class="col-12">
                     <label for="cupet_user_phone" class="form-label">연락처</label>
                     <input type="text" class="form-control" id="cupet_user_phone" v-model="state.form.phone">
@@ -57,9 +70,8 @@
       </div>
     </div>
   </div>
-<CommonFooter />
+  <CommonFooter />
 </template>
-
 
 <script>
 import { computed, reactive } from "vue";
@@ -79,17 +91,49 @@ export default {
   },
   setup() {
     const token = localStorage.getItem("Token");
+
+    const getLocalISOString = () => {
+      const now = new Date();
+      const timezoneOffset = now.getTimezoneOffset() * 60000;
+      const localISOTime = new Date(now - timezoneOffset).toISOString().slice(0, 19).replace('T', ' ');
+      return localISOTime;
+    };
+
     const state = reactive({
       items: [],
       data: {},
       form: {
         name: "",
+        postcode: "",
         address: "",
         phone: "",
         price: "",
-        date: new Date().toISOString().slice(0, 16)
+        date: getLocalISOString(),
+        point: 0
       }
     });
+
+    const openPostcode = () => {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          state.form.postcode = data.zonecode;
+          state.form.address = data.roadAddress;
+        },
+        width: "100%",
+        height: "100%",
+        maxWidth: "600px",
+        maxHeight: "400px",
+        popupName: "postcodePopup",
+        popupKey: "postcodePopupKey",
+      }).open({
+        popupName: "postcodePopup",
+        left: window.screen.width / 2 - 300,
+        top: window.screen.height / 2 - 200,
+        width: 600,
+        height: 400,
+        openOnPopup: true,
+      });
+    };
 
     const load = () => {
       axios.post("/api1/cart/items", {}, {
@@ -104,6 +148,19 @@ export default {
         })
         .catch(error => {
           console.error("Error fetching cart items:", error);
+        });
+
+      // 사용자 포인트 로드
+      axios.get("/api1/user/point", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(({ data }) => {
+          state.form.point = data;
+        })
+        .catch(error => {
+          console.error("Error fetching user points:", error);
         });
     };
 
@@ -138,6 +195,11 @@ export default {
     });
 
     const submit = () => {
+      if (computedPrice.value > state.form.point) {
+        alert("포인트가 부족합니다.");
+        return;
+      }
+
       const args = JSON.parse(JSON.stringify(state.form));
       args.items = JSON.stringify(state.items);
       args.price = computedPrice.value;
@@ -156,7 +218,29 @@ export default {
     };
 
     load();
-    return { state, lib, computedPrice, submit, getItemTotalPrice, getItemCount };
+    return { state, lib, computedPrice, submit, getItemTotalPrice, getItemCount, openPostcode };
   }
 }
 </script>
+
+<style scoped>
+.content-container {
+  display: flex;
+}
+
+.orderPage {
+  flex: 1;
+  padding: 20px;
+}
+
+.total-info {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.short-input {
+  width: 150px;
+  margin-right: 10px;
+}
+</style>

@@ -1,17 +1,22 @@
 <template>
   <div class="main-container">
     <CommonHeader />
-    <div class="content-container">
+    <div class="content-area">
       <CommonSideBar />
-      <div class="infocontent-container">
-        <DetailInfoCard
-          :petDetail="selectedPetDetail"
-          class="detail-info-card"
-        />
-        <div class="mapbut-and-map-container">
-          <KaKaoMapMissingVue @select-pet="selectPet" />
+      <main class="content-container">
+        <div class="infocontent-container">
+          <DetailInfoCard
+            :petDetail="selectedPetDetail"
+            class="detail-info-card"
+          />
+          <div class="mapbut-and-map-container">
+            <KaKaoMapMissingVue @select-pet="selectPet" />
+          </div>
         </div>
-      </div>
+        <br/>
+        <CommentInputForm :cupetPetNo="selectedPetDetail?.id" @comment-added="fetchComments"/>
+        <CommentList :comments="comments" />
+      </main>
     </div>
     <CommonFooter />
   </div>
@@ -24,6 +29,9 @@ import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import KaKaoMapMissingVue from "./map/KaKaoMapMissing.vue";
 import DetailInfoCard from "./DetailInfoCard.vue";
+import CommentInputForm from "./CommentInputForm.vue";
+import CommentList from "./CommentList.vue";
+import axios from "axios";
 
 export default {
   name: "MissingMainPage",
@@ -33,49 +41,87 @@ export default {
     CommonFooter,
     KaKaoMapMissingVue,
     DetailInfoCard,
+    CommentInputForm,
+    CommentList,
   },
   setup() {
     const selectedPetDetail = ref(null);
+    const comments = ref([]);
 
     const selectPet = (petDetail) => {
       selectedPetDetail.value = petDetail;
+      fetchComments();
     };
 
-    return { selectedPetDetail, selectPet };
+    const fetchComments = () => {
+      if (!selectedPetDetail.value) return;
+      axios
+        .get(`/api1/findpet/comments?petId=${selectedPetDetail.value.id}`)
+        .then((response) => {
+          comments.value = response.data;
+        })
+        .catch((error) => {
+          console.error("Error fetching comments:", error);
+        });
+    };
+
+    return { selectedPetDetail, selectPet, comments, fetchComments };
   },
 };
 </script>
 
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* 화면 전체 높이에 맞추기 위해 */
+  min-height: 100vh;
+}
+
+.content-area {
+  display: flex;
+  flex: 1;
+}
+
+header {
+  background: #f8f9fa;
+  padding: 1rem;
 }
 
 .content-container {
   display: flex;
-}
-
-.sidebar-container {
-  /* 필요에 따라 너비 조절 */
-  display: flex;
-  width: 20%; /* 예시로 20%로 설정 */
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
 }
 
 .infocontent-container {
+  display: flex;
+  flex-direction: row;
   padding-top: 20px;
-  display: flex; /* 요소들을 가로로 정렬 */
-  padding-left: 10px;
 }
 
 .detail-info-card {
-  margin-right: 20px; /* 카드와 지도 사이에 간격 추가 */
+  margin-right: 20px; 
   height: 60vh;
   width: 300px;
 }
 
 .mapbut-and-map-container {
-  flex-grow: 1; /* 지도 컨테이너가 남은 공간을 차지하도록 */
+  flex-grow: 1; 
 }
+
+.comment-input-form, .comment-list {
+  margin: 10px 0;
+}
+
 </style>
