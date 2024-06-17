@@ -38,9 +38,16 @@
                     <input type="text" class="form-control" id="cupet_user_name" v-model="state.form.name">
                   </div>
                   <div class="col-12">
-                    <label for="cupet_user_address" class="form-label">주소</label>
-                    <input type="text" class="form-control" id="cupet_user_address" v-model="state.form.address">
+                    <label for="cupet_receiver_postcode">우편번호</label>
+                    <div class="d-flex">
+                      <input type="text" class="form-control short-input" id="cupet_receiver_postcode" v-model="state.form.postcode" readonly required />
+                      <button type="button" class="search-btn" @click="openPostcode">우편번호 찾기</button>
+                    </div>
                   </div>
+                  <div class="col-12">
+                    <label for="cupet_receiver_add">상세 주소</label>
+                    <input type="text" class="form-control" id="cupet_receiver_add" v-model="state.form.address" required/>
+                </div>
                   <div class="col-12">
                     <label for="cupet_user_phone" class="form-label">연락처</label>
                     <input type="text" class="form-control" id="cupet_user_phone" v-model="state.form.phone">
@@ -97,6 +104,7 @@ export default {
       data: {},
       form: {
         name: "",
+        postcode: "",
         address: "",
         phone: "",
         price: "",
@@ -104,6 +112,28 @@ export default {
         point: 0
       }
     });
+
+    const openPostcode = () => {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          state.form.postcode = data.zonecode;
+          state.form.address = data.roadAddress;
+        },
+        width: "100%",
+        height: "100%",
+        maxWidth: "600px",
+        maxHeight: "400px",
+        popupName: "postcodePopup",
+        popupKey: "postcodePopupKey",
+      }).open({
+        popupName: "postcodePopup",
+        left: window.screen.width / 2 - 300,
+        top: window.screen.height / 2 - 200,
+        width: 600,
+        height: 400,
+        openOnPopup: true,
+      });
+    };
 
     const load = () => {
       axios.post("/api1/cart/items", {}, {
@@ -188,24 +218,29 @@ export default {
     };
 
     load();
-    return { state, lib, computedPrice, submit, getItemTotalPrice, getItemCount };
+    return { state, lib, computedPrice, submit, getItemTotalPrice, getItemCount, openPostcode };
   }
 }
 </script>
 
 <style scoped>
-  .content-container {
-    display: flex;
-  }
+.content-container {
+  display: flex;
+}
 
-  .orderPage {
-    flex: 1;
-    padding: 20px;
-  }
+.orderPage {
+  flex: 1;
+  padding: 20px;
+}
 
-  .total-info {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
-  </style>
+.total-info {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.short-input {
+  width: 150px;
+  margin-right: 10px;
+}
+</style>
