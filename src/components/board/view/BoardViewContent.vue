@@ -1,39 +1,22 @@
 <template>
-  <div>
+  <div class="container mt-5 p-4" style="background-color: #F2FFF2; border-radius: 10px; max-width: 800px; margin: auto;">
     <div class="content">
-      <h1 style="color: #7e84a3">게시물 상세보기</h1>
-      <div class="form-container">
-        <div class="form-group">
-          <label>게시물 번호: </label>
-          <div class="info">{{ state.board.cupet_board_no }}</div>
+      <h4 class="text-muted mb-1">{{ state.board.cupet_board_head_name }}</h4>
+      <h1 style="color: #34A853;">{{ state.board.cupet_board_title }}</h1>
+      <div class="d-flex justify-content-between text-muted mb-4">
+        <div>
+          <span>{{ state.board.cupet_user_nickname }}</span> | 
+          <span>{{ state.board.cupet_board_regdate }}</span> | 
+          <span>조회수: {{ state.board.cupet_board_viewcnt }}</span>
         </div>
-        <div class="form-group">
-          <label>머릿말: </label>
-          <div class="info">{{ state.board.cupet_board_head_name }}</div>
-        </div>
-        <div class="form-group">
-          <label>제목: </label>
-          <div class="info">{{ state.board.cupet_board_title }}</div>
-        </div>
-        <div class="form-group">
-          <label>내용: </label>
-          <div class="info" v-html="cleanContent(state.board.cupet_board_content)"></div>
-        </div>
-        <div class="form-group">
-          <label>작성자: </label>
-          <div class="info">{{ state.board.cupet_user_nickname }}</div>
-        </div>
-        <div class="form-group">
-          <label>작성일: </label>
-          <div class="info">{{ state.board.cupet_board_regdate }}</div>
-        </div>
-        <div class="form-group">
-          <label>조회수: </label>
-          <div class="info">{{ state.board.cupet_board_viewcnt }}</div>
+      </div>
+      <div class="p-4" style="background-color: #FFFFFF; border: 1px solid #9CD866; border-radius: 5px;">
+        <div class="content-box">
+          <div v-html="cleanContent(state.board.cupet_board_content)"></div>
         </div>
       </div>
     </div>
-    <div class="change-button">
+    <div class="d-flex justify-content-center mt-4">
       <button
         v-if="state.cupet_user_id === state.board.cupet_user_id"
         type="button"
@@ -59,13 +42,13 @@
 
 <script>
 import axios from "axios"
-import "@/components/common/CommonButtonStyle.css"
 
 export default {
   data() {
     return {
       state: {
         board: {},
+        cupet_user_id: null,
       },
     }
   },
@@ -137,8 +120,6 @@ export default {
 .content {
   flex: 1;
   align-items: center;
-  padding-left: 40px;
-  margin-top: 25px;
 }
 
 .form-container {
@@ -148,30 +129,27 @@ export default {
   width: 100%;
 }
 
-.form-group {
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.form-group label {
-  margin-right: 10px;
-}
-
-.form-group {
-  flex: 1;
-  padding: 8px;
-  box-sizing: border-box;
-  border-radius: 4px;
-}
-
 .change-button {
   margin-top: 10px;
-  margin-left: 40px;
+}
+
+button {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #34a853;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #9cd866;
 }
 
 .update-button {
   margin-right: 10px;
-}
+} 
 
 .delete-button {
   margin-right: 10px;
@@ -179,5 +157,10 @@ export default {
 
 .cancel-button {
   margin-right: 10px;
+}
+
+.content-box {
+  padding: 10px; /* Adjust padding as needed */
+  height: 100%;
 }
 </style>
