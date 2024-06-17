@@ -1,34 +1,36 @@
 <template>
-  <CommonHeader />
-  <div class="content-container">
-    <CommonSideBar />
-    <div class="ordersPage">
-      <div class="container">
-        <div class="text-center mb-4"><h2>주문 내역</h2></div>
-        <table class="table table-hover">
-          <thead class="table-dark">
-            <tr>
-              <th>주문번호</th>
-              <th>받는 사람</th>
-              <th>배송주소</th>
-              <th>연락처</th>
-              <th>주문 날짜</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(o, idx1) in state.orders" :key="idx1" @click="goToOrderDetail(o.cupet_order_no)">
-              <td>{{ o.cupet_order_no }}</td>
-              <td>{{ o.cupet_receiver_name }}</td>
-              <td>{{ o.cupet_receiver_add }}</td>
-              <td>{{ o.cupet_receiver_phone }}</td>
-              <td>{{ o.cupet_order_date }}</td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="main-container">
+    <CommonHeader />
+    <div class="content-container">
+      <CommonSideBar />
+      <div class="ordersPage">
+        <div class="container">
+          <div class="text-center mb-4"><h2>주문 내역</h2></div>
+          <table class="table table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>주문번호</th>
+                <th>받는 사람</th>
+                <th>배송주소</th>
+                <th>연락처</th>
+                <th>주문 날짜</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(o, idx1) in state.orders" :key="idx1" @click="goToOrderDetail(o.cupet_order_no)">
+                <td>{{ o.cupet_order_no }}</td>
+                <td>{{ o.cupet_receiver_name }}</td>
+                <td>{{ o.cupet_receiver_add }}</td>
+                <td>{{ o.cupet_receiver_phone }}</td>
+                <td>{{ o.cupet_order_date }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+    <CommonFooter />
   </div>
-  <CommonFooter />
 </template>
 
 <script>
@@ -84,6 +86,30 @@ export default {
 </script>
 
 <style scoped>
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+}
+
+.ordersPage {
+  flex: 1;
+}
+
+.container {
+  padding: 20px;
+}
+
 .table {
   margin-top: 30px;
 }
@@ -101,7 +127,4 @@ export default {
   background-color: #f1f1f1;
 }
 
-.container {
-  padding: 20px;
-}
 </style>

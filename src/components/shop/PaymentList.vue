@@ -1,35 +1,37 @@
 <template>
-    <div class="page-container">
-      <CommonHeader />
+  <div class="main-container">
+    <CommonHeader />
       <div class="content-container">
         <CommonSideBar />
         <div class="paymentList">
-          <h1>결제 내역</h1>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>결제번호</th>
-                <th>금액</th>
-                <th>결제 UID</th>
-                <th>결제일</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(payment, index) in payments" :key="index">
-                <td>{{ payment.cupet_payno }}</td>
-                <td>{{ payment.cupet_pay_price }}</td>
-                <td>{{ payment.cupet_payment_uid }}</td>
-                <td>{{ payment.cupet_pay_date }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="container">
+            <div class="text-center mb-4"><h2>결제 내역</h2></div>
+            <table class="table table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>결제번호</th>
+                  <th>금액</th>
+                  <th>결제 UID</th>
+                  <th>결제일</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(payment, index) in payments" :key="index">
+                  <td>{{ payment.cupet_payno }}</td>
+                  <td>{{ payment.cupet_pay_price }} 원</td>
+                  <td>{{ payment.cupet_payment_uid }}</td>
+                  <td>{{ payment.cupet_pay_date }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <CommonFooter />
-    </div>
-  </template>
+    <CommonFooter />
+  </div>
+</template>
   
-  <script>
+<script>
   import axios from 'axios';
   import CommonHeader from "@/components/common/CommonHeader.vue";
   import CommonSideBar from "@/components/common/CommonSideBar.vue";
@@ -60,57 +62,48 @@
       }
     }
   };
-  </script>
+</script>
   
-  <style scoped>
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  .content-container {
-    display: flex;
-    flex: 1;
-  }
-  
-  .paymentList {
-    flex: 1;
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px; /* 최대 너비를 800px로 설정 */
-    margin: auto;
-  }
-  
-  h1 {
-    margin-bottom: 20px;
-  }
-  
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .table th, .table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    color : darkslategray;
-  }
-  
-  .table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .table tr:hover {
-    background-color: #f1f1f1;
-  }
-  </style>
-  
+<style scoped>
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+}
+
+.paymentList{
+  flex: 1;
+}
+
+.container {
+  padding: 20px;
+}
+
+.table {
+  margin-top: 30px;
+}
+
+.table > tbody {
+  border-top: 1px solid #eee;
+}
+
+.table > tbody > tr {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.table > tbody > tr:hover {
+  background-color: #f1f1f1;
+}
+
+</style>

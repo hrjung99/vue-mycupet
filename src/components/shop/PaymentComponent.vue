@@ -112,7 +112,9 @@ export default {
   margin-left: 50px;  
   position: relative;
   display: flex;
-  justify-content: center; 
+  flex-direction: column;
+  height: 80%;
+  min-height: 80vh;
   align-items: center;
 }
 </style>

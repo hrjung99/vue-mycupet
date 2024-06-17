@@ -94,6 +94,29 @@ export default {
 </script>
 
 <style scoped>
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+}
+
+.orderDetailPage {
+  flex: 1;
+}
+
+.container {
+  padding: 20px;
+}
 .orderDetailPage { 
   background-color: #f2fff2;    
   position: relative;
