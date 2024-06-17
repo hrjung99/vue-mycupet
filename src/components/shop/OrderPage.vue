@@ -39,8 +39,10 @@
                   </div>
                   <div class="col-12">
                     <label for="cupet_receiver_postcode">우편번호</label>
-                    <input type="text" class="form-control" id="cupet_receiver_postcode" v-model="state.form.postcode" readonly required />
-                    <button type="button" @click="openPostcode">우편번호 찾기</button>
+                    <div class="d-flex">
+                      <input type="text" class="form-control short-input" id="cupet_receiver_postcode" v-model="state.form.postcode" readonly required />
+                      <button type="button" class="search-btn" @click="openPostcode">우편번호 찾기</button>
+                    </div>
                   </div>
                   <div class="col-12">
                     <label for="cupet_receiver_add">상세 주소</label>
@@ -235,5 +237,10 @@ export default {
   margin-top: 20px;
   padding: 10px;
   border: 1px solid #ddd;
+}
+
+.short-input {
+  width: 150px;
+  margin-right: 10px;
 }
 </style>

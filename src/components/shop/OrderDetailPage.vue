@@ -10,6 +10,7 @@
             <div class="card-body">
               <h3 class="card-title">주문 번호: {{ orderDetails.cupet_order_no }}</h3>
               <p class="card-text">수신자 이름: {{ orderDetails.cupet_receiver_name }}</p>
+              <p class="card-text">우편번호: {{ orderDetails.cupet_receiver_postcode }}</p>
               <p class="card-text">주소: {{ orderDetails.cupet_receiver_add }}</p>
               <p class="card-text">전화번호: {{ orderDetails.cupet_receiver_phone }}</p>
               <p class="card-text">총 가격: {{ lib.getNumberFormatted(orderDetails.cupet_total_price) }} 원</p>
