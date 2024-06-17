@@ -30,7 +30,7 @@
               </div>
             </div>
             <div class="col-md-7 col-lg-8">
-              <h4 class="mb-3">주문자 정보</h4>
+              <h4 class="mb-3">배송 정보</h4>
               <div class="needs-validation" novalidate="">
                 <div class="row g-3">
                   <div class="col-12">
