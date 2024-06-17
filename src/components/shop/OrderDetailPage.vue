@@ -19,7 +19,8 @@
           <div v-if="orderItems.length > 0">
             <h4>주문 상품</h4>
             <ul class="list-group">
-              <li v-for="item in orderItems" :key="item.cupet_prodno" class="list-group-item d-flex justify-content-between align-items-center">
+              <li v-for="item in orderItems" :key="item.cupet_prodno"
+                class="list-group-item d-flex justify-content-between align-items-center"  @click="viewDetails(item.cupet_prodno)">
                 <span>{{ item.cupet_prodname }}</span>
                 <span>{{ lib.getNumberFormatted(item.cupet_prodprice - item.cupet_prodprice * item.cupet_proddiscountper / 100) }}원</span>
               </li>
@@ -41,6 +42,7 @@ import CommonHeader from "@/components/common/CommonHeader.vue";
 import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import lib from "@/scripts/lib";
+import router from '@/router';
 
 export default {
   components: {
@@ -56,9 +58,14 @@ export default {
     };
   },
   methods: {
+    viewDetails(cupet_prodno) {
+      router.push({ name: 'ShopDetail', params: { cupet_prodno: cupet_prodno } });
+    },
+
     changeSidebarColor() {
       this.$refs.sidebar.changeBackground("#ffffff");
     },
+
     async fetchOrderDetails(cupet_order_no) {
       try {
         const token = localStorage.getItem("Token");
@@ -69,8 +76,7 @@ export default {
           withCredentials: true,
         });
         this.orderDetails = response.data;
-
-        // Fetch order items details
+        
         const itemsResponse = await axios.post('/api1/order/items', {}, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -102,6 +108,7 @@ html, body {
 .main-container {
   display: flex;
   flex-direction: column;
+  height: 100%;
   min-height: 100vh;
 }
 
@@ -139,9 +146,11 @@ html, body {
 .list-group-item {
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.container {
-  padding: 20px;
+.list-group-item:hover {
+  background-color: #f1f1f1;
 }
 </style>

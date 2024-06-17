@@ -84,6 +84,14 @@ export default {
   },
   setup() {
     const token = localStorage.getItem("Token");
+
+    const getLocalISOString = () => {
+      const now = new Date();
+      const timezoneOffset = now.getTimezoneOffset() * 60000;
+      const localISOTime = new Date(now - timezoneOffset).toISOString().slice(0, 19).replace('T', ' ');
+      return localISOTime;
+    };
+
     const state = reactive({
       items: [],
       data: {},
@@ -92,7 +100,7 @@ export default {
         address: "",
         phone: "",
         price: "",
-        date: new Date().toISOString().slice(0, 16),
+        date: getLocalISOString(),
         point: 0
       }
     });
