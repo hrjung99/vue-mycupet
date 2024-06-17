@@ -153,6 +153,7 @@ export default {
 .content-container {
   display: flex;
   height: 100%;
+  min-height: 85vh;
 }
 
 .container {
