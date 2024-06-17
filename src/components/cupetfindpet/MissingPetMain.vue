@@ -13,9 +13,7 @@
             <KaKaoMapMissingVue @select-pet="selectPet" />
           </div>
         </div>
-        <br/>
-        <CommentInputForm :cupetPetNo="selectedPetDetail?.id" @comment-added="fetchComments"/>
-        <CommentList :comments="comments" />
+        <br />
       </main>
     </div>
     <CommonFooter />
@@ -29,8 +27,6 @@ import CommonSideBar from "@/components/common/CommonSideBar.vue";
 import CommonFooter from "@/components/common/CommonFooter.vue";
 import KaKaoMapMissingVue from "./map/KaKaoMapMissing.vue";
 import DetailInfoCard from "./DetailInfoCard.vue";
-import CommentInputForm from "./CommentInputForm.vue";
-import CommentList from "./CommentList.vue";
 import axios from "axios";
 
 export default {
@@ -41,8 +37,6 @@ export default {
     CommonFooter,
     KaKaoMapMissingVue,
     DetailInfoCard,
-    CommentInputForm,
-    CommentList,
   },
   setup() {
     const selectedPetDetail = ref(null);
@@ -77,7 +71,8 @@ export default {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -111,17 +106,17 @@ header {
 }
 
 .detail-info-card {
-  margin-right: 20px; 
+  margin-right: 20px;
   height: 60vh;
   width: 300px;
 }
 
 .mapbut-and-map-container {
-  flex-grow: 1; 
+  flex-grow: 1;
 }
 
-.comment-input-form, .comment-list {
+.comment-input-form,
+.comment-list {
   margin: 10px 0;
 }
-
 </style>
