@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-center mt-4">
+    <div class="d-flex justify-content-start mt-4">
       <button
         v-if="state.cupet_user_id === state.board.cupet_user_id"
         type="button"
